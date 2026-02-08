@@ -51,6 +51,8 @@ Page({
   },
 
   maxHistoryLength: 50,
+  maxRetries: 3,
+  retryDelay: 1000,
 
   onLoad() {
     this.initPage();
@@ -115,6 +117,10 @@ Page({
     const userMessage = this.data.userInput.trim();
     if (!userMessage || this.data.loading) return;
 
+    wx.vibrateShort({
+      type: 'light'
+    });
+
     const timestamp = Date.now();
     const formattedTime = this.formatTime(timestamp);
     const userMsg = { 
@@ -143,57 +149,71 @@ Page({
   },
 
   async callAIAPI(userMessage, chatHistory) {
-    try {
-      const prompt = `你是一个专业的财务助手，请回答以下财务问题：${userMessage}\n\n请提供详细、准确的回答，包括相关的财务知识和建议。`;
-      const response = await aiService.financialAssistant(prompt);
-      
-      let aiResponse = '';
-      if (response && response.output && response.output[0] && response.output[0].content && response.output[0].content[0]) {
-        aiResponse = response.output[0].content[0].text;
-      } else {
-        aiResponse = '抱歉，我暂时无法回答这个问题。请稍后再试或联系管理员。';
-      }
+    let retryCount = 0;
+    
+    const attemptCall = async () => {
+      try {
+        const prompt = `你是一个专业的财务助手，请回答以下财务问题：${userMessage}\n\n请提供详细、准确的回答，包括相关的财务知识和建议。`;
+        const response = await aiService.financialAssistant(prompt);
+        
+        let aiResponse = '';
+        if (response && response.output && response.output[0] && response.output[0].content && response.output[0].content[0]) {
+          aiResponse = response.output[0].content[0].text;
+        } else {
+          aiResponse = '抱歉，我暂时无法回答这个问题。请稍后再试或联系管理员。';
+        }
 
-      const lastIndex = chatHistory.length - 1;
-      chatHistory[lastIndex].aiResponse = aiResponse;
-      chatHistory[lastIndex].isTyping = true;
-      chatHistory[lastIndex].displayResponse = '';
-      
-      this.setData({
-        chatHistory,
-        loading: false
-      });
-      
-      this.typeWriterEffect(lastIndex, aiResponse, chatHistory);
-    } catch (error) {
-      console.error('AI API调用失败:', error);
-      
-      const fallbackResponse = '抱歉，网络连接出现问题，请检查网络设置后重试。';
-      
-      const lastIndex = chatHistory.length - 1;
-      chatHistory[lastIndex].aiResponse = fallbackResponse;
-      chatHistory[lastIndex].isTyping = true;
-      chatHistory[lastIndex].displayResponse = '';
-      
-      this.setData({
-        chatHistory,
-        loading: false
-      });
-      
-      this.typeWriterEffect(lastIndex, fallbackResponse, chatHistory);
-    }
+        const lastIndex = chatHistory.length - 1;
+        chatHistory[lastIndex].aiResponse = aiResponse;
+        chatHistory[lastIndex].isTyping = true;
+        chatHistory[lastIndex].displayResponse = '';
+        
+        this.setData({
+          chatHistory,
+          loading: false
+        });
+        
+        this.typeWriterEffect(lastIndex, aiResponse, chatHistory);
+      } catch (error) {
+        console.error('AI API调用失败:', error, '重试次数:', retryCount);
+        
+        if (retryCount < this.data.maxRetries) {
+          retryCount++;
+          setTimeout(() => {
+            attemptCall();
+          }, this.data.retryDelay * retryCount);
+        } else {
+          const fallbackResponse = '抱歉，网络连接出现问题，请检查网络设置后重试。';
+          
+          const lastIndex = chatHistory.length - 1;
+          chatHistory[lastIndex].aiResponse = fallbackResponse;
+          chatHistory[lastIndex].isTyping = true;
+          chatHistory[lastIndex].displayResponse = '';
+          
+          this.setData({
+            chatHistory,
+            loading: false
+          });
+          
+          this.typeWriterEffect(lastIndex, fallbackResponse, chatHistory);
+        }
+      }
+    };
+    
+    attemptCall();
   },
 
   typeWriterEffect(index, fullText, chatHistory) {
     let currentIndex = 0;
-    const speed = 30;
+    const baseSpeed = 30;
+    const dynamicSpeed = Math.max(15, Math.min(baseSpeed, Math.floor(1000 / fullText.length)));
     
     const typeNext = () => {
       if (currentIndex < fullText.length) {
         chatHistory[index].displayResponse = fullText.substring(0, currentIndex + 1);
         this.setData({ chatHistory });
         currentIndex++;
-        setTimeout(typeNext, speed);
+        setTimeout(typeNext, dynamicSpeed);
       } else {
         chatHistory[index].isTyping = false;
         this.setData({ chatHistory });
