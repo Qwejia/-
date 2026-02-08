@@ -908,11 +908,14 @@ page {
 
 .input-section {
   background: #ffffff;
-  padding: 24rpx;
+  padding: 24rpx 32rpx;
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
   border-top: 1rpx solid #f1f3f4;
   box-shadow: 0 -8rpx 32rpx rgba(0, 0, 0, 0.06);
   backdrop-filter: blur(10rpx);
   -webkit-backdrop-filter: blur(10rpx);
+  position: relative;
+  z-index: 10;
 }
 
 .input-container {
@@ -921,34 +924,40 @@ page {
   gap: 16rpx;
   background: #f8f9fa;
   border-radius: 50rpx;
-  padding: 16rpx 24rpx;
+  padding: 20rpx 24rpx;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: 2rpx solid transparent;
+  border: 2rpx solid #e9ecef;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.04);
+  min-height: 100rpx;
 }
 
 .input-container:focus-within {
   background: #ffffff;
   border-color: #667eea;
-  box-shadow: 0 0 0 4rpx rgba(102, 126, 234, 0.1);
+  box-shadow: 0 0 0 4rpx rgba(102, 126, 234, 0.15);
 }
 
 .message-input {
   flex: 1;
-  font-size: 28rpx;
+  font-size: 30rpx;
+  line-height: 1.6;
   color: #2c3e50;
   background: transparent;
   border: none;
   outline: none;
   transition: all 0.3s;
+  min-height: 60rpx;
+  padding: 0;
 }
 
 .message-input::placeholder {
   color: #bdc3c7;
+  font-weight: 400;
 }
 
 .send-btn {
-  width: 80rpx;
-  height: 80rpx;
+  width: 88rpx;
+  height: 88rpx;
   border-radius: 50%;
   border: none;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -959,6 +968,7 @@ page {
   box-shadow: 0 4rpx 16rpx rgba(102, 126, 234, 0.3);
   position: relative;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .send-btn::before {
@@ -980,23 +990,27 @@ page {
 }
 
 .send-btn:active {
-  transform: scale(0.9);
+  transform: scale(0.92);
   box-shadow: 0 2rpx 8rpx rgba(102, 126, 234, 0.4);
 }
 
 .send-btn:disabled {
-  opacity: 0.4;
+  opacity: 0.5;
   transform: none;
   box-shadow: none;
   cursor: not-allowed;
+  background: linear-gradient(135deg, #bdc3c7 0%, #95a5a6 100%);
 }
 
 .send-btn .btn-icon {
   color: #ffffff;
-  font-size: 36rpx;
+  font-size: 40rpx;
   font-weight: bold;
   position: relative;
   z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .tab-bar {
