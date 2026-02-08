@@ -65,7 +65,12 @@
      "pages/tools/vat-calculator",
      "pages/tools/personal-tax-calculator",
      "pages/tools/corporate-tax-calculator",
-     "pages/tools/finance-check"
+     "pages/tools/finance-check",
+     "pages/tools/cost-analysis",
+     "pages/tools/cashflow-forecast",
+     "pages/tools/risk-assessment",
+     "pages/tools/tax-risk-check",
+     "pages/tools/business-risk-analysis"
   ],
   "subPackages": [],
   "window": {

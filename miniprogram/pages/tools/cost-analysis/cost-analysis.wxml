@@ -1,0 +1,80 @@
+<view class="page-container">
+  <view class="header-section">
+    <text class="page-title">成本结构分析</text>
+    <text class="page-subtitle">深入分析企业成本构成</text>
+  </view>
+
+  <scroll-view class="content-scroll" scroll-y>
+    <view class="form-container">
+      <view class="form-item">
+        <text class="label">年营收（万元）</text>
+        <input class="input-field" type="digit" placeholder="请输入年营收" value="{{revenue}}" bindinput="onRevenueInput" />
+      </view>
+      <view class="form-item">
+        <text class="label">人工成本（万元）</text>
+        <input class="input-field" type="digit" placeholder="请输入人工成本" value="{{labor}}" bindinput="onLaborInput" />
+      </view>
+      <view class="form-item">
+        <text class="label">材料成本（万元）</text>
+        <input class="input-field" type="digit" placeholder="请输入材料成本" value="{{material}}" bindinput="onMaterialInput" />
+      </view>
+      <view class="form-item">
+        <text class="label">制造费用（万元）</text>
+        <input class="input-field" type="digit" placeholder="请输入制造费用" value="{{manufacturing}}" bindinput="onManufacturingInput" />
+      </view>
+      <view class="form-item">
+        <text class="label">销售费用（万元）</text>
+        <input class="input-field" type="digit" placeholder="请输入销售费用" value="{{sales}}" bindinput="onSalesInput" />
+      </view>
+      <view class="form-item">
+        <text class="label">管理费用（万元）</text>
+        <input class="input-field" type="digit" placeholder="请输入管理费用" value="{{management}}" bindinput="onManagementInput" />
+      </view>
+      <view class="form-item">
+        <text class="label">其他费用（万元）</text>
+        <input class="input-field" type="digit" placeholder="请输入其他费用" value="{{other}}" bindinput="onOtherInput" />
+      </view>
+
+      <button class="action-btn" bindtap="calculate" disabled="{{!canCalculate}}">
+        <text class="btn-icon">📊</text>
+        <text class="btn-text">开始分析</text>
+      </button>
+
+      <view class="info-section" wx:if="{{showResult}}">
+        <view class="info-card">
+          <view class="info-header">
+            <text class="info-icon">📊</text>
+            <text class="info-title">分析结果</text>
+          </view>
+          <view class="info-content">
+            <view class="result-row">
+              <text class="result-label">总成本</text>
+              <text class="result-value">¥{{totalCost || '0.00'}}万元</text>
+            </view>
+            <view class="result-row">
+              <text class="result-label">成本率</text>
+              <text class="result-value">{{costRatio || '0.00'}}%</text>
+            </view>
+            <view class="result-row">
+              <text class="result-label">利润</text>
+              <text class="result-value">¥{{profit || '0.00'}}万元</text>
+            </view>
+            <view class="result-row highlight">
+              <text class="result-label">利润率</text>
+              <text class="result-value">{{profitMargin || '0.00'}}%</text>
+            </view>
+            <view class="analysis-section">
+              <text class="analysis-title">成本构成分析</text>
+              <text class="analysis-text">{{costAnalysis}}</text>
+            </view>
+          </view>
+        </view>
+
+        <button class="action-btn secondary" bindtap="copyResult">
+          <text class="btn-icon">📋</text>
+          <text class="btn-text">复制结果</text>
+        </button>
+      </view>
+    </view>
+  </scroll-view>
+</view>

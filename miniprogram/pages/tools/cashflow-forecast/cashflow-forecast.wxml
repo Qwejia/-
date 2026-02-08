@@ -1,0 +1,26 @@
+<view class="page-container">
+  <view class="header-section">
+    <text class="page-title">现金流预测</text>
+    <text class="page-subtitle">预测未来现金流趋势</text>
+  </view>
+  <scroll-view class="content-scroll" scroll-y>
+    <view class="form-container">
+      <view class="form-item"><text class="label">月营收（万元）</text><input class="input-field" type="digit" placeholder="请输入月营收" value="{{revenue}}" bindinput="onRevenueInput" /></view>
+      <view class="form-item"><text class="label">月成本（万元）</text><input class="input-field" type="digit" placeholder="请输入月成本" value="{{cost}}" bindinput="onCostInput" /></view>
+      <view class="form-item"><text class="label">月应收账款（万元）</text><input class="input-field" type="digit" placeholder="请输入月应收账款" value="{{receivables}}" bindinput="onReceivablesInput" /></view>
+      <view class="form-item"><text class="label">月应付账款（万元）</text><input class="input-field" type="digit" placeholder="请输入月应付账款" value="{{payables}}" bindinput="onPayablesInput" /></view>
+      <button class="action-btn" bindtap="calculate" disabled="{{!canCalculate}}"><text class="btn-icon">📊</text><text class="btn-text">开始预测</text></button>
+      <view class="info-section" wx:if="{{showResult}}">
+        <view class="info-card">
+          <view class="info-header"><text class="info-icon">📊</text><text class="info-title">预测结果</text></view>
+          <view class="info-content">
+            <view class="result-row"><text class="result-label">月净现金流</text><text class="result-value">¥{{netCashFlow || '0.00'}}万元</text></view>
+            <view class="result-row"><text class="result-label">现金流趋势</text><text class="result-value">{{cashFlowTrend}}</text></view>
+            <view class="analysis-section"><text class="analysis-title">未来6个月预测</text><text class="analysis-text">{{forecastAnalysis}}</text></view>
+          </view>
+        </view>
+        <button class="action-btn secondary" bindtap="copyResult"><text class="btn-icon">📋</text><text class="btn-text">复制结果</text></button>
+      </view>
+    </view>
+  </scroll-view>
+</view>
