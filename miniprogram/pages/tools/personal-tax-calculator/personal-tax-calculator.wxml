@@ -1,0 +1,65 @@
+<view class="page-container">
+  <view class="header-section">
+    <text class="page-title">个税计算器</text>
+    <text class="page-subtitle">计算个人所得税</text>
+  </view>
+
+  <scroll-view class="content-scroll" scroll-y>
+    <view class="form-container">
+      <view class="form-item">
+        <text class="label">税前月工资（元）</text>
+        <input 
+          class="input-field" 
+          type="digit"
+          placeholder="请输入税前月工资" 
+          value="{{salary}}" 
+          bindinput="onSalaryInput"
+        />
+      </view>
+
+      <view class="info-section">
+        <view class="info-card">
+          <view class="info-header">
+            <text class="info-icon">📊</text>
+            <text class="info-title">计算结果</text>
+          </view>
+          <view class="info-content">
+            <view class="result-row">
+              <text class="result-label">税前工资</text>
+              <text class="result-value">¥{{salary || '0.00'}}</text>
+            </view>
+            <view class="result-row">
+              <text class="result-label">个人所得税</text>
+              <text class="result-value tax">¥{{tax || '0.00'}}</text>
+            </view>
+            <view class="result-row highlight">
+              <text class="result-label">税后工资</text>
+              <text class="result-value total">¥{{afterTax || '0.00'}}</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="tips-card">
+          <view class="tips-header">
+            <text class="tips-icon">💡</text>
+            <text class="tips-title">税率说明</text>
+          </view>
+          <view class="tips-content">
+            <text class="tips-text">• 不超过36000元：3%</text>
+            <text class="tips-text">• 超过36000-144000元：10%</text>
+            <text class="tips-text">• 超过144000-300000元：20%</text>
+            <text class="tips-text">• 超过300000-420000元：25%</text>
+            <text class="tips-text">• 超过420000-660000元：30%</text>
+            <text class="tips-text">• 超过660000-960000元：35%</text>
+            <text class="tips-text">• 超过960000元：45%</text>
+          </view>
+        </view>
+      </view>
+
+      <button class="action-btn" bindtap="copyResult" disabled="{{!salary}}">
+        <text class="btn-icon">📋</text>
+        <text class="btn-text">复制结果</text>
+      </button>
+    </view>
+  </scroll-view>
+</view>

@@ -61,7 +61,9 @@
     "pages/fixedAssets/assetList",
     "pages/fixedAssets/assetAdd",
     "pages/fixedAssets/assetDetail",
-    "pages/category/index"
+    "pages/category/index",
+    "pages/tools/vat-calculator",
+    "pages/tools/personal-tax-calculator"
   ],
   "subPackages": [],
   "window": {

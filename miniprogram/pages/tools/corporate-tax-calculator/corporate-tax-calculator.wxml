@@ -1,0 +1,66 @@
+<view class="page-container">
+  <view class="header-section">
+    <text class="page-title">企业所得税计算器</text>
+    <text class="page-subtitle">计算企业所得税额</text>
+  </view>
+
+  <scroll-view class="content-scroll" scroll-y>
+    <view class="form-container">
+      <view class="form-item">
+        <text class="label">年应纳税所得额（万元）</text>
+        <input 
+          class="input-field" 
+          type="digit"
+          placeholder="请输入年应纳税所得额" 
+          value="{{income}}" 
+          bindinput="onIncomeInput"
+        />
+      </view>
+
+      <view class="info-section">
+        <view class="info-card">
+          <view class="info-header">
+            <text class="info-icon">📊</text>
+            <text class="info-title">计算结果</text>
+          </view>
+          <view class="info-content">
+            <view class="result-row">
+              <text class="result-label">应纳税所得额</text>
+              <text class="result-value">¥{{income || '0.00'}}万元</text>
+            </view>
+            <view class="result-row">
+              <text class="result-label">企业所得税</text>
+              <text class="result-value tax">¥{{tax || '0.00'}}万元</text>
+            </view>
+            <view class="result-row highlight">
+              <text class="result-label">税后利润</text>
+              <text class="result-value total">¥{{afterTax || '0.00'}}万元</text>
+            </view>
+            <view class="result-row">
+              <text class="result-label">实际税率</text>
+              <text class="result-value">{{taxRate || '0.00'}}%</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="tips-card">
+          <view class="tips-header">
+            <text class="tips-icon">💡</text>
+            <text class="tips-title">税率说明</text>
+          </view>
+          <view class="tips-content">
+            <text class="tips-text">• 标准税率：25%</text>
+            <text class="tips-text">• 小型微利企业：实际税负2.5%-5%</text>
+            <text class="tips-text">• 高新技术企业：15%</text>
+            <text class="tips-text">• 技术先进型服务企业：15%</text>
+          </view>
+        </view>
+      </view>
+
+      <button class="action-btn" bindtap="copyResult" disabled="{{!income}}">
+        <text class="btn-icon">📋</text>
+        <text class="btn-text">复制结果</text>
+      </button>
+    </view>
+  </scroll-view>
+</view>

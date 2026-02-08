@@ -1,0 +1,61 @@
+<view class="page-container">
+  <view class="header-section">
+    <text class="page-title">增值税计算器</text>
+    <text class="page-subtitle">快速计算增值税额</text>
+  </view>
+
+  <scroll-view class="content-scroll" scroll-y>
+    <view class="form-container">
+      <view class="form-item">
+        <text class="label">不含税金额（元）</text>
+        <input 
+          class="input-field" 
+          type="digit"
+          placeholder="请输入不含税金额" 
+          value="{{amount}}" 
+          bindinput="onAmountInput"
+        />
+      </view>
+
+      <view class="info-section">
+        <view class="info-card">
+          <view class="info-header">
+            <text class="info-icon">📊</text>
+            <text class="info-title">计算结果</text>
+          </view>
+          <view class="info-content">
+            <view class="result-row">
+              <text class="result-label">不含税金额</text>
+              <text class="result-value">¥{{amount || '0.00'}}</text>
+            </view>
+            <view class="result-row">
+              <text class="result-label">增值税（13%）</text>
+              <text class="result-value tax">¥{{tax || '0.00'}}</text>
+            </view>
+            <view class="result-row highlight">
+              <text class="result-label">含税金额</text>
+              <text class="result-value total">¥{{total || '0.00'}}</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="tips-card">
+          <view class="tips-header">
+            <text class="tips-icon">💡</text>
+            <text class="tips-title">税率说明</text>
+          </view>
+          <view class="tips-content">
+            <text class="tips-text">• 一般纳税人增值税税率：13%</text>
+            <text class="tips-text">• 小规模纳税人增值税税率：3%</text>
+            <text class="tips-text">• 本计算器按13%税率计算</text>
+          </view>
+        </view>
+      </view>
+
+      <button class="action-btn" bindtap="copyResult" disabled="{{!amount}}">
+        <text class="btn-icon">📋</text>
+        <text class="btn-text">复制结果</text>
+      </button>
+    </view>
+  </scroll-view>
+</view>

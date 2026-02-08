@@ -291,8 +291,23 @@ Page({
 
   executeTool(e) {
     const action = e.currentTarget.dataset.action;
-    if (this[action]) {
-      this[action]();
+    const pageMap = {
+      'openVATCalculator': '/pages/tools/vat-calculator',
+      'openPersonalTaxCalculator': '/pages/tools/personal-tax-calculator',
+      'openIncomeTaxCalculator': '/pages/tools/corporate-tax-calculator',
+      'openFinanceCheck': '/pages/tools/finance-check',
+      'openCostAnalysis': '/pages/tools/cost-analysis',
+      'openCashFlowForecast': '/pages/tools/cashflow-forecast',
+      'openRiskAssessment': '/pages/tools/risk-assessment',
+      'openTaxRiskCheck': '/pages/tools/tax-risk-check',
+      'openBusinessRiskAnalysis': '/pages/tools/business-risk-analysis'
+    };
+    
+    const url = pageMap[action];
+    if (url) {
+      wx.navigateTo({
+        url: url
+      });
     }
   },
 
