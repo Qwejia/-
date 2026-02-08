@@ -170,7 +170,20 @@
 
   <view class="input-section" wx:if="{{activeTab === 'chat'}}">
     <view class="input-container">
-      <input class="message-input" placeholder="请输入您的问题..." value="{{userInput}}" bindinput="onInputChange" bindconfirm="sendMessage" confirm-type="send" />
+      <input 
+        class="message-input" 
+        placeholder="请输入您的问题..." 
+        placeholder-class="input-placeholder"
+        value="{{userInput}}" 
+        bindinput="onInputChange" 
+        bindconfirm="sendMessage" 
+        confirm-type="send"
+        adjust-position="{{true}}"
+        cursor-spacing="{{10}}"
+        auto-height="{{true}}"
+        maxlength="{{1000}}"
+        show-confirm-bar="{{false}}"
+      />
       <button class="send-btn" bindtap="sendMessage" disabled="{{!userInput || loading}}">
         <text class="btn-icon">→</text>
       </button>

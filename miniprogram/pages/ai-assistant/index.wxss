@@ -947,10 +947,18 @@ page {
   outline: none;
   transition: all 0.3s;
   min-height: 60rpx;
+  max-height: 200rpx;
   padding: 0;
+  word-break: break-all;
+  overflow-wrap: break-word;
 }
 
 .message-input::placeholder {
+  color: #bdc3c7;
+  font-weight: 400;
+}
+
+.input-placeholder {
   color: #bdc3c7;
   font-weight: 400;
 }
