@@ -850,10 +850,256 @@ Page({
   },
 
   openTaxRiskCheck() {
-    wx.showToast({ title: '税务风险检测功能开发中', icon: 'none' });
+    wx.showModal({
+      title: '税务风险检测',
+      editable: true,
+      placeholderText: '请输入年营收',
+      content: '请输入以下税务数据（单位：万元）\n\n1. 年营收：\n2. 年纳税额：\n3. 应收账款：\n4. 存货价值：',
+      success: (res) => {
+        if (res.confirm && res.content) {
+          const inputs = res.content.split('\n').map(s => parseFloat(s.trim()));
+          const [revenue, taxPaid, receivables, inventory] = inputs;
+          
+          if (inputs.some(isNaN)) {
+            wx.showToast({ title: '请输入有效的税务数据', icon: 'none' });
+            return;
+          }
+          
+          const riskAssessment = this.calculateTaxRiskAssessment(revenue, taxPaid, receivables, inventory);
+          
+          wx.showModal({
+            title: '税务风险检测结果',
+            content: `风险等级：${riskAssessment.level}\n风险评分：${riskAssessment.score}分\n\n详细分析：\n\n${riskAssessment.analysis}`,
+            showCancel: false,
+            confirmText: '复制结果',
+            success: (copyRes) => {
+              if (copyRes.confirm) {
+                wx.setClipboardData({
+                  data: `风险等级：${riskAssessment.level}\n风险评分：${riskAssessment.score}分`,
+                  success: () => {
+                    wx.showToast({ title: '已复制', icon: 'success' });
+                  }
+                });
+              }
+            }
+          });
+        }
+      }
+    });
+  },
+
+  calculateTaxRiskAssessment(revenue, taxPaid, receivables, inventory) {
+    let score = 100;
+    let analysis = '';
+    
+    const taxRatio = revenue > 0 ? (taxPaid / revenue) * 100 : 0;
+    const receivablesRatio = revenue > 0 ? (receivables / revenue) * 100 : 0;
+    const inventoryRatio = revenue > 0 ? (inventory / revenue) * 100 : 0;
+    
+    analysis += '税务风险指标分析：\n';
+    analysis += `• 税负率：${taxRatio.toFixed(2)}%\n`;
+    if (taxRatio > 25) {
+      score -= 30;
+      analysis += `✗ 税负率过高（>25%），税务负担重\n`;
+    } else if (taxRatio > 20) {
+      score -= 15;
+      analysis += `⚠ 税负率偏高（20%-25%），建议税务筹划\n`;
+    } else if (taxRatio > 15) {
+      score -= 5;
+      analysis += `✓ 税负率适中（15%-20%），税务结构合理\n`;
+    } else {
+      analysis += `✓ 税负率低（<15%），税务负担轻\n`;
+    }
+    
+    analysis += `• 应收账款率：${receivablesRatio.toFixed(2)}%\n`;
+    if (receivablesRatio > 30) {
+      score -= 20;
+      analysis += `✗ 应收账款率过高（>30%），回款风险大\n`;
+    } else if (receivablesRatio > 20) {
+      score -= 10;
+      analysis += `⚠ 应收账款率偏高（20%-30%），建议加强催收\n`;
+    } else if (receivablesRatio > 10) {
+      score -= 5;
+      analysis += `✓ 应收账款率适中（10%-20%），回款正常\n`;
+    } else {
+      analysis += `✓ 应收账款率低（<10%），回款良好\n`;
+    }
+    
+    analysis += `• 存货率：${inventoryRatio.toFixed(2)}%\n`;
+    if (inventoryRatio > 40) {
+      score -= 20;
+      analysis += `✗ 存货率过高（>40%），库存积压风险\n`;
+    } else if (inventoryRatio > 30) {
+      score -= 10;
+      analysis += `⚠ 存货率偏高（30%-40%），建议优化库存\n`;
+    } else if (inventoryRatio > 20) {
+      score -= 5;
+      analysis += `✓ 存货率适中（20%-30%），库存管理良好\n`;
+    } else {
+      analysis += `✓ 存货率低（<20%），库存周转快\n`;
+    }
+    
+    analysis += `\n税务合规建议：\n`;
+    if (score >= 70) {
+      analysis += `✓ 税务状况良好，建议保持\n`;
+    } else if (score >= 50) {
+      analysis += `✓ 税务状况一般，建议优化\n`;
+      analysis += `• 合理利用税收优惠政策\n`;
+      analysis += `• 优化业务结构降低税负\n`;
+    } else {
+      analysis += `✗ 税务状况较差，需要关注\n`;
+      analysis += `• 建议咨询专业税务顾问\n`;
+      analysis += `• 加强税务合规管理\n`;
+    }
+    
+    const finalScore = Math.max(0, Math.min(100, score));
+    let level = '';
+    if (finalScore >= 80) level = '低风险';
+    else if (finalScore >= 60) level = '中低风险';
+    else if (finalScore >= 40) level = '中等风险';
+    else if (finalScore >= 20) level = '中高风险';
+    else level = '高风险';
+    
+    return {
+      score: finalScore,
+      level,
+      analysis
+    };
   },
 
   openBusinessRiskAnalysis() {
-    wx.showToast({ title: '经营风险分析功能开发中', icon: 'none' });
+    wx.showModal({
+      title: '经营风险分析',
+      editable: true,
+      placeholderText: '请输入年营收',
+      content: '请输入以下经营数据（单位：万元）\n\n1. 年营收：\n2. 年利润：\n3. 营收增长率：\n4. 市场占有率：\n5. 员工人数：',
+      success: (res) => {
+        if (res.confirm && res.content) {
+          const inputs = res.content.split('\n').map(s => parseFloat(s.trim()));
+          const [revenue, profit, growthRate, marketShare, employeeCount] = inputs;
+          
+          if (inputs.some(isNaN)) {
+            wx.showToast({ title: '请输入有效的经营数据', icon: 'none' });
+            return;
+          }
+          
+          const riskAssessment = this.calculateBusinessRiskAssessment(revenue, profit, growthRate, marketShare, employeeCount);
+          
+          wx.showModal({
+            title: '经营风险分析结果',
+            content: `风险等级：${riskAssessment.level}\n风险评分：${riskAssessment.score}分\n\n详细分析：\n\n${riskAssessment.analysis}`,
+            showCancel: false,
+            confirmText: '复制结果',
+            success: (copyRes) => {
+              if (copyRes.confirm) {
+                wx.setClipboardData({
+                  data: `风险等级：${riskAssessment.level}\n风险评分：${riskAssessment.score}分`,
+                  success: () => {
+                    wx.showToast({ title: '已复制', icon: 'success' });
+                  }
+                });
+              }
+            }
+          });
+        }
+      }
+    });
+  },
+
+  calculateBusinessRiskAssessment(revenue, profit, growthRate, marketShare, employeeCount) {
+    let score = 100;
+    let analysis = '';
+    
+    const profitMargin = revenue > 0 ? (profit / revenue) * 100 : 0;
+    
+    analysis += '经营风险指标分析：\n';
+    analysis += `• 利润率：${profitMargin.toFixed(2)}%\n`;
+    if (profitMargin < 0) {
+      score -= 30;
+      analysis += `✗ 企业亏损，经营风险极高\n`;
+    } else if (profitMargin < 5) {
+      score -= 15;
+      analysis += `⚠ 利润率较低（<5%），盈利能力弱\n`;
+    } else if (profitMargin < 10) {
+      score -= 5;
+      analysis += `✓ 利润率一般（5%-10%），盈利能力一般\n`;
+    } else if (profitMargin < 15) {
+      analysis += `✓ 利润率良好（10%-15%），盈利能力较强\n`;
+    } else {
+      analysis += `✓ 利润率优秀（>15%），盈利能力强\n`;
+    }
+    
+    if (growthRate !== undefined && !isNaN(growthRate)) {
+      analysis += `• 营收增长率：${growthRate.toFixed(2)}%\n`;
+      if (growthRate < 0) {
+        score -= 20;
+        analysis += `✗ 营收负增长，业务萎缩\n`;
+      } else if (growthRate < 5) {
+        score -= 10;
+        analysis += `⚠ 增长率较低（<5%），增长乏力\n`;
+      } else if (growthRate < 15) {
+        analysis += `✓ 增长率适中（5%-15%），增长稳定\n`;
+      } else {
+        analysis += `✓ 增长率良好（>15%），增长强劲\n`;
+      }
+    }
+    
+    if (marketShare !== undefined && !isNaN(marketShare)) {
+      analysis += `• 市场占有率：${marketShare.toFixed(2)}%\n`;
+      if (marketShare < 5) {
+        score -= 15;
+        analysis += `✗ 市场占有率低（<5%），竞争力弱\n`;
+      } else if (marketShare < 10) {
+        score -= 5;
+        analysis += `✓ 市场占有率一般（5%-10%），竞争力一般\n`;
+      } else {
+        analysis += `✓ 市场占有率良好（>10%），竞争力强\n`;
+      }
+    }
+    
+    if (employeeCount !== undefined && !isNaN(employeeCount)) {
+      const revenuePerEmployee = revenue > 0 && employeeCount > 0 ? (revenue / employeeCount) : 0;
+      analysis += `• 人均营收：¥${revenuePerEmployee.toFixed(2)}万元\n`;
+      if (revenuePerEmployee < 50) {
+        score -= 15;
+        analysis += `✗ 人均营收低（<50万），效率偏低\n`;
+      } else if (revenuePerEmployee < 100) {
+        score -= 5;
+        analysis += `✓ 人均营收一般（50-100万），效率一般\n`;
+      } else {
+        analysis += `✓ 人均营收良好（>100万），效率较高\n`;
+      }
+    }
+    
+    analysis += `\n经营风险建议：\n`;
+    if (score >= 70) {
+      analysis += `✓ 经营状况良好，建议保持\n`;
+      analysis += `• 继续提升核心竞争力\n`;
+      analysis += `• 优化运营效率\n`;
+    } else if (score >= 50) {
+      analysis += `✓ 经营状况一般，需要关注\n`;
+      analysis += `• 加强成本控制\n`;
+      analysis += `• 提升产品竞争力\n`;
+      analysis += `• 优化人员配置\n`;
+    } else {
+      analysis += `✗ 经营状况较差，风险较高\n`;
+      analysis += `• 建议制定转型计划\n`;
+      analysis += `• 优化业务结构\n`;
+      analysis += `• 加强风险管理\n`;
+    }
+    
+    const finalScore = Math.max(0, Math.min(100, score));
+    let level = '';
+    if (finalScore >= 80) level = '低风险';
+    else if (finalScore >= 60) level = '中低风险';
+    else if (finalScore >= 40) level = '中等风险';
+    else if (finalScore >= 20) level = '中高风险';
+    else level = '高风险';
+    
+    return {
+      score: finalScore,
+      level,
+      analysis
+    };
   }
 });

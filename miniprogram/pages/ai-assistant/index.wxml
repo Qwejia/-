@@ -145,8 +145,20 @@
             
             <view class="analysis-card" bindtap="openRiskAssessment">
               <view class="card-icon">⚠️</view>
-              <text class="card-title">风险预警系统</text>
-              <text class="card-desc">实时监控财务指标，提前预警风险</text>
+              <text class="card-title">财务风险评估</text>
+              <text class="card-desc">多维度分析财务指标，评估风险等级</text>
+            </view>
+            
+            <view class="analysis-card" bindtap="openTaxRiskCheck">
+              <view class="card-icon">📋</view>
+              <text class="card-title">税务风险检测</text>
+              <text class="card-desc">检测税务合规风险，提供合规建议</text>
+            </view>
+            
+            <view class="analysis-card" bindtap="openBusinessRiskAnalysis">
+              <view class="card-icon">📉</view>
+              <text class="card-title">经营风险分析</text>
+              <text class="card-desc">评估企业经营风险，提供风险预警</text>
             </view>
           </view>
         </view>
