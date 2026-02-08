@@ -1,0 +1,239 @@
+.container {
+  background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+  min-height: 100vh;
+  padding: 20rpx;
+}
+
+.page-header {
+  background: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 12rpx rgba(30, 58, 138, 0.1);
+  margin-bottom: 30rpx;
+  border: 1rpx solid rgba(30, 58, 138, 0.1);
+}
+
+.page-title {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  text-align: center;
+  margin-bottom: 30rpx;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.type-tabs {
+  display: flex;
+  border: 2rpx solid rgba(30, 58, 138, 0.2);
+  border-radius: 12rpx;
+  overflow: hidden;
+}
+
+.tab-item {
+  padding: 16rpx 24rpx;
+  font-size: 24rpx;
+  color: #666;
+  background: #dbeafe;
+}
+
+.tab-item.active {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  color: white;
+}
+
+.period-picker {
+  background: #dbeafe;
+  padding: 16rpx 24rpx;
+  border-radius: 12rpx;
+  border: 2rpx solid rgba(30, 58, 138, 0.2);
+  flex: 1;
+}
+
+.picker-content {
+  font-size: 28rpx;
+  color: #333;
+}
+
+.export-btn {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4rpx 12rpx rgba(30, 58, 138, 0.3);
+}
+
+.export-icon {
+  font-size: 36rpx;
+  color: white;
+}
+
+.report-content {
+  background: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 12rpx rgba(30, 58, 138, 0.1);
+  border: 1rpx solid rgba(30, 58, 138, 0.1);
+}
+
+.table {
+  border: 2rpx solid rgba(30, 58, 138, 0.2);
+  border-radius: 12rpx;
+  overflow: hidden;
+}
+
+.table-row {
+  display: flex;
+  border-bottom: 2rpx solid rgba(30, 58, 138, 0.2);
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.table-cell {
+  padding: 20rpx;
+  font-size: 26rpx;
+}
+
+.category-header {
+  background: #dbeafe;
+  border-bottom: 2rpx solid rgba(30, 58, 138, 0.3);
+}
+
+.category-title {
+  width: 100%;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #1e3a8a;
+}
+
+.item-row {
+  background: white;
+}
+
+.item-name {
+  flex: 2;
+  color: #333;
+  padding-left: 40rpx;
+}
+
+.item-amount {
+  flex: 1;
+  text-align: right;
+  font-family: monospace;
+  padding-right: 40rpx;
+}
+
+.item-amount.income {
+  color: #059669;
+}
+
+.item-amount.expense {
+  color: #dc2626;
+}
+
+.item-amount.profit {
+  color: #1e3a8a;
+}
+
+.item-amount.netprofit {
+  color: #1e40af;
+}
+
+.total-row {
+  background: #dbeafe;
+  border-top: 2rpx solid rgba(30, 58, 138, 0.3);
+}
+
+.total-label {
+  flex: 2;
+  font-weight: bold;
+  color: #333;
+  padding-left: 40rpx;
+}
+
+.total-prefix {
+  margin-right: 10rpx;
+  font-weight: normal;
+  color: #666;
+}
+
+.total-amount {
+  flex: 1;
+  text-align: right;
+  font-family: monospace;
+  font-weight: bold;
+  padding-right: 40rpx;
+}
+
+.total-amount.income {
+  color: #047857;
+}
+
+.total-amount.expense {
+  color: #b91c1c;
+}
+
+.total-amount.profit {
+  color: #1e40af;
+}
+
+.total-amount.netprofit {
+  color: #1e3a8a;
+}
+
+.separator-row {
+  background: rgba(30, 58, 138, 0.2);
+  height: 8rpx;
+}
+
+.separator {
+  width: 100%;
+  padding: 0;
+}
+
+@media (max-width: 750rpx) {
+  .container {
+    padding: 12rpx;
+  }
+  
+  .page-header, .report-content {
+    padding: 20rpx;
+  }
+  
+  .header-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .type-tabs, .period-picker {
+    width: 100%;
+  }
+  
+  .export-btn {
+    align-self: center;
+    margin-top: 20rpx;
+  }
+  
+  .table-cell {
+    padding: 16rpx;
+    font-size: 24rpx;
+  }
+  
+  .item-name, .total-label {
+    padding-left: 20rpx;
+  }
+  
+  .item-amount, .total-amount {
+    padding-right: 20rpx;
+  }
+}

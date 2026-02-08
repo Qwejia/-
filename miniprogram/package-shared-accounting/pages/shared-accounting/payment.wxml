@@ -1,0 +1,64 @@
+<!-- 支付页面 -->
+<view class="container">
+  <!-- 页面头部 -->
+  <view class="header">
+    <view class="back-btn" bindtap="onBack">
+      <text>←</text>
+    </view>
+    <text class="title">任务支付</text>
+    <view class="header-right">
+      <text class="header-icon">💳</text>
+    </view>
+  </view>
+
+  <!-- 支付信息卡片 -->
+  <view class="payment-card">
+    <view class="payment-header">
+      <text class="payment-title">任务支付详情</text>
+      <text class="payment-status">待支付</text>
+    </view>
+
+    <!-- 任务信息 -->
+    <view class="task-info">
+      <view class="info-row">
+        <text class="info-label">任务名称：</text>
+        <text class="info-value">{{task.title}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">服务类型：</text>
+        <text class="info-value">{{getServiceText(task.service)}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">服务会计：</text>
+        <text class="info-value">{{task.accountantName}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">支付金额：</text>
+        <text class="info-value amount">{{task.amount}}</text>
+      </view>
+    </view>
+
+    <!-- 支付方式 -->
+    <view class="payment-methods">
+      <text class="section-title">选择支付方式</text>
+      <view class="method-list">
+        <view class="method-item" wx:for="{{paymentMethods}}" wx:key="id" bindtap="selectPaymentMethod" data-id="{{item.id}}" style="border-color: {{selectedMethod === item.id ? '#1677ff' : '#e0e0e0'}};">
+          <view class="method-icon">{{item.icon}}</view>
+          <text class="method-name">{{item.name}}</text>
+          <view class="method-check" wx:if="selectedMethod === item.id">✓</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部支付按钮 -->
+  <view class="bottom-bar">
+    <view class="amount-info">
+      <text class="amount-label">支付金额：</text>
+      <text class="amount-value">{{task.amount}}</text>
+    </view>
+    <button class="pay-btn" bindtap="confirmPayment">
+      <text class="btn-text">立即支付</text>
+    </button>
+  </view>
+</view>

@@ -1,0 +1,178 @@
+<view class="container">
+  <view class="header">
+    <view class="header-left">
+      <text class="page-title">银行对账</text>
+      <text class="page-subtitle">智能对账 · 高效管理</text>
+    </view>
+    <view class="header-right">
+      <view class="icon-btn" bindtap="exportReport">
+        <text class="icon">📊</text>
+      </view>
+      <view class="icon-btn" bindtap="onRefresh">
+        <text class="icon">🔄</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="stats-container">
+    <view class="stat-card primary">
+      <view class="stat-icon">
+        <text>💰</text>
+      </view>
+      <view class="stat-content">
+        <text class="stat-label">对账总额</text>
+        <text class="stat-value">¥65,678.88</text>
+      </view>
+    </view>
+    <view class="stat-card success">
+      <view class="stat-icon">
+        <text>✅</text>
+      </view>
+      <view class="stat-content">
+        <text class="stat-label">已对账</text>
+        <text class="stat-value">2</text>
+      </view>
+    </view>
+    <view class="stat-card warning">
+      <view class="stat-icon">
+        <text>⏳</text>
+      </view>
+      <view class="stat-content">
+        <text class="stat-label">待对账</text>
+        <text class="stat-value">2</text>
+      </view>
+    </view>
+    <view class="stat-card info">
+      <view class="stat-icon">
+        <text>📈</text>
+      </view>
+      <view class="stat-content">
+        <text class="stat-label">对账中</text>
+        <text class="stat-value">1</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="filter-section">
+    <view class="search-box">
+      <text class="search-icon">🔍</text>
+      <input 
+        class="search-input" 
+        placeholder="搜索银行名称或账户" 
+        value="{{searchText}}"
+        bindinput="onSearchInput"
+      />
+    </view>
+    <view class="filter-tabs">
+      <view 
+        class="filter-tab {{statusFilter === '全部' ? 'active' : ''}}" 
+        bindtap="onStatusFilterChange"
+        data-filter="全部"
+      >
+        全部
+      </view>
+      <view 
+        class="filter-tab {{statusFilter === '待对账' ? 'active' : ''}}" 
+        bindtap="onStatusFilterChange"
+        data-filter="待对账"
+      >
+        待对账
+      </view>
+      <view 
+        class="filter-tab {{statusFilter === '对账中' ? 'active' : ''}}" 
+        bindtap="onStatusFilterChange"
+        data-filter="对账中"
+      >
+        对账中
+      </view>
+      <view 
+        class="filter-tab {{statusFilter === '已对账' ? 'active' : ''}}" 
+        bindtap="onStatusFilterChange"
+        data-filter="已对账"
+      >
+        已对账
+      </view>
+    </view>
+  </view>
+
+  <scroll-view class="reconciliation-list" scroll-y="true" refresher-enabled="{{true}}" refresher-triggered="{{refreshing}}" bindrefresherrefresh="onRefresh">
+    <view wx:if="{{loading}}" class="loading-container">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">加载中...</text>
+    </view>
+
+    <view wx:else>
+      <view 
+        wx:for="{{filteredData}}" 
+        wx:key="id" 
+        class="reconciliation-card"
+      >
+        <view class="card-header">
+          <view class="bank-info">
+            <view class="bank-avatar">
+              <text>{{item.bankName.charAt(0)}}</text>
+            </view>
+            <view class="bank-details">
+              <text class="bank-name">{{item.bankName}}</text>
+              <text class="account-number">{{item.account}}</text>
+            </view>
+          </view>
+          <view class="status-badge {{item.status === '待对账' ? 'status-pending' : item.status === '对账中' ? 'status-processing' : 'status-completed'}}">
+            {{item.status}}
+          </view>
+        </view>
+
+        <view class="card-body">
+          <view class="info-row">
+            <text class="label">对账日期</text>
+            <text class="value">{{item.reconciliationDate}}</text>
+          </view>
+          <view class="info-row">
+            <text class="label">对账金额</text>
+            <text class="value amount">¥{{item.amount}}</text>
+          </view>
+          <view class="info-row">
+            <text class="label">差异金额</text>
+            <text class="value {{item.difference !== '0.00' ? 'difference' : ''}}" bindtap="viewDifferenceDetails" data-id="{{item.id}}">
+              ¥{{item.difference}}
+            </text>
+          </view>
+          <view class="info-row">
+            <text class="label">交易笔数</text>
+            <text class="value">{{item.transactionCount}}笔</text>
+          </view>
+        </view>
+
+        <view class="card-footer">
+          <view class="action-btn detail-btn" bindtap="viewDetails" data-id="{{item.id}}">
+            详情
+          </view>
+          <view class="action-btn history-btn" bindtap="viewTransactionHistory" data-id="{{item.id}}">
+            明细
+          </view>
+          <view 
+            wx:if="{{item.status === '待对账'}}"
+            class="action-btn primary-btn" 
+            bindtap="startReconciliation"
+            data-id="{{item.id}}"
+          >
+            开始对账
+          </view>
+          <view wx:else class="action-btn" style="background: #f5f5f5; color: #8c8c8c;">
+            {{item.status === '对账中' ? '对账中...' : '已完成'}}
+          </view>
+        </view>
+      </view>
+
+      <view wx:if="{{filteredData.length === 0}}" class="empty-state">
+        <text class="empty-icon">📭</text>
+        <text class="empty-text">暂无对账数据</text>
+        <text class="empty-hint">下拉刷新或调整筛选条件</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="fab" bindtap="onRefresh">
+    <text class="fab-icon">🔄</text>
+  </view>
+</view>

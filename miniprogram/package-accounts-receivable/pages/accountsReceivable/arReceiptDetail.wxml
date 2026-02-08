@@ -1,0 +1,133 @@
+<!-- pages/accountsReceivable/arReceiptDetail.wxml -->
+<view class="container">
+  <view class="header-section">
+    <text class="page-title">
+      {{action === 'add' ? '添加收款记录' : action === 'edit' ? '编辑收款记录' : '查看收款记录'}}
+    </text>
+    <button class="back-btn" bindtap="goBack">
+      <icon type="left" size="25"></icon>返回
+    </button>
+  </view>
+  
+  <form class="form-section">
+    <!-- 收款记录编号 -->
+    <view class="form-item">
+      <text class="form-label">收款记录编号</text>
+      <view class="form-value">{{receipt.receiptNo}}</view>
+    </view>
+    
+    <!-- 客户选择 -->
+    <view class="form-item">
+      <text class="form-label">客户名称 *</text>
+      <picker 
+        class="form-picker"
+        mode="selector" 
+        range="{{customers}}" 
+        range-key="name"
+        value="{{receipt.customerId}}"
+        bindchange="onCustomerChange"
+        disabled="{{action === 'view'}}"
+      >
+        <view class="picker-content">
+          {{receipt.customerName || '请选择客户'}}
+        </view>
+      </picker>
+    </view>
+    
+    <!-- 应收单选择 -->
+    <view class="form-item">
+      <text class="form-label">关联应收单 *</text>
+      <picker 
+        class="form-picker"
+        mode="selector" 
+        range="{{filteredInvoices}}" 
+        range-key="invoiceNo"
+        value="{{receipt.invoiceId}}"
+        bindchange="onInvoiceChange"
+        disabled="{{action === 'view'}}"
+      >
+        <view class="picker-content">
+          {{receipt.invoiceNo || '请选择应收单'}}
+        </view>
+      </picker>
+    </view>
+    
+    <!-- 收款日期 -->
+    <view class="form-item">
+      <text class="form-label">收款日期 *</text>
+      <picker 
+        class="form-picker"
+        mode="date" 
+        value="{{receipt.receiptDate}}"
+        bindchange="onReceiptDateChange"
+        disabled="{{action === 'view'}}"
+      >
+        <view class="picker-content">
+          {{receipt.receiptDate || '请选择收款日期'}}
+        </view>
+      </picker>
+    </view>
+    
+    <!-- 收款金额 -->
+    <view class="form-item">
+      <text class="form-label">收款金额 *</text>
+      <input 
+        class="form-input" 
+        placeholder="请输入收款金额" 
+        value="{{receipt.amount}}"
+        type="digit"
+        bindinput="onAmountChange"
+        disabled="{{action === 'view'}}"
+      />
+    </view>
+    
+    <!-- 收款方式 -->
+    <view class="form-item">
+      <text class="form-label">收款方式</text>
+      <radio-group class="form-radio" bindchange="onMethodChange" value="{{receipt.method}}" disabled="{{action === 'view'}}">
+        <radio value="cash">现金</radio>
+        <radio value="bank">银行转账</radio>
+        <radio value="wechat">微信</radio>
+        <radio value="alipay">支付宝</radio>
+      </radio-group>
+    </view>
+    
+    <!-- 备注 -->
+    <view class="form-item">
+      <text class="form-label">备注</text>
+      <textarea 
+        class="form-textarea" 
+        placeholder="请输入备注信息" 
+        value="{{receipt.remark}}"
+        bindinput="onRemarkChange"
+        disabled="{{action === 'view'}}"
+      ></textarea>
+    </view>
+  </form>
+  
+  <!-- 操作按钮 -->
+  <view class="action-section">
+    <!-- 添加/编辑模式 -->
+    <view class="save-actions" wx:if="{{action === 'add' || action === 'edit'}}">
+      <button 
+        class="save-btn" 
+        bindtap="saveReceipt"
+        loading="{{isSubmitting}}"
+        disabled="{{isSubmitting}}"
+      >
+        {{action === 'add' ? '保存收款记录' : '更新收款记录'}}
+      </button>
+      <button class="cancel-btn" bindtap="goBack">取消</button>
+    </view>
+    
+    <!-- 查看模式 -->
+    <view class="view-actions" wx:if="{{action === 'view'}}">
+      <button class="edit-btn" bindtap="editReceipt">
+        编辑
+      </button>
+      <button class="delete-btn" bindtap="deleteReceipt">
+        删除
+      </button>
+    </view>
+  </view>
+</view>

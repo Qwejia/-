@@ -1,0 +1,59 @@
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <input 
+      class="search-input" 
+      placeholder="搜索计划编号或产品名称" 
+      value="{{searchKeyword}}"
+      bindinput="onSearchInput"
+    />
+    <button class="add-btn" bindtap="addProductionPlan">+</button>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 生产计划列表 -->
+  <view wx:else class="production-plan-list">
+    <view 
+      wx:for="{{productionPlans}}" 
+      wx:key="planNumber"
+      class="production-plan-item"
+      data-plan-id="{{item._id}}"
+      bindtap="goToPlanDetail"
+    >
+      <view class="plan-header">
+        <view class="plan-number">{{item.planNumber}}</view>
+        <view class="plan-status">
+          <text class="status-tag" style="background-color: {{item.status === 'completed' ? '#e8f5e9' : item.status === 'inProgress' ? '#e3f2fd' : '#fff3e0'}}; color: {{item.status === 'completed' ? '#2e7d32' : item.status === 'inProgress' ? '#1565c0' : '#ef6c00'}};">
+            {{item.status === 'completed' ? '已完成' : item.status === 'inProgress' ? '进行中' : '待开始'}}
+          </text>
+        </view>
+      </view>
+      <view class="plan-body">
+        <view class="plan-info">
+          <text class="info-label">产品名称:</text>
+          <text class="info-value">{{item.productName}}</text>
+        </view>
+        <view class="plan-info">
+          <text class="info-label">计划数量:</text>
+          <text class="info-value">{{item.quantity}}</text>
+        </view>
+        <view class="plan-dates">
+          <text class="date-label">开始日期:</text>
+          <text class="date-value">{{item.startDate}}</text>
+          <text class="date-separator">至</text>
+          <text class="date-label">结束日期:</text>
+          <text class="date-value">{{item.endDate}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view wx:if="{{productionPlans.length === 0}}" class="empty-state">
+      <text>暂无生产计划</text>
+    </view>
+  </view>
+</view>

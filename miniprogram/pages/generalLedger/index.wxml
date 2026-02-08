@@ -1,0 +1,53 @@
+<!-- pages/generalLedger/index.wxml -->
+<view class="container">
+  <!-- 凭证类型快捷入口 -->
+  <view class="section">
+    <view class="section-title">
+      <text>凭证类型</text>
+    </view>
+    <view class="voucher-types">
+      <view wx:for="{{voucherTypes}}" wx:key="id" class="type-item" bindtap="goToVoucherEntry" data-type="{{item.id}}">
+        <view class="type-icon">{{item.icon}}</view>
+        <view class="type-name">{{item.name}}</view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 功能菜单 -->
+  <view class="section">
+    <view class="section-title">
+      <text>功能菜单</text>
+    </view>
+    <view class="menu-grid">
+      <view wx:for="{{menuItems}}" wx:key="id" class="menu-item" bindtap="navigateToPage" data-url="{{item.url}}">
+        <view class="menu-icon">{{item.icon}}</view>
+        <view class="menu-name">{{item.name}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 快速访问 -->
+  <view class="section">
+    <view class="section-title">
+      <text>快速访问</text>
+    </view>
+    <view class="quick-access">
+      <navigator url="/pages/accountsReceivable/index" class="quick-item">
+        <view class="quick-icon">💰</view>
+        <view class="quick-name">应收账款</view>
+      </navigator>
+      <navigator url="/pages/accountsPayable/index" class="quick-item">
+        <view class="quick-icon">💳</view>
+        <view class="quick-name">应付账款</view>
+      </navigator>
+      <navigator url="/pages/category/index" class="quick-item">
+        <view class="quick-icon">🏷️</view>
+        <view class="quick-name">分类管理</view>
+      </navigator>
+      <navigator url="/pages/statistics/index" class="quick-item">
+        <view class="quick-icon">📊</view>
+        <view class="quick-name">收支统计</view>
+      </navigator>
+    </view>
+  </view>
+</view>

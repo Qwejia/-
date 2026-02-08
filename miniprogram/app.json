@@ -1,0 +1,120 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/record/index",
+    "pages/record/income",
+    "pages/record/expense",
+    "pages/record/transfer",
+    "pages/finance/index",
+    "pages/finance/invoice",
+    "pages/finance/tax",
+    "pages/finance/data-connection",
+    "pages/finance/bank-reconciliation",
+    "pages/ai-assistant/index",
+    "pages/ai-assistant/voice-input",
+    "pages/ai-assistant/settings",
+    "pages/ai-assistant/risk-warning",
+    "pages/ai-assistant/tax-planning",
+    "pages/mine/index",
+    "pages/mine/settings",
+    "pages/mine/profile",
+    "pages/mine/finance-services",
+    "pages/business-education/index",
+    "pages/business-education/courses",
+    "pages/business-education/articles",
+    "pages/business-education/course-detail",
+    "pages/business-education/article-detail",
+    "pages/auth/login",
+    "pages/auth/register",
+    "pages/auth/forgotPassword",
+    "pages/generalLedger/index",
+    "pages/generalLedger/ledger",
+    "pages/generalLedger/voucherList",
+    "pages/generalLedger/voucherEntry",
+    "pages/generalLedger/voucherDetail",
+    "pages/generalLedger/accountsList",
+    "pages/generalLedger/accountDetail",
+    "pages/generalLedger/accountTransactions",
+    "pages/generalLedger/accountEntry",
+    "pages/generalLedger/checkout",
+    "pages/generalLedger/balanceSheet",
+    "pages/generalLedger/subLedger",
+    "pages/accountsReceivable/index",
+    "pages/accountsReceivable/customerList",
+    "pages/accountsReceivable/customerDetail",
+    "pages/accountsReceivable/arInvoiceList",
+    "pages/accountsReceivable/arInvoiceDetail",
+    "pages/accountsReceivable/arReceiptList",
+    "pages/accountsReceivable/arReceiptDetail",
+    "pages/accountsReceivable/arWriteOffList",
+    "pages/accountsReceivable/arWriteOffDetail",
+    "pages/accountsReceivable/arAgingAnalysis",
+    "pages/accountsPayable/index",
+    "pages/accountsPayable/supplierList",
+    "pages/accountsPayable/supplierDetail",
+    "pages/accountsPayable/apInvoiceList",
+    "pages/accountsPayable/apInvoiceDetail",
+    "pages/accountsPayable/apPaymentList",
+    "pages/accountsPayable/apPaymentDetail",
+    "pages/accountsPayable/apWriteOffList",
+    "pages/fixedAssets/index",
+    "pages/fixedAssets/assetList",
+    "pages/fixedAssets/assetAdd",
+    "pages/fixedAssets/assetDetail",
+    "pages/category/index"
+  ],
+  "subPackages": [],
+  "window": {
+    "backgroundColor": "#f8fafc",
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#1e3a8a",
+    "navigationBarTitleText": "数智领航",
+    "navigationBarTextStyle": "white",
+    "enablePullDownRefresh": true,
+    "backgroundColorTop": "#1e3a8a",
+    "backgroundColorBottom": "#f8fafc"
+  },
+  "tabBar": {
+    "color": "#999999",
+    "selectedColor": "#1e3a8a",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/icons/home.png",
+        "selectedIconPath": "images/icons/home-active.png"
+      },
+      {
+        "pagePath": "pages/record/index",
+        "text": "记账",
+        "iconPath": "images/icons/business.png",
+        "selectedIconPath": "images/icons/business-active.png"
+      },
+      {
+        "pagePath": "pages/finance/index",
+        "text": "财务",
+        "iconPath": "images/icons/goods.png",
+        "selectedIconPath": "images/icons/goods-active.png"
+      },
+      {
+        "pagePath": "pages/ai-assistant/index",
+        "text": "AI助手",
+        "iconPath": "images/icons/examples.png",
+        "selectedIconPath": "images/icons/examples-active.png"
+      },
+      {
+        "pagePath": "pages/mine/index",
+        "text": "我的",
+        "iconPath": "images/icons/usercenter.png",
+        "selectedIconPath": "images/icons/usercenter-active.png"
+      }
+    ]
+  },
+  "networkTimeout": {
+    "request": 30000,
+    "downloadFile": 60000
+  },
+  "sitemapLocation": "sitemap.json"
+}

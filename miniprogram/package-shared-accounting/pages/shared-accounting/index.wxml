@@ -1,0 +1,173 @@
+<view class="page-container">
+  <view class="header-bar">
+    <text class="page-title">共享会计</text>
+    <view class="header-actions">
+      <button class="ai-btn" bindtap="openAIAssistant">
+        <text class="ai-icon">🤖</text>
+      </button>
+    </view>
+  </view>
+
+  <scroll-view class="content-scroll" scroll-y>
+    <view class="content-wrapper">
+      <view class="hero-section">
+        <view class="hero-card">
+          <text class="hero-title">专业会计服务</text>
+          <text class="hero-subtitle">高效对接，专业服务</text>
+          <button class="hero-btn" bindtap="navigateToPostTask">
+            <text class="btn-icon">✏️</text>
+            <text class="btn-text">发布任务</text>
+          </button>
+        </view>
+      </view>
+
+      <view class="services-section">
+        <view class="section-header">
+          <text class="section-title">服务类型</text>
+        </view>
+        <view class="services-grid">
+          <view class="service-card tax" bindtap="navigateToTaskList" data-service="tax">
+            <view class="service-icon-wrapper">
+              <text class="service-icon">📋</text>
+            </view>
+            <text class="service-name">税务申报</text>
+          </view>
+          <view class="service-card accounting" bindtap="navigateToTaskList" data-service="accounting">
+            <view class="service-icon-wrapper">
+              <text class="service-icon">📊</text>
+            </view>
+            <text class="service-name">账务处理</text>
+          </view>
+          <view class="service-card audit" bindtap="navigateToTaskList" data-service="audit">
+            <view class="service-icon-wrapper">
+              <text class="service-icon">🔍</text>
+            </view>
+            <text class="service-name">财务审计</text>
+          </view>
+          <view class="service-card consulting" bindtap="navigateToTaskList" data-service="consulting">
+            <view class="service-icon-wrapper">
+              <text class="service-icon">💡</text>
+            </view>
+            <text class="service-name">财务咨询</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="accountants-section">
+        <view class="section-header">
+          <text class="section-title">推荐会计</text>
+          <view class="view-all-btn" bindtap="navigateToAccountantList">
+            <text class="view-all-text">查看全部</text>
+            <text class="view-all-arrow">→</text>
+          </view>
+        </view>
+        <view class="accountants-list">
+          <view class="accountant-card" wx:for="{{recommendedAccountants}}" wx:key="id" bindtap="viewAccountantDetail" data-id="{{item.id}}">
+            <view class="accountant-header">
+              <view class="accountant-avatar">
+                <text class="avatar-text">{{item.avatar}}</text>
+              </view>
+              <view class="accountant-basic">
+                <text class="accountant-name">{{item.name}}</text>
+                <view class="accountant-rating">
+                  <text class="rating-stars">{{item.rating}}⭐</text>
+                </view>
+              </view>
+              <view class="accountant-price">
+                <text class="price-value">¥{{item.price}}</text>
+                <text class="price-unit">/次</text>
+              </view>
+            </view>
+            <view class="accountant-body">
+              <text class="accountant-specialty">{{item.specialty}}</text>
+              <view class="accountant-stats">
+                <view class="stat-item">
+                  <text class="stat-value">{{item.experience}}</text>
+                  <text class="stat-label">年经验</text>
+                </view>
+                <view class="stat-divider">|</view>
+                <view class="stat-item">
+                  <text class="stat-value">{{item.completedTasks}}</text>
+                  <text class="stat-label">单</text>
+                </view>
+              </view>
+            </view>
+            <view class="accountant-footer">
+              <button class="book-btn" catchtap="hireAccountant" data-id="{{item.id}}">立即预约</button>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="tasks-section">
+        <view class="section-header">
+          <text class="section-title">我的任务</text>
+          <view class="view-all-btn" bindtap="navigateToMyTasks">
+            <text class="view-all-text">查看全部</text>
+            <text class="view-all-arrow">→</text>
+          </view>
+        </view>
+        <view class="tasks-list">
+          <view class="task-card" wx:for="{{myTasks}}" wx:key="id" bindtap="viewTaskDetail" data-id="{{item.id}}">
+            <view class="task-header">
+              <text class="task-title">{{item.title}}</text>
+              <view class="task-status {{item.statusClass}}">{{item.status}}</view>
+            </view>
+            <text class="task-description">{{item.description}}</text>
+            <view class="task-footer">
+              <view class="task-price">
+                <text class="price-label">预算</text>
+                <text class="price-value">¥{{item.price}}</text>
+              </view>
+              <text class="task-date">{{item.createdDate}}</text>
+            </view>
+          </view>
+          <view class="empty-state" wx:if="{{myTasks.length === 0}}">
+            <text class="empty-icon">📋</text>
+            <text class="empty-text">暂无任务</text>
+            <button class="empty-btn" bindtap="navigateToPostTask">发布第一个任务</button>
+          </view>
+        </view>
+      </view>
+
+      <view class="process-section">
+        <view class="section-header">
+          <text class="section-title">服务流程</text>
+        </view>
+        <view class="process-steps">
+          <view class="process-step">
+            <view class="step-number">1</view>
+            <view class="step-content">
+              <text class="step-title">发布任务</text>
+              <text class="step-desc">填写需求详情</text>
+            </view>
+          </view>
+          <view class="step-connector"></view>
+          <view class="process-step">
+            <view class="step-number">2</view>
+            <view class="step-content">
+              <text class="step-title">会计匹配</text>
+              <text class="step-desc">专业会计接单</text>
+            </view>
+          </view>
+          <view class="step-connector"></view>
+          <view class="process-step">
+            <view class="step-number">3</view>
+            <view class="step-content">
+              <text class="step-title">在线沟通</text>
+              <text class="step-desc">确认服务细节</text>
+            </view>
+          </view>
+          <view class="step-connector"></view>
+          <view class="process-step">
+            <view class="step-number">4</view>
+            <view class="step-content">
+              <text class="step-title">完成交付</text>
+              <text class="step-desc">验收付款评价</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

@@ -1,0 +1,75 @@
+<!-- 生产制造首页 -->
+<view class="container">
+  <!-- 页面头部 -->
+  <view class="header">
+    <text class="header-title">生产制造</text>
+  </view>
+
+  <!-- 统计信息 -->
+  <view class="stats-section">
+    <view class="stats-card">
+      <text class="stats-label">总计划数</text>
+      <text class="stats-value">{{productionStats.totalPlans}}</text>
+    </view>
+    <view class="stats-card">
+      <text class="stats-label">待处理计划</text>
+      <text class="stats-value pending">{{productionStats.pendingPlans}}</text>
+    </view>
+    <view class="stats-card">
+      <text class="stats-label">已完成计划</text>
+      <text class="stats-value completed">{{productionStats.completedPlans}}</text>
+    </view>
+    <view class="stats-card">
+      <text class="stats-label">车间订单数</text>
+      <text class="stats-value workshop">{{productionStats.totalWorkshopOrders}}</text>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="menu-section">
+    <view class="menu-grid">
+      <view class="menu-item" bindtap="goToProductionPlan">
+        <view class="menu-icon plan-icon">📋</view>
+        <text class="menu-text">生产计划</text>
+      </view>
+      <view class="menu-item" bindtap="goToWorkshop">
+        <view class="menu-icon workshop-icon">🏭</view>
+        <text class="menu-text">车间管理</text>
+      </view>
+      <view class="menu-item" bindtap="goToBom">
+        <view class="menu-icon bom-icon">🧩</view>
+        <text class="menu-text">物料清单</text>
+      </view>
+      <view class="menu-item" bindtap="goToProductionAnalysis">
+        <view class="menu-icon analysis-icon">📊</view>
+        <text class="menu-text">生产分析</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 最近生产计划 -->
+  <view class="recent-plans-section">
+    <view class="section-header">
+      <text class="section-title">最近生产计划</text>
+      <text class="section-more" bindtap="goToProductionPlan">查看全部</text>
+    </view>
+    <view class="plans-list">
+      <view wx:for="{{recentPlans}}" wx:key="_id" class="plan-item" data-plan-id="{{_id}}" bindtap="goToPlanDetail">
+        <view class="plan-header">
+          <text class="plan-number">{{item.planNumber}}</text>
+          <text class="plan-status {{item.status}}">{{item.status === 'completed' ? '已完成' : item.status === 'pending' ? '待处理' : '处理中'}}</text>
+        </view>
+        <view class="plan-info">
+          <text class="plan-product">{{item.productName}}</text>
+          <text class="plan-quantity">{{item.quantity}} 件</text>
+        </view>
+        <view class="plan-dates">
+          <text class="date-label">开始日期:</text>
+          <text class="date-value">{{item.startDate}}</text>
+          <text class="date-label">结束日期:</text>
+          <text class="date-value">{{item.endDate}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,125 @@
+<!--pages/ai-assistant/risk-warning.wxml-->
+<view class="risk-warning-page">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="navigateBack">
+      <text class="back-icon">←</text>
+      <text class="nav-title">风险预警</text>
+    </view>
+    <view class="nav-right" bindtap="showHelp">
+      <text class="help-icon">?</text>
+    </view>
+  </view>
+
+  <!-- 风险状态概览 -->
+  <view class="risk-overview">
+    <view class="overview-header">
+      <text class="overview-title">风险状态</text>
+      <text class="overview-date">{{currentDate}}</text>
+    </view>
+    <view class="risk-level" wx:if="riskLevel === 'high'">
+      <text class="level-icon high">⚠️</text>
+      <text class="level-text high">高风险</text>
+      <text class="level-desc">存在严重的税务或财务风险，需要立即处理</text>
+    </view>
+    <view class="risk-level" wx:elif="riskLevel === 'medium'">
+      <text class="level-icon medium">⚠️</text>
+      <text class="level-text medium">中风险</text>
+      <text class="level-desc">存在一定的风险，建议及时关注和处理</text>
+    </view>
+    <view class="risk-level" wx:else>
+      <text class="level-icon low">✅</text>
+      <text class="level-text low">低风险</text>
+      <text class="level-desc">风险较低，建议定期检查和维护</text>
+    </view>
+  </view>
+
+  <!-- 风险预警列表 -->
+  <view class="warning-list">
+    <view class="list-header">
+      <text class="list-title">风险预警</text>
+      <text class="list-count">{{warnings.length}} 条</text>
+    </view>
+    <view class="warning-items">
+      <view 
+        class="warning-item" 
+        wx:for="{{warnings}}" 
+        wx:key="id"
+        data-id="{{item.id}}"
+        bindtap="showWarningDetail"
+      >
+        <view class="warning-left">
+          <view class="warning-icon {{item.level}}">{{item.icon}}</view>
+          <view class="warning-info">
+            <text class="warning-title">{{item.title}}</text>
+            <text class="warning-desc">{{item.description}}</text>
+            <text class="warning-date">{{item.date}}</text>
+          </view>
+        </view>
+        <view class="warning-right">
+          <text class="warning-status {{item.status}}">{{item.statusText}}</text>
+          <text class="arrow">→</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 风险评估工具 -->
+  <view class="assessment-tools">
+    <text class="tools-title">风险评估工具</text>
+    <view class="tools-grid">
+      <view class="tool-item" bindtap="startTaxAssessment">
+        <text class="tool-icon">📋</text>
+        <text class="tool-text">税务风险评估</text>
+      </view>
+      <view class="tool-item" bindtap="startFinancialAssessment">
+        <text class="tool-icon">💰</text>
+        <text class="tool-text">财务风险评估</text>
+      </view>
+      <view class="tool-item" bindtap="startComplianceAssessment">
+        <text class="tool-icon">✅</text>
+        <text class="tool-text">合规性评估</text>
+      </view>
+      <view class="tool-item" bindtap="generateReport">
+        <text class="tool-icon">📊</text>
+        <text class="tool-text">生成风险报告</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 风险详情模态框 -->
+  <view class="modal" wx:if="showDetailModal" bindtap="closeDetailModal">
+    <view class="modal-content" catchtap="catchTap">
+      <view class="modal-header">
+        <text class="modal-title">{{selectedWarning.title}}</text>
+        <text class="modal-close" bindtap="closeDetailModal">×</text>
+      </view>
+      <view class="modal-body">
+        <view class="detail-item">
+          <text class="detail-label">风险等级：</text>
+          <text class="detail-value {{selectedWarning.level}}">{{selectedWarning.levelText}}</text>
+        </view>
+        <view class="detail-item">
+          <text class="detail-label">发现时间：</text>
+          <text class="detail-value">{{selectedWarning.date}}</text>
+        </view>
+        <view class="detail-item">
+          <text class="detail-label">风险描述：</text>
+          <text class="detail-value desc">{{selectedWarning.description}}</text>
+        </view>
+        <view class="detail-item">
+          <text class="detail-label">影响范围：</text>
+          <text class="detail-value">{{selectedWarning.impact}}</text>
+        </view>
+        <view class="detail-item">
+          <text class="detail-label">建议措施：</text>
+          <text class="detail-value desc">{{selectedWarning.suggestion}}</text>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <button class="footer-btn primary" bindtap="handleWarning">立即处理</button>
+        <button class="footer-btn secondary" bindtap="closeDetailModal">关闭</button>
+      </view>
+    </view>
+  </view>
+</view>

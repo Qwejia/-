@@ -1,0 +1,159 @@
+<!-- pages/accountsReceivable/arInvoiceDetail.wxml -->
+<view class="container">
+  <view class="header-section">
+    <text class="page-title">
+      {{action === 'add' ? '添加应收单' : action === 'edit' ? '编辑应收单' : '查看应收单'}}
+    </text>
+    <button class="back-btn" bindtap="goBack">
+      <icon type="left" size="25"></icon>返回
+    </button>
+  </view>
+  
+  <form class="form-section">
+    <!-- 应收单编号 -->
+    <view class="form-item">
+      <text class="form-label">应收单编号</text>
+      <view class="form-value">{{arInvoice.invoiceNo}}</view>
+    </view>
+    
+    <!-- 客户选择 -->
+    <view class="form-item">
+      <text class="form-label">客户名称 *</text>
+      <picker 
+        class="form-picker"
+        mode="selector" 
+        range="{{customers}}" 
+        range-key="name"
+        value="{{arInvoice.customerId}}"
+        bindchange="onCustomerChange"
+        disabled="{{action === 'view'}}"
+      >
+        <view class="picker-content">
+          {{arInvoice.customerName || '请选择客户'}}
+        </view>
+      </picker>
+    </view>
+    
+    <!-- 发票日期 -->
+    <view class="form-item">
+      <text class="form-label">发票日期 *</text>
+      <picker 
+        class="form-picker"
+        mode="date" 
+        value="{{arInvoice.invoiceDate}}"
+        bindchange="onInvoiceDateChange"
+        disabled="{{action === 'view'}}"
+      >
+        <view class="picker-content">
+          {{arInvoice.invoiceDate || '请选择发票日期'}}
+        </view>
+      </picker>
+    </view>
+    
+    <!-- 到期日期 -->
+    <view class="form-item">
+      <text class="form-label">到期日期 *</text>
+      <picker 
+        class="form-picker"
+        mode="date" 
+        value="{{arInvoice.dueDate}}"
+        bindchange="onDueDateChange"
+        disabled="{{action === 'view'}}"
+      >
+        <view class="picker-content">
+          {{arInvoice.dueDate || '请选择到期日期'}}
+        </view>
+      </picker>
+    </view>
+    
+    <!-- 金额 -->
+    <view class="form-item">
+      <text class="form-label">金额 *</text>
+      <input 
+        class="form-input" 
+        placeholder="请输入金额" 
+        value="{{arInvoice.amount}}"
+        type="digit"
+        bindinput="onAmountChange"
+        disabled="{{action === 'view'}}"
+      />
+    </view>
+    
+    <!-- 应收单类型 -->
+    <view class="form-item">
+      <text class="form-label">应收单类型</text>
+      <radio-group class="form-radio" bindchange="onTypeChange" value="{{arInvoice.type}}" disabled="{{action === 'view'}}">
+        <radio value="sale">销售发票</radio>
+        <radio value="fee">费用单</radio>
+        <radio value="adjustment">调账单</radio>
+      </radio-group>
+    </view>
+    
+    <!-- 备注 -->
+    <view class="form-item">
+      <text class="form-label">备注</text>
+      <textarea 
+        class="form-textarea" 
+        placeholder="请输入备注信息" 
+        value="{{arInvoice.remark}}"
+        bindinput="onRemarkChange"
+        disabled="{{action === 'view'}}"
+      ></textarea>
+    </view>
+    
+    <!-- 单据状态 -->
+    <view class="form-item" wx:if="{{action === 'view' || action === 'edit'}}">
+      <text class="form-label">单据状态</text>
+      <view class="status-container">
+        <view class="status-item" wx:if="{{arInvoice.status === 'draft'}}">
+          <view class="status-dot" style="background-color: #ffeb3b;"></view>
+          <text class="status-text">草稿</text>
+        </view>
+        <view class="status-item" wx:elif="{{arInvoice.status === 'approved'}}">
+          <view class="status-dot" style="background-color: #4caf50;"></view>
+          <text class="status-text">已审核</text>
+        </view>
+        <view class="status-item" wx:elif="{{arInvoice.status === 'writtenoff'}}">
+          <view class="status-dot" style="background-color: #2196f3;"></view>
+          <text class="status-text">已核销</text>
+        </view>
+        <view class="status-item" wx:else>
+          <view class="status-dot" style="background-color: #9e9e9e;"></view>
+          <text class="status-text">已关闭</text>
+        </view>
+      </view>
+    </view>
+  </form>
+  
+  <!-- 操作按钮 -->
+  <view class="action-section">
+    <!-- 添加/编辑模式 -->
+    <view class="save-actions" wx:if="{{action === 'add' || action === 'edit'}}">
+      <button 
+        class="save-btn" 
+        bindtap="saveInvoice"
+        loading="{{isSubmitting}}"
+        disabled="{{isSubmitting}}"
+      >
+        {{action === 'add' ? '保存应收单' : '更新应收单'}}
+      </button>
+      <button class="cancel-btn" bindtap="goBack">取消</button>
+    </view>
+    
+    <!-- 查看模式 -->
+    <view class="view-actions" wx:if="{{action === 'view'}}">
+      <button 
+        class="approve-btn" 
+        bindtap="approveInvoice"
+        wx:if="{{arInvoice.status === 'draft'}}">
+        审核单据
+      </button>
+      <button 
+        class="close-btn" 
+        bindtap="closeInvoice"
+        wx:if="{{arInvoice.status === 'approved' || arInvoice.status === 'draft'}}">
+        关闭单据
+      </button>
+    </view>
+  </view>
+</view>

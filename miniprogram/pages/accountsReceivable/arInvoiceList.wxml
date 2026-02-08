@@ -1,0 +1,102 @@
+<!-- pages/accountsReceivable/arInvoiceList.wxml -->
+<view class="container">
+  <view class="header-section">
+    <text class="page-title">应收单管理</text>
+    <button class="add-btn" bindtap="addInvoice">
+      <text class="add-icon">+</text>新增应收单
+    </button>
+  </view>
+  
+  <!-- 统计信息 -->
+  <view class="summary-section">
+    <view class="summary-item">
+      <text class="summary-label">应收单数量：</text>
+      <text class="summary-value">{{filteredInvoices.length}}</text>
+    </view>
+    <view class="summary-item">
+      <text class="summary-label">合计金额：</text>
+      <text class="summary-value">¥{{totalAmount.toFixed(2)}}</text>
+    </view>
+  </view>
+  
+  <!-- 筛选区域 -->
+  <view class="filter-section">
+    <view class="search-box">
+      <icon class="search-icon" type="search" size="20"></icon>
+      <input 
+        class="search-input" 
+        placeholder="搜索单据编号/客户/备注" 
+        value="{{searchKeyword}}"
+        bindinput="onSearchInput"
+      />
+    </view>
+    <button class="filter-btn" bindtap="toggleFilter">
+      <icon type="waiting" size="20"></icon>筛选
+    </button>
+  </view>
+  
+  <!-- 筛选面板 -->
+  <view class="filter-panel" wx:if="{{showFilter}}">
+    <view class="filter-item">
+      <text class="filter-label">单据状态：</text>
+      <radio-group class="filter-radio" bindchange="onStatusChange" value="{{selectedStatus}}">
+        <radio value="all">全部</radio>
+        <radio value="draft">草稿</radio>
+        <radio value="approved">已审核</radio>
+        <radio value="writtenoff">已核销</radio>
+        <radio value="closed">已关闭</radio>
+      </radio-group>
+    </view>
+    
+    <view class="filter-item">
+      <text class="filter-label">日期范围：</text>
+      <view class="date-range">
+        <picker mode="date" bindchange="onStartDateChange" value="{{dateRange.startDate}}">
+          <view class="date-picker">
+            {{dateRange.startDate || '开始日期'}}
+          </view>
+        </picker>
+        <text class="date-separator">至</text>
+        <picker mode="date" bindchange="onEndDateChange" value="{{dateRange.endDate}}">
+          <view class="date-picker">
+            {{dateRange.endDate || '结束日期'}}
+          </view>
+        </picker>
+      </view>
+    </view>
+    
+    <button class="reset-btn" bindtap="resetFilter">重置筛选</button>
+  </view>
+  
+  <!-- 应收单列表 -->
+  <view class="list-section">
+    <view class="empty" wx:if="{{filteredInvoices.length === 0}}">
+      <text class="empty-text">暂无应收单数据</text>
+    </view>
+    
+    <view wx:for="{{filteredInvoices}}" wx:key="_id" class="invoice-item" bindtap="viewInvoice" data-id="{{item._id}}">
+      <view class="invoice-header">
+        <view class="invoice-info">
+          <view class="invoice-no">{{item.invoiceNo}}</view>
+          <view class="invoice-date">{{item.invoiceDate}}</view>
+        </view>
+        <view class="invoice-status status-{{item.status}}">{{item.status === 'draft' ? '草稿' : item.status === 'approved' ? '已审核' : item.status === 'writtenoff' ? '已核销' : '已关闭'}}</view>
+      </view>
+      
+      <view class="invoice-details">
+        <view class="detail-item">
+          <text class="detail-label">客户：</text>
+          <text class="detail-value">{{item.customerName}}</text>
+        </view>
+        <view class="detail-item">
+          <text class="detail-label">金额：</text>
+          <text class="detail-value amount">¥{{item.amount.toFixed(2)}}</text>
+        </view>
+        <view class="detail-item" wx:if="{{item.remark}}">
+          <text class="detail-label">备注：</text>
+          <text class="detail-value">{{item.remark}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

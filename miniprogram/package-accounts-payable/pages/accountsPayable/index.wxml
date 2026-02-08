@@ -1,0 +1,121 @@
+<!-- pages/accountsPayable/index.wxml -->
+<view class="container">
+  <view class="header-section">
+    <view class="header-title">
+      <text class="title">应付款管理</text>
+      <button class="ai-assistant-btn" bindtap="openAIAssistant">
+        <view class="ai-btn-icon">🤖</view>
+        <text class="ai-btn-text">AI助手</text>
+      </button>
+    </view>
+    <view class="summary-section">
+      <view class="summary-card">
+        <view class="summary-label">供应商数量</view>
+        <view class="summary-value">{{suppliers.length}}</view>
+      </view>
+      <view class="summary-card">
+        <view class="summary-label">应付单</view>
+        <view class="summary-value">{{apInvoices.length}}</view>
+      </view>
+      <view class="summary-card">
+        <view class="summary-label">付款单</view>
+        <view class="summary-value">{{apPayments.length}}</view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- AI提醒区域 -->
+  <view class="ai-reminder-section">
+    <view class="section-header">
+      <text class="header-text">AI提醒</text>
+      <button class="refresh-btn" bindtap="refreshAIReminders">
+        <text class="refresh-text">刷新</text>
+      </button>
+    </view>
+    <view class="reminder-list">
+      <view wx:for="{{aiReminders}}" wx:key="index" class="reminder-item" data-type="{{item.type}}" data-id="{{item.id}}">
+        <view class="reminder-icon">{{item.icon}}</view>
+        <view class="reminder-content">
+          <view class="reminder-title">{{item.title}}</view>
+          <view class="reminder-desc">{{item.description}}</view>
+          <view class="reminder-amount">{{item.amount}}</view>
+        </view>
+        <view class="reminder-action">
+          <button class="action-btn" bindtap="handleReminderAction">处理</button>
+        </view>
+      </view>
+      <view wx:if="{{aiReminders.length === 0}}" class="empty-reminder">
+        <view class="empty-icon">✅</view>
+        <text class="empty-text">暂无待处理事项</text>
+      </view>
+    </view>
+  </view>
+  
+  <view class="menu-section">
+    <view class="menu-grid">
+      <view wx:for="{{menuItems}}" wx:key="id" class="menu-item" bindtap="navigateToPage" data-path="{{item.path}}">
+        <view class="menu-icon">{{item.icon}}</view>
+        <view class="menu-name">{{item.name}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能模块快速访问 -->
+  <view class="quick-access-section">
+    <view class="section-header">
+      <text class="header-text">功能模块</text>
+    </view>
+    <view class="quick-access-grid">
+      <navigator url="/pages/generalLedger/index" class="quick-access-item">
+        <view class="quick-icon">📋</view>
+        <view class="quick-name">总账管理</view>
+      </navigator>
+      <navigator url="/pages/accountsReceivable/index" class="quick-access-item">
+        <view class="quick-icon">💰</view>
+        <view class="quick-name">应收账款</view>
+      </navigator>
+      <navigator url="/pages/category/index" class="quick-access-item">
+        <view class="quick-icon">🏷️</view>
+        <view class="quick-name">分类管理</view>
+      </navigator>
+      <navigator url="/pages/statistics/index" class="quick-access-item">
+        <view class="quick-icon">📊</view>
+        <view class="quick-name">收支统计</view>
+      </navigator>
+    </view>
+  </view>
+</view>
+
+<!-- AI助手弹窗 -->
+<view class="ai-assistant-modal" wx:if="{{showAIAssistant}}">
+  <view class="modal-content">
+    <view class="modal-header">
+      <text class="modal-title">AI应付助手</text>
+      <button class="close-btn" bindtap="closeAIAssistant">✕</button>
+    </view>
+    <view class="modal-body">
+      <view class="ai-chat-container">
+        <view class="chat-messages">
+          <view wx:for="{{aiChatMessages}}" wx:key="index" class="chat-message {{item.role === 'assistant' ? 'assistant-message' : 'user-message'}}">
+            <view class="message-content">{{item.content}}</view>
+          </view>
+          <view wx:if="{{isAILoading}}" class="chat-message assistant-message">
+            <view class="message-content">
+              <view class="loading-dots">
+                <view class="dot"></view>
+                <view class="dot"></view>
+                <view class="dot"></view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="chat-input">
+          <input type="text" class="input-field" placeholder="输入您的问题，如：如何优化应付账款管理？" value="{{aiQuestion}}" bindinput="onAIQuestionInput" />
+          <button class="send-btn" bindtap="sendAIQuestion" disabled="{{isAILoading || !aiQuestion.trim()}}">
+            <text class="send-text">发送</text>
+          </button>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

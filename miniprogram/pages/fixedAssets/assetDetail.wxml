@@ -1,0 +1,80 @@
+<!-- 资产详情页面 -->
+<view class="container">
+  <!-- 页面头部 -->
+  <view class="header">
+    <view class="header-left">
+      <button class="back-button" bindtap="goBack">
+        <text class="back-icon">←</text>
+      </button>
+    </view>
+    <view class="header-center">
+      <text class="header-title">资产详情</text>
+    </view>
+    <view class="header-right">
+      <button class="edit-button" bindtap="editAsset">编辑</button>
+    </view>
+  </view>
+
+  <!-- 资产基本信息 -->
+  <view class="asset-info">
+    <view class="info-item">
+      <text class="info-label">资产名称</text>
+      <text class="info-value">{{asset.name}}</text>
+    </view>
+    <view class="info-item">
+      <text class="info-label">资产类别</text>
+      <text class="info-value">{{asset.category}}</text>
+    </view>
+    <view class="info-item">
+      <text class="info-label">原值</text>
+      <text class="info-value">{{asset.originalValue.toLocaleString('zh-CN', { style: 'currency', currency: 'CNY' })}}</text>
+    </view>
+    <view class="info-item">
+      <text class="info-label">累计折旧</text>
+      <text class="info-value">{{asset.accumulatedDepreciation.toLocaleString('zh-CN', { style: 'currency', currency: 'CNY' })}}</text>
+    </view>
+    <view class="info-item">
+      <text class="info-label">净值</text>
+      <text class="info-value net-value">{{asset.netValue.toLocaleString('zh-CN', { style: 'currency', currency: 'CNY' })}}</text>
+    </view>
+    <view class="info-item">
+      <text class="info-label">使用年限</text>
+      <text class="info-value">{{asset.usefulLife}}年</text>
+    </view>
+    <view class="info-item">
+      <text class="info-label">折旧方法</text>
+      <text class="info-value">{{asset.depreciationMethod === 'straightLine' ? '直线法' : '加速折旧法'}}</text>
+    </view>
+    <view class="info-item">
+      <text class="info-label">购买日期</text>
+      <text class="info-value">{{asset.purchaseDate}}</text>
+    </view>
+    <view class="info-item">
+      <text class="info-label">供应商</text>
+      <text class="info-value">{{asset.supplier}}</text>
+    </view>
+    <view class="info-item">
+      <text class="info-label">使用部门</text>
+      <text class="info-value">{{asset.department}}</text>
+    </view>
+    <view class="info-item">
+      <text class="info-label">存放地点</text>
+      <text class="info-value">{{asset.location}}</text>
+    </view>
+    <view class="info-item">
+      <text class="info-label">资产状态</text>
+      <text class="info-value status-{{asset.status}}">
+        {{asset.status === 'inUse' ? '在用' : asset.status === 'idle' ? '闲置' : asset.status === 'scrapped' ? '报废' : '出售'}}
+      </text>
+    </view>
+    <view class="info-item">
+      <text class="info-label">资产描述</text>
+      <text class="info-value">{{asset.description}}</text>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="action-buttons">
+    <button class="depreciation-button" bindtap="calculateDepreciation">计提折旧</button>
+  </view>
+</view>

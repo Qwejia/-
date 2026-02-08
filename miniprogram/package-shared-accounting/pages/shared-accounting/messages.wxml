@@ -1,0 +1,37 @@
+<!-- 消息页面 -->
+<view class="container">
+  <!-- 页面头部 -->
+  <view class="header">
+    <view class="back-btn" bindtap="onBack">
+      <text>←</text>
+    </view>
+    <text class="title">消息中心</text>
+    <view class="header-right">
+      <text class="header-icon">💬</text>
+    </view>
+  </view>
+
+  <!-- 消息列表 -->
+  <view class="message-list" wx:if="conversations.length > 0">
+    <view class="conversation-item" wx:for="{{conversations}}" wx:key="id" bindtap="openConversation" data-id="{{item.id}}">
+      <view class="conversation-avatar">
+        <text class="avatar-text">{{item.avatar}}</text>
+      </view>
+      <view class="conversation-info">
+        <view class="conversation-header">
+          <text class="conversation-name">{{item.name}}</text>
+          <text class="conversation-time">{{item.lastMessage.time}}</text>
+        </view>
+        <text class="conversation-preview">{{item.lastMessage.content}}</text>
+        <view class="unread-badge" wx:if="item.unreadCount > 0">
+          <text class="unread-count">{{item.unreadCount}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  <view class="empty-state" wx:else>
+    <view class="empty-icon">💬</view>
+    <text class="empty-title">暂无消息</text>
+    <text class="empty-subtitle">您还没有任何消息记录</text>
+  </view>
+</view>

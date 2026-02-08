@@ -1,0 +1,161 @@
+<!-- 资产新增页面 -->
+<view class="container">
+  <view class="form-header">
+    <text class="form-title">资产新增</text>
+    <text class="form-subtitle">添加新的固定资产</text>
+  </view>
+
+  <form class="asset-form">
+    <view class="form-section">
+      <text class="section-title">基本信息</text>
+      
+      <view class="form-group">
+        <text class="form-label required">资产名称</text>
+        <input 
+          type="text" 
+          class="form-input" 
+          placeholder="请输入资产名称" 
+          value="{{assetName}}" 
+          bindinput="handleAssetNameInput"
+        />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label required">资产类别</text>
+        <picker 
+          mode="selector" 
+          range="['房屋及建筑物', '机器设备', '运输工具', '电子设备', '办公设备']" 
+          value="{{category}}" 
+          bindchange="handleCategoryChange"
+          class="form-picker"
+        >
+          <view class="picker-text">{{category || '请选择资产类别'}}</view>
+        </picker>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label required">原值 (元)</text>
+        <input 
+          type="number" 
+          class="form-input" 
+          placeholder="请输入资产原值" 
+          value="{{originalValue}}" 
+          bindinput="handleOriginalValueInput"
+        />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label required">使用年限 (年)</text>
+        <input 
+          type="number" 
+          class="form-input" 
+          placeholder="请输入使用年限" 
+          value="{{usefulLife}}" 
+          bindinput="handleUsefulLifeInput"
+        />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label required">折旧方法</text>
+        <picker 
+          mode="selector" 
+          range="['直线法', '双倍余额递减法', '年数总和法']" 
+          range-key="name" 
+          value="{{depreciationMethod}}" 
+          bindchange="handleDepreciationMethodChange"
+          class="form-picker"
+        >
+          <view class="picker-text">
+            {{depreciationMethod === 'straightLine' ? '直线法' : depreciationMethod === 'doubleDeclining' ? '双倍余额递减法' : '年数总和法'}}
+          </view>
+        </picker>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label required">购买日期</text>
+        <picker 
+          mode="date" 
+          value="{{purchaseDate}}" 
+          bindchange="handlePurchaseDateChange"
+          class="form-picker"
+        >
+          <view class="picker-text">{{purchaseDate}}</view>
+        </picker>
+      </view>
+    </view>
+
+    <view class="form-section">
+      <text class="section-title">其他信息</text>
+      
+      <view class="form-group">
+        <text class="form-label">供应商</text>
+        <input 
+          type="text" 
+          class="form-input" 
+          placeholder="请输入供应商" 
+          value="{{supplier}}" 
+          bindinput="handleSupplierInput"
+        />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">使用部门</text>
+        <input 
+          type="text" 
+          class="form-input" 
+          placeholder="请输入使用部门" 
+          value="{{department}}" 
+          bindinput="handleDepartmentInput"
+        />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">存放地点</text>
+        <input 
+          type="text" 
+          class="form-input" 
+          placeholder="请输入存放地点" 
+          value="{{location}}" 
+          bindinput="handleLocationInput"
+        />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">描述</text>
+        <textarea 
+          class="form-textarea" 
+          placeholder="请输入资产描述" 
+          value="{{description}}" 
+          bindinput="handleDescriptionInput"
+        ></textarea>
+      </view>
+    </view>
+
+    <view wx:if="{{error}}" class="error-message">
+      {{error}}
+    </view>
+
+    <view wx:if="{{success}}" class="success-message">
+      {{success}}
+    </view>
+
+    <view class="form-actions">
+      <button 
+        type="default" 
+        class="cancel-button" 
+        bindtap="cancel"
+      >
+        取消
+      </button>
+      <button 
+        type="primary" 
+        class="save-button" 
+        bindtap="saveAsset"
+        loading="{{loading}}"
+        disabled="{{loading}}"
+      >
+        保存
+      </button>
+    </view>
+  </form>
+</view>

@@ -1,0 +1,131 @@
+<view class="container">
+  <view class="header">
+    <text class="title">{{editing ? '编辑应付单' : '新增应付单'}}</text>
+    <button class="back-btn" bindtap="goBack">返回</button>
+  </view>
+
+  <view class="form-container">
+    <form bindsubmit="saveApInvoice">
+      <view class="form-section">
+        <view class="form-item">
+          <text class="form-label">供应商 *</text>
+          <picker 
+            value="{{supplierIndex}}" 
+            range="{{suppliers}}" 
+            range-key="name"
+            bindchange="supplierChange"
+            class="form-picker"
+          >
+            <view class="picker-text">{{selectedSupplierName}}</view>
+          </picker>
+        </view>
+
+        <view class="form-item">
+          <text class="form-label">应付单编号</text>
+          <view class="form-value">{{apInvoice.code}}</view>
+        </view>
+
+        <view class="form-item">
+          <text class="form-label">开票日期 *</text>
+          <picker 
+            mode="date" 
+            value="{{apInvoice.invoiceDate}}" 
+            start="2020-01-01" 
+            end="2030-12-31"
+            bindchange="inputChange"
+            data-field="invoiceDate"
+            class="form-picker"
+          >
+            <view class="picker-text">{{apInvoice.invoiceDate}}</view>
+          </picker>
+        </view>
+
+        <view class="form-item">
+          <text class="form-label">到期日期 *</text>
+          <picker 
+            mode="date" 
+            value="{{apInvoice.dueDate}}" 
+            start="2020-01-01" 
+            end="2030-12-31"
+            bindchange="inputChange"
+            data-field="dueDate"
+            class="form-picker"
+          >
+            <view class="picker-text">{{apInvoice.dueDate}}</view>
+          </picker>
+        </view>
+
+        <view class="form-item">
+          <text class="form-label">金额 *</text>
+          <input 
+            class="form-input" 
+            type="digit" 
+            placeholder="请输入应付金额" 
+            value="{{apInvoice.amount}}"
+            bindinput="inputChange"
+            data-field="amount"
+          />
+        </view>
+
+        <view class="form-item">
+          <text class="form-label">结算方式</text>
+          <input 
+            class="form-input" 
+            placeholder="请输入结算方式" 
+            value="{{apInvoice.paymentMethod}}"
+            bindinput="inputChange"
+            data-field="paymentMethod"
+          />
+        </view>
+
+        <view class="form-item">
+          <text class="form-label">备注</text>
+          <textarea 
+            class="form-textarea" 
+            placeholder="请输入备注信息" 
+            value="{{apInvoice.remark}}"
+            bindinput="inputChange"
+            data-field="remark"
+            auto-height
+          ></textarea>
+        </view>
+
+        <view class="form-item" wx:if="{{editing}}">
+          <text class="form-label">状态</text>
+          <view class="status-value">
+            <text class="status-badge {{apInvoice.status === 'unpaid' ? 'unpaid' : apInvoice.status === 'partiallypaid' ? 'partiallypaid' : 'paid'}}">
+              {{apInvoice.status === 'unpaid' ? '未付' : apInvoice.status === 'partiallypaid' ? '部分付款' : '已核销'}}
+            </text>
+          </view>
+        </view>
+
+        <view class="form-item" wx:if="{{editing}}">
+          <text class="form-label">已付金额</text>
+          <view class="form-value">{{formattedPaidAmount}} 元</view>
+        </view>
+
+        <view class="form-item" wx:if="{{editing}}">
+          <text class="form-label">应付余额</text>
+          <view class="form-value balance">{{apInvoice.balance}} 元</view>
+        </view>
+      </view>
+
+      <view class="form-actions">
+        <button 
+          class="btn-submit"
+          type="primary"
+          form-type="submit"
+        >
+          {{editing ? '保存修改' : '保存应付单'}}
+        </button>
+        <button 
+          class="btn-delete"
+          wx:if="{{editing}}"
+          bindtap="deleteApInvoice"
+        >
+          删除应付单
+        </button>
+      </view>
+    </form>
+  </view>
+</view>

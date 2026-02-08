@@ -1,0 +1,86 @@
+<!-- pages/accountsReceivable/customerList.wxml -->
+<view class="container">
+  <view class="header-section">
+    <view class="header-title">客户管理</view>
+    <view class="header-actions">
+      <button class="add-btn" type="primary" bindtap="addCustomer">
+        <text class="add-icon">+</text>添加客户
+      </button>
+    </view>
+  </view>
+  
+  <!-- 搜索和筛选区域 -->
+  <view class="filter-section">
+    <view class="search-box">
+      <icon class="search-icon" type="search" size="20"></icon>
+      <input 
+        class="search-input" 
+        placeholder="搜索客户名称/编号/联系人/电话" 
+        value="{{searchKeyword}}"
+        bindinput="onSearchInput"
+      />
+    </view>
+    <button class="filter-btn" bindtap="toggleFilter">
+      <icon type="waiting" size="20"></icon>筛选
+    </button>
+  </view>
+  
+  <!-- 筛选面板 -->
+  <view class="filter-panel" wx:if="{{showFilter}}">
+    <view class="filter-item">
+      <text class="filter-label">客户状态：</text>
+      <radio-group class="filter-radio" bindchange="onStatusChange" value="{{selectedStatus}}">
+        <radio value="all">全部</radio>
+        <radio value="active">正常</radio>
+        <radio value="inactive">停用</radio>
+      </radio-group>
+    </view>
+    <button class="reset-btn" bindtap="resetFilter">重置筛选</button>
+  </view>
+  
+  <!-- 客户列表 -->
+  <view class="list-section">
+    <view class="empty" wx:if="{{filteredCustomers.length === 0}}">
+      <text class="empty-text">暂无客户数据</text>
+    </view>
+    
+    <view wx:for="{{filteredCustomers}}" wx:key="_id" class="customer-item">
+      <view class="customer-header">
+        <view class="customer-info">
+          <view class="customer-code">{{item.code}}</view>
+          <view class="customer-name">{{item.name}}</view>
+        </view>
+        <view class="customer-status" wx:if="{{item.status === 'active'}}" style="background-color: #c8e6c9;">正常</view>
+        <view class="customer-status" wx:else style="background-color: #ffcdd2;">停用</view>
+      </view>
+      
+      <view class="customer-details">
+        <view class="detail-item">
+          <text class="detail-label">联系人：</text>
+          <text class="detail-value">{{item.contact}}</text>
+        </view>
+        <view class="detail-item">
+          <text class="detail-label">电话：</text>
+          <text class="detail-value">{{item.phone}}</text>
+        </view>
+        <view class="detail-item">
+          <text class="detail-label">地址：</text>
+          <text class="detail-value">{{item.address}}</text>
+        </view>
+        <view class="detail-item">
+          <text class="detail-label">信用额度：</text>
+          <text class="detail-value">¥{{item.creditLimit}}</text>
+        </view>
+      </view>
+      
+      <view class="customer-actions">
+        <button class="edit-btn" bindtap="editCustomer" data-id="{{item._id}}">
+          <text class="edit-icon">✏️</text>编辑
+        </button>
+        <button class="delete-btn" bindtap="deleteCustomer" data-id="{{item._id}}">
+          <text class="delete-icon">🗑️</text>删除
+        </button>
+      </view>
+    </view>
+  </view>
+</view>

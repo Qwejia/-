@@ -1,0 +1,112 @@
+<view class="container">
+  <view class="header">
+    <text class="title">应付单管理</text>
+    <button class="add-btn" bindtap="addApInvoice">+ 新增</button>
+  </view>
+
+  <view class="search-bar">
+    <input 
+      class="search-input" 
+      placeholder="搜索应付单编号或供应商名称" 
+      value="{{searchQuery}}"
+      bindinput="searchInvoice"
+    />
+  </view>
+
+  <view class="filter-bar">
+    <view 
+      class="filter-item {{statusFilter === 'all' ? 'active' : ''}}"
+      bindtap="filterByStatus"
+      data-status="all"
+    >
+      全部
+    </view>
+    <view 
+      class="filter-item {{statusFilter === 'unpaid' ? 'active' : ''}}"
+      bindtap="filterByStatus"
+      data-status="unpaid"
+    >
+      未付
+    </view>
+    <view 
+      class="filter-item {{statusFilter === 'partiallypaid' ? 'active' : ''}}"
+      bindtap="filterByStatus"
+      data-status="partiallypaid"
+    >
+      部分付款
+    </view>
+    <view 
+      class="filter-item {{statusFilter === 'writtenoff' ? 'active' : ''}}"
+      bindtap="filterByStatus"
+      data-status="writtenoff"
+    >
+      已核销
+    </view>
+  </view>
+
+  <view class="invoice-list">
+    <view wx:if="{{filteredInvoices.length === 0}}" class="empty">
+      <text>暂无应付单数据</text>
+    </view>
+    <block wx:for="{{filteredInvoices}}" wx:key="_id">
+      <view class="invoice-item">
+        <view class="invoice-header">
+          <view class="invoice-info">
+            <text class="invoice-code">应付单：{{item.code}}</text>
+            <text class="supplier-name">{{item.supplierName}}</text>
+            <text class="invoice-date">{{item.invoiceDate}}</text>
+          </view>
+          <text class="status-badge {{item.status === 'unpaid' ? 'unpaid' : item.status === 'partiallypaid' ? 'partiallypaid' : 'paid'}}">
+            {{item.status === 'unpaid' ? '未付' : item.status === 'partiallypaid' ? '部分付款' : '已核销'}}
+          </text>
+        </view>
+        <view class="invoice-details">
+          <view class="detail-row">
+            <view class="detail-item">
+              <text class="label">金额：</text>
+              <text class="value">{{item.formattedAmount}} 元</text>
+            </view>
+            <view class="detail-item">
+              <text class="label">已付：</text>
+              <text class="value">{{item.formattedPaid}} 元</text>
+            </view>
+            <view class="detail-item">
+              <text class="label">余额：</text>
+              <text class="value balance">{{item.formattedBalance}} 元</text>
+            </view>
+          </view>
+          <view class="detail-row">
+            <view class="detail-item">
+              <text class="label">到期日：</text>
+              <text class="value">{{item.dueDate}}</text>
+            </view>
+            <view class="detail-item">
+              <text class="label">结算方式：</text>
+              <text class="value">{{item.paymentMethod || '未指定'}}</text>
+            </view>
+          </view>
+        </view>
+        <view class="invoice-remark" wx:if="{{item.remark}}">
+          <text class="label">备注：</text>
+          <text class="value">{{item.remark}}</text>
+        </view>
+        <view class="invoice-actions">
+          <button 
+            class="action-btn view" 
+            bindtap="viewApInvoice"
+            data-id="{{item._id}}"
+          >
+            查看/编辑
+          </button>
+          <button 
+            class="action-btn delete" 
+            bindtap="deleteApInvoice"
+            data-id="{{item._id}}"
+          >
+            删除
+          </button>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

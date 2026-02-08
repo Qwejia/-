@@ -1,0 +1,82 @@
+<!-- 课程详情页 -->
+<view class="course-detail">
+  <!-- 顶部导航 -->
+  <view class="navbar">
+    <text class="back-btn" bindtap="navigateBack">←</text>
+    <text class="navbar-title">课程详情</text>
+    <text class="share-btn" bindtap="shareCourse">📤</text>
+  </view>
+
+  <!-- 加载中 -->
+  <view wx:if="{{loading}}" class="loading-container">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 课程内容 -->
+  <view wx:else class="content">
+    <!-- 课程封面 -->
+    <view class="course-header">
+      <view class="course-cover">
+        <text class="cover-icon">{{course.icon}}</text>
+        <view class="course-badges">
+          <view class="badge level">{{course.level}}</view>
+          <view class="badge free" wx:if="{{course.isFree}}">免费</view>
+        </view>
+      </view>
+      <view class="course-info">
+        <text class="course-title">{{course.title}}</text>
+        <text class="course-description">{{course.description}}</text>
+        <view class="course-meta">
+          <text class="course-author">{{course.author}}</text>
+          <view class="course-stats">
+            <text class="course-rating">⭐ {{course.rating}}</text>
+            <text class="course-students">{{course.students}}人学习</text>
+            <text class="course-duration">{{course.duration}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 开始学习按钮 -->
+    <view class="action-section">
+      <button class="start-btn" bindtap="startLearning">立即学习</button>
+    </view>
+
+    <!-- 课程大纲 -->
+    <view class="outline-section">
+      <view class="section-header">
+        <text class="section-title">课程大纲</text>
+      </view>
+      <view class="chapters-list">
+        <view class="chapter-item" wx:for="{{course.chapters}}" wx:key="id">
+          <view class="chapter-info">
+            <text class="chapter-title">{{index + 1}}. {{item.title}}</text>
+            <text class="chapter-description">{{item.description}}</text>
+          </view>
+          <text class="chapter-duration">{{item.duration}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 学习目标 -->
+    <view class="targets-section">
+      <view class="section-header">
+        <text class="section-title">学习目标</text>
+      </view>
+      <view class="targets-list">
+        <view class="target-item" wx:for="{{course.whatYouLearn}}" wx:key="index">
+          <text class="target-icon">✓</text>
+          <text class="target-text">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 课程要求 -->
+    <view class="requirements-section">
+      <view class="section-header">
+        <text class="section-title">课程要求</text>
+      </view>
+      <text class="requirements-text">{{course.requirements}}</text>
+    </view>
+  </view>
+</view>

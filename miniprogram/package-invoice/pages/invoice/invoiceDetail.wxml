@@ -1,0 +1,191 @@
+<!-- pages/invoice/invoiceDetail.wxml -->
+<view class="container">
+  <!-- 顶部导航 -->
+  <view class="header">
+    <view class="back-btn" bindtap="onBack">
+      <text class="back-icon">←</text>
+    </view>
+    <view class="page-title">发票详情</view>
+    <view class="header-actions">
+      <block wx:if="{{action === 'view'}}">
+        <view class="action-btn edit-btn" bindtap="onEdit">
+          <text class="btn-text">编辑</text>
+        </view>
+        <block wx:if="{{invoice.status === 'issued'}}">
+          <view class="action-btn cancel-btn" bindtap="onCancel">
+            <text class="btn-text">作废</text>
+          </view>
+        </block>
+        <view class="action-btn delete-btn" bindtap="onDelete">
+          <text class="btn-text">删除</text>
+        </view>
+      </block>
+    </view>
+  </view>
+
+  <!-- 加载中 -->
+  <view wx:if="{{loading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 发票内容 -->
+  <block wx:else>
+    <!-- 发票头部 -->
+    <view class="invoice-header">
+        <view class="invoice-title">
+          <text class="title-text">
+              {{invoice.type || '发票'}}
+            </text>
+        </view>
+        
+        <view class="invoice-basic-info">
+          <view class="invoice-no-section">
+            <text class="label">发票号码: </text>
+            <text class="value">{{invoice.invoiceNo}}</text>
+          </view>
+          <view class="invoice-date-section">
+            <text class="label">发票日期: </text>
+            <text class="value">{{invoice.invoiceDate}}</text>
+          </view>
+          <view class="invoice-direction-section">
+            <text class="label">发票方向: </text>
+            <text class="value {{invoice.direction === 'sale' ? 'sale-type' : 'purchase-type'}}">
+              {{invoice.direction === 'sale' ? '销售发票' : '采购发票'}}
+            </text>
+          </view>
+          <view class="invoice-type-section">
+            <text class="label">发票类型: </text>
+            <text class="value">
+              {{invoice.type || '未知类型'}}
+            </text>
+          </view>
+        <view class="invoice-status-section">
+          <text class="label">状态: </text>
+          <text class="value status {{invoice.status}}">
+            {{invoice.status === 'draft' ? '草稿' : invoice.status === 'issued' ? '已开具' : '已作废'}}
+          </text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 发票方信息 -->
+    <view class="invoice-parties">
+      <block wx:if="{{invoice.type === 'sale'}}">
+        <!-- 销售方 -->
+        <view class="party-section">
+          <text class="party-title">销售方</text>
+          <view class="party-info">
+            <text class="party-item">名称: {{invoice.sellerName || '北京星辰科技有限公司'}}</text>
+            <text class="party-item">税号: {{invoice.sellerTaxNo || '911100000000000000'}}</text>
+            <text class="party-item">地址: {{invoice.sellerAddress || '北京市朝阳区科技园区'}}</text>
+            <text class="party-item">电话: {{invoice.sellerPhone || '010-12345678'}}</text>
+            <text class="party-item">开户行: {{invoice.sellerBank || '中国工商银行北京市分行'}}</text>
+            <text class="party-item">账号: {{invoice.sellerAccount || '6222020200000000000'}}</text>
+          </view>
+        </view>
+
+        <!-- 购买方 -->
+        <view class="party-section">
+          <text class="party-title">购买方</text>
+          <view class="party-info">
+            <text class="party-item">名称: {{invoice.customerName || '客户名称'}}</text>
+            <text class="party-item">税号: {{invoice.customerTaxNo || '911100000000000000'}}</text>
+            <text class="party-item">地址: {{invoice.customerAddress || '客户地址'}}</text>
+            <text class="party-item">电话: {{invoice.customerPhone || '客户电话'}}</text>
+            <text class="party-item">开户行: {{invoice.customerBank || '客户开户行'}}</text>
+            <text class="party-item">账号: {{invoice.customerAccount || '客户账号'}}</text>
+          </view>
+        </view>
+      </block>
+      <block wx:else>
+        <!-- 购买方 -->
+        <view class="party-section">
+          <text class="party-title">购买方</text>
+          <view class="party-info">
+            <text class="party-item">名称: {{invoice.buyerName || '北京星辰科技有限公司'}}</text>
+            <text class="party-item">税号: {{invoice.buyerTaxNo || '911100000000000000'}}</text>
+            <text class="party-item">地址: {{invoice.buyerAddress || '北京市朝阳区科技园区'}}</text>
+            <text class="party-item">电话: {{invoice.buyerPhone || '010-12345678'}}</text>
+            <text class="party-item">开户行: {{invoice.buyerBank || '中国工商银行北京市分行'}}</text>
+            <text class="party-item">账号: {{invoice.buyerAccount || '6222020200000000000'}}</text>
+          </view>
+        </view>
+
+        <!-- 销售方 -->
+        <view class="party-section">
+          <text class="party-title">销售方</text>
+          <view class="party-info">
+            <text class="party-item">名称: {{invoice.supplierName || '供应商名称'}}</text>
+            <text class="party-item">税号: {{invoice.supplierTaxNo || '911100000000000000'}}</text>
+            <text class="party-item">地址: {{invoice.supplierAddress || '供应商地址'}}</text>
+            <text class="party-item">电话: {{invoice.supplierPhone || '供应商电话'}}</text>
+            <text class="party-item">开户行: {{invoice.supplierBank || '供应商开户行'}}</text>
+            <text class="party-item">账号: {{invoice.supplierAccount || '供应商账号'}}</text>
+          </view>
+        </view>
+      </block>
+    </view>
+
+    <!-- 发票明细 -->
+    <view class="invoice-items">
+      <view class="items-header">
+        <view class="item-col item-name">货物或应税劳务、服务名称</view>
+        <view class="item-col item-spec">规格型号</view>
+        <view class="item-col item-unit">单位</view>
+        <view class="item-col item-quantity">数量</view>
+        <view class="item-col item-price">单价</view>
+        <view class="item-col item-amount">金额</view>
+        <view class="item-col item-tax-rate">税率</view>
+        <view class="item-col item-tax">税额</view>
+      </view>
+      
+      <view class="items-content">
+        <block wx:for="{{invoiceItems}}" wx:key="_id" wx:for-item="item">
+          <view class="item-row">
+            <view class="item-col item-name">{{item.name}}</view>
+            <view class="item-col item-spec">{{item.spec || '-'}}</view>
+            <view class="item-col item-unit">{{item.unit || '-'}}</view>
+            <view class="item-col item-quantity">{{item.quantity.toFixed(2)}}</view>
+            <view class="item-col item-price">¥{{item.unitPrice.toFixed(2)}}</view>
+            <view class="item-col item-amount">¥{{item.amount.toFixed(2)}}</view>
+            <view class="item-col item-tax-rate">{{item.taxRate * 100}}%</view>
+            <view class="item-col item-tax">¥{{item.taxAmount.toFixed(2)}}</view>
+          </view>
+        </block>
+      </view>
+      
+      <view class="items-footer">
+        <view class="footer-row">
+          <view class="footer-label">合计:</view>
+          <view class="footer-amount">
+            <text class="amount-text">¥{{invoice.totalAmount.toFixed(2)}}</text>
+          </view>
+        </view>
+        <view class="footer-row">
+          <view class="footer-label">税额:</view>
+          <view class="footer-tax">
+            <text class="tax-text">¥{{invoice.totalTax.toFixed(2)}}</text>
+          </view>
+        </view>
+        <view class="footer-row grand-total">
+          <view class="footer-label">价税合计:</view>
+          <view class="footer-grand-total">
+            <text class="grand-total-text">¥{{invoice.totalAmount + invoice.totalTax}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 备注 -->
+    <view class="invoice-remark" wx:if="{{invoice.remark}}">
+      <text class="remark-label">备注: </text>
+      <text class="remark-content">{{invoice.remark}}</text>
+    </view>
+
+    <!-- 作废信息 -->
+    <view class="invoice-cancel-info" wx:if="{{invoice.status === 'cancelled'}}">
+      <text class="cancel-label">作废日期: </text>
+      <text class="cancel-date">{{invoice.cancelledDate}}</text>
+    </view>
+  </block>
+</view>

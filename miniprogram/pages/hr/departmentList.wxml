@@ -1,0 +1,44 @@
+<view class="container">
+  <!-- 操作栏 -->
+  <view class="action-bar">
+    <text class="page-title">部门管理</text>
+    <button class="add-btn" bindtap="addDepartment">+ 添加部门</button>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 部门列表 -->
+  <view wx:else class="department-list">
+    <view 
+      wx:for="{{departments}}" 
+      wx:key="code"
+      class="department-item"
+      data-department-id="{{item.code}}"
+      bindtap="viewDepartmentDetail"
+    >
+      <view class="department-header">
+        <view class="department-name">{{item.name}}</view>
+        <view class="department-code">{{item.code}}</view>
+      </view>
+      <view class="department-body">
+        <view class="department-manager">
+          <text>部门经理: {{item.managerName}}</text>
+        </view>
+        <view class="department-description">
+          <text>{{item.description}}</text>
+        </view>
+      </view>
+      <view class="department-footer">
+        <text class="status-tag">{{item.status === 'active' ? '启用' : '禁用'}}</text>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view wx:if="{{departments.length === 0}}" class="empty-state">
+      <text>暂无部门数据</text>
+    </view>
+  </view>
+</view>

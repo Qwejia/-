@@ -1,0 +1,4 @@
+<view class="container">
+  <text class="title">测试页面</text>
+  <text class="message">这是一个简单的测试页面</text>
+</view>

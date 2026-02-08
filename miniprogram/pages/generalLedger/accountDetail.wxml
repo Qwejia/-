@@ -1,0 +1,95 @@
+<!-- pages/generalLedger/accountDetail.wxml -->
+<view class="container">
+  <view class="account-card">
+    <view class="account-header">
+      <view class="account-main-info">
+        <text class="account-code">{{account.code}}</text>
+        <text class="account-name">{{account.name}}</text>
+      </view>
+      <view class="account-actions">
+        <button type="primary" size="mini" bindtap="editAccount">编辑</button>
+      </view>
+    </view>
+    
+    <view class="account-details">
+      <view class="detail-row">
+        <text class="detail-label">科目类别</text>
+        <text class="detail-value">{{categoryName}}</text>
+      </view>
+      <view class="detail-row">
+        <text class="detail-label">科目级次</text>
+        <text class="detail-value">{{account.level}}</text>
+      </view>
+      <view class="detail-row">
+        <text class="detail-label">上级科目</text>
+        <text class="detail-value">{{parentAccountName}}</text>
+      </view>
+      <view class="detail-row">
+        <text class="detail-label">余额方向</text>
+        <text class="detail-value">{{account.balanceDirection === 'debit' ? '借方' : '贷方'}}</text>
+      </view>
+      <view class="detail-row">
+        <text class="detail-label">辅助核算</text>
+        <text class="detail-value">{{auxAccountingText || '无'}}</text>
+      </view>
+      <view class="detail-row">
+        <text class="detail-label">科目属性</text>
+        <text class="detail-value">
+          {{account.isEnabled ? '启用' : '禁用'}} · {{account.isLeaf ? '末级科目' : '非末级科目'}}
+        </text>
+      </view>
+    </view>
+  </view>
+  
+  <view class="balance-section">
+    <view class="section-title">科目余额</view>
+    <view class="balance-info">
+      <view class="balance-item">
+        <text class="balance-label">期初余额</text>
+        <text class="balance-value {{account.balanceDirection === 'debit' ? 'debit' : 'credit'}}">
+          ¥{{account.initialBalance || 0}}
+        </text>
+      </view>
+      <view class="balance-item">
+        <text class="balance-label">本期借方</text>
+        <text class="balance-value debit">¥{{account.currentDebit || 0}}</text>
+      </view>
+      <view class="balance-item">
+        <text class="balance-label">本期贷方</text>
+        <text class="balance-value credit">¥{{account.currentCredit || 0}}</text>
+      </view>
+      <view class="balance-item">
+        <text class="balance-label">期末余额</text>
+        <text class="balance-value {{account.balanceDirection === 'debit' ? 'debit' : 'credit'}}">
+          ¥{{account.endingBalance || 0}}
+        </text>
+      </view>
+    </view>
+  </view>
+  
+  <view class="transaction-section">
+    <view class="section-header">
+      <text class="section-title">近期交易</text>
+      <text class="view-more" bindtap="viewAllTransactions">查看更多</text>
+    </view>
+    
+    <view class="transaction-list">
+      <view wx:for="{{recentTransactions}}" wx:key="_id" class="transaction-item">
+        <view class="transaction-date">{{item.date}}</view>
+        <view class="transaction-info">
+          <text class="transaction-description">{{item.description}}</text>
+          <text class="transaction-voucher">{{item.voucherNumber}}</text>
+        </view>
+        <view class="transaction-amount">
+          <text class="amount {{item.type === 'debit' ? 'debit' : 'credit'}}">
+            {{item.type === 'debit' ? '+' : '-'}}¥{{item.amount.toFixed(2)}}
+          </text>
+        </view>
+      </view>
+      
+      <view wx:if="recentTransactions.length === 0" class="empty-state">
+        <text class="empty-text">暂无交易记录</text>
+      </view>
+    </view>
+  </view>
+</view>

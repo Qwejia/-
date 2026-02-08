@@ -1,0 +1,101 @@
+.container {
+  padding: 20rpx;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.action-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.page-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.add-btn {
+  padding: 12rpx 24rpx;
+  background-color: #07c160;
+  color: #fff;
+  border-radius: 4rpx;
+  font-size: 28rpx;
+  border: none;
+}
+
+.loading {
+  padding: 40rpx;
+  text-align: center;
+  color: #666;
+}
+
+.department-list {
+  background-color: #fff;
+  border-radius: 8rpx;
+  box-shadow: 0 2rpx 4rpx rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.department-item {
+  padding: 30rpx 20rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.department-item:last-child {
+  border-bottom: none;
+}
+
+.department-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.department-name {
+  font-size: 36rpx;
+  font-weight: bold;
+}
+
+.department-code {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.department-body {
+  margin-bottom: 20rpx;
+}
+
+.department-manager {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 12rpx;
+}
+
+.department-description {
+  font-size: 28rpx;
+  color: #999;
+  line-height: 1.4;
+}
+
+.department-footer {
+  text-align: right;
+}
+
+.status-tag {
+  padding: 8rpx 16rpx;
+  border-radius: 16rpx;
+  font-size: 24rpx;
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.empty-state {
+  padding: 100rpx;
+  text-align: center;
+  color: #999;
+  font-size: 32rpx;
+}

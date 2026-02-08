@@ -1,0 +1,459 @@
+/* pages/ai-assistant/risk-warning.wxss */
+.risk-warning-page {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+  padding-bottom: 20rpx;
+}
+
+/* 顶部导航栏 */
+.nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  background-color: #ffffff;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+}
+
+.back-icon {
+  font-size: 36rpx;
+  margin-right: 10rpx;
+  color: #333333;
+}
+
+.nav-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333333;
+}
+
+.help-icon {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333333;
+  width: 40rpx;
+  height: 40rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+  border-radius: 50%;
+}
+
+/* 风险状态概览 */
+.risk-overview {
+  margin: 30rpx;
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.overview-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.overview-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333333;
+}
+
+.overview-date {
+  font-size: 24rpx;
+  color: #999999;
+}
+
+.risk-level {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40rpx 0;
+  border-radius: 12rpx;
+  background-color: #f9f9f9;
+}
+
+.level-icon {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+}
+
+.level-text {
+  font-size: 32rpx;
+  font-weight: 600;
+  margin-bottom: 12rpx;
+}
+
+.level-desc {
+  font-size: 24rpx;
+  color: #666666;
+  text-align: center;
+  max-width: 80%;
+  line-height: 1.4;
+}
+
+/* 风险等级颜色 */
+.level-text.high, .warning-icon.high {
+  color: #ff4d4f;
+}
+
+.level-text.medium, .warning-icon.medium {
+  color: #faad14;
+}
+
+.level-text.low, .warning-icon.low {
+  color: #52c41a;
+}
+
+/* 风险预警列表 */
+.warning-list {
+  margin: 30rpx;
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24rpx;
+}
+
+.list-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333333;
+}
+
+.list-count {
+  font-size: 24rpx;
+  color: #1e3a8a;
+  padding: 4rpx 12rpx;
+  background-color: #dbeafe;
+  border-radius: 12rpx;
+}
+
+.warning-items {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.warning-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20rpx;
+  background-color: #f9f9f9;
+  border-radius: 12rpx;
+  transition: all 0.2s ease;
+  border-left: 4rpx solid #1e3a8a;
+}
+
+.warning-item:active {
+  background-color: #f0f0f0;
+  transform: translateX(4rpx);
+}
+
+.warning-left {
+  display: flex;
+  align-items: flex-start;
+  flex: 1;
+}
+
+.warning-icon {
+  font-size: 48rpx;
+  margin-right: 16rpx;
+  flex-shrink: 0;
+}
+
+.warning-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.warning-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 8rpx;
+  display: block;
+}
+
+.warning-desc {
+  font-size: 24rpx;
+  color: #666666;
+  margin-bottom: 8rpx;
+  line-height: 1.3;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.warning-date {
+  font-size: 20rpx;
+  color: #999999;
+  display: block;
+}
+
+.warning-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8rpx;
+}
+
+.warning-status {
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 12rpx;
+  font-weight: 500;
+}
+
+.warning-status.pending {
+  background-color: #fff7e6;
+  color: #fa8c16;
+}
+
+.warning-status.processing {
+  background-color: #e6f7ff;
+  color: #1890ff;
+}
+
+.warning-status.resolved {
+  background-color: #f6ffed;
+  color: #52c41a;
+}
+
+.arrow {
+  font-size: 24rpx;
+  color: #999999;
+  margin-top: 8rpx;
+}
+
+/* 风险评估工具 */
+.assessment-tools {
+  margin: 30rpx;
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.tools-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 24rpx;
+  display: block;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20rpx;
+}
+
+.tool-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30rpx;
+  background-color: #f5f7fa;
+  border-radius: 12rpx;
+  transition: all 0.3s ease;
+}
+
+.tool-item:active {
+  background-color: #e8e8e8;
+  transform: translateY(2rpx);
+}
+
+.tool-icon {
+  font-size: 60rpx;
+  margin-bottom: 16rpx;
+}
+
+.tool-text {
+  font-size: 24rpx;
+  color: #333333;
+  text-align: center;
+  line-height: 1.3;
+}
+
+/* 风险详情模态框 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  width: 90%;
+  max-width: 600rpx;
+  max-height: 80vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.modal-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333333;
+  flex: 1;
+}
+
+.modal-close {
+  font-size: 32rpx;
+  color: #999999;
+  width: 40rpx;
+  height: 40rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  transition: all 0.2s ease;
+}
+
+.modal-close:active {
+  background-color: #e0e0e0;
+  transform: scale(0.9);
+}
+
+.modal-body {
+  padding: 24rpx;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.detail-item {
+  margin-bottom: 24rpx;
+}
+
+.detail-label {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #333333;
+  margin-bottom: 8rpx;
+  display: block;
+}
+
+.detail-value {
+  font-size: 24rpx;
+  color: #666666;
+  line-height: 1.4;
+  display: block;
+}
+
+.detail-value.desc {
+  white-space: pre-wrap;
+  min-height: 80rpx;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 16rpx;
+  padding: 24rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.footer-btn {
+  flex: 1;
+  padding: 16rpx 0;
+  border-radius: 12rpx;
+  font-size: 24rpx;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.footer-btn.primary {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  color: #ffffff;
+  border: none;
+}
+
+.footer-btn.primary:active {
+  background: linear-gradient(135deg, #1e40af 0%, #b45309 100%);
+}
+
+.footer-btn.secondary {
+  background-color: #f0f0f0;
+  color: #333333;
+  border: none;
+}
+
+.footer-btn.secondary:active {
+  background-color: #e0e0e0;
+}
+
+/* 响应式设计 */
+@media (max-width: 375px) {
+  .risk-overview,
+  .warning-list,
+  .assessment-tools {
+    margin: 20rpx;
+    padding: 20rpx;
+  }
+  
+  .tools-grid {
+    gap: 16rpx;
+  }
+  
+  .tool-item {
+    padding: 24rpx;
+  }
+  
+  .warning-title {
+    font-size: 26rpx;
+  }
+  
+  .warning-desc {
+    font-size: 22rpx;
+  }
+}
+
+@media (min-width: 768px) {
+  .risk-warning-page {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .tools-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

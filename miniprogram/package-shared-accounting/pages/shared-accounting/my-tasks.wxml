@@ -1,0 +1,95 @@
+<!-- 我的任务页面 -->
+<view class="container">
+  <!-- 顶部导航 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="onBack">
+      <text class="nav-icon">←</text>
+    </view>
+    <text class="nav-title">我的任务</text>
+    <view class="nav-right"></view>
+  </view>
+  
+  <!-- 任务筛选 -->
+  <view class="filter-section">
+    <view class="filter-tabs">
+      <view class="filter-tab {{activeFilter === 'all' ? 'active' : ''}}" bindtap="switchFilter" data-filter="all">
+        <text class="filter-text">全部</text>
+      </view>
+      <view class="filter-tab {{activeFilter === 'pending' ? 'active' : ''}}" bindtap="switchFilter" data-filter="pending">
+        <text class="filter-text">待处理</text>
+      </view>
+      <view class="filter-tab {{activeFilter === 'processing' ? 'active' : ''}}" bindtap="switchFilter" data-filter="processing">
+        <text class="filter-text">处理中</text>
+      </view>
+      <view class="filter-tab {{activeFilter === 'completed' ? 'active' : ''}}" bindtap="switchFilter" data-filter="completed">
+        <text class="filter-text">已完成</text>
+      </view>
+      <view class="filter-tab {{activeFilter === 'cancelled' ? 'active' : ''}}" bindtap="switchFilter" data-filter="cancelled">
+        <text class="filter-text">已取消</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 任务列表 -->
+  <view class="task-section">
+    <view class="task-list">
+      <view class="task-card" wx:for="{{filteredTasks}}" wx:key="id" bindtap="viewTaskDetail" data-id="{{item.id}}">
+        <view class="task-header">
+          <text class="task-title">{{item.title}}</text>
+          <text class="task-status" style="color: {{getStatusColor(item.status)}}">{{getStatusText(item.status)}}</text>
+        </view>
+        <text class="task-description">{{item.description}}</text>
+        <view class="task-meta">
+          <view class="meta-item">
+            <text class="meta-label">服务类型：</text>
+            <text class="meta-value">{{getServiceText(item.service)}}</text>
+          </view>
+          <view class="meta-item">
+            <text class="meta-label">预算：</text>
+            <text class="meta-value">{{getBudgetText(item.budget)}}</text>
+          </view>
+          <view class="meta-item">
+            <text class="meta-label">截止日期：</text>
+            <text class="meta-value">{{item.deadline}}</text>
+          </view>
+          <view class="meta-item">
+            <text class="meta-label">发布日期：</text>
+            <text class="meta-value">{{formatDate(item.createdAt)}}</text>
+          </view>
+        </view>
+        <view class="task-actions" wx:if="item.status === 'pending'">
+          <view class="action-btn cancel" bindtap="cancelTask" data-id="{{item.id}}">
+            <text class="btn-text">取消任务</text>
+          </view>
+        </view>
+        <view class="task-actions" wx:elif="item.status === 'processing'">
+          <view class="action-btn complete" bindtap="completeTask" data-id="{{item.id}}">
+            <text class="btn-text">标记完成</text>
+          </view>
+        </view>
+        <view class="task-actions" wx:elif="item.status === 'completed'">
+          <view class="action-btn review" bindtap="reviewTask" data-id="{{item.id}}">
+            <text class="btn-text">评价服务</text>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 空状态 -->
+      <view class="empty-state" wx:if="filteredTasks.length === 0">
+        <text class="empty-icon">📋</text>
+        <text class="empty-text">暂无任务记录</text>
+        <view class="empty-action" bindtap="navigateToPostTask">
+          <text class="action-text">发布新任务</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <view class="bar-item" bindtap="navigateToPostTask">
+      <text class="bar-icon">+</text>
+      <text class="bar-text">发布任务</text>
+    </view>
+  </view>
+</view>

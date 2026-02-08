@@ -1,0 +1,146 @@
+<view class="container">
+  <view class="header">
+    <text class="title">{{editing ? '编辑付款单' : '新增付款单'}}</text>
+    <button class="back-btn" bindtap="goBack">返回</button>
+  </view>
+
+  <view class="form-container">
+    <form bindsubmit="saveApPayment">
+      <view class="form-section">
+        <view class="form-item">
+          <text class="form-label">供应商 *</text>
+          <picker 
+            value="{{supplierIndex}}" 
+            range="{{suppliers}}" 
+            range-key="name"
+            bindchange="supplierChange"
+            class="form-picker"
+          >
+            <view class="picker-text">{{selectedSupplierName}}</view>
+          </picker>
+        </view>
+
+        <view class="form-item">
+          <text class="form-label">付款单编号</text>
+          <view class="form-value">{{apPayment.code}}</view>
+        </view>
+
+        <view class="form-item">
+          <text class="form-label">付款日期 *</text>
+          <picker 
+            mode="date" 
+            value="{{apPayment.paymentDate}}" 
+            start="2020-01-01" 
+            end="2030-12-31"
+            bindchange="inputChange"
+            data-field="paymentDate"
+            class="form-picker"
+          >
+            <view class="picker-text">{{apPayment.paymentDate}}</view>
+          </picker>
+        </view>
+
+        <view class="form-item">
+          <text class="form-label">付款金额 *</text>
+          <input 
+            class="form-input" 
+            type="digit" 
+            placeholder="请输入付款金额" 
+            value="{{apPayment.amount}}"
+            bindinput="inputChange"
+            data-field="amount"
+          />
+        </view>
+
+        <view class="form-item">
+          <text class="form-label">结算方式</text>
+          <input 
+            class="form-input" 
+            placeholder="请输入结算方式" 
+            value="{{apPayment.paymentMethod}}"
+            bindinput="inputChange"
+            data-field="paymentMethod"
+          />
+        </view>
+
+        <view class="form-item">
+          <text class="form-label">付款人</text>
+          <input 
+            class="form-input" 
+            placeholder="请输入付款人" 
+            value="{{apPayment.payer}}"
+            bindinput="inputChange"
+            data-field="payer"
+          />
+        </view>
+
+        <view class="form-item">
+          <text class="form-label">备注</text>
+          <textarea 
+            class="form-textarea" 
+            placeholder="请输入备注信息" 
+            value="{{apPayment.remark}}"
+            bindinput="inputChange"
+            data-field="remark"
+            auto-height
+          ></textarea>
+        </view>
+
+        <view class="form-item" wx:if="{{editing}}">
+          <text class="form-label">状态</text>
+          <view class="status-value">
+            <text class="status-badge {{apPayment.status === 'pending' ? 'pending' : 'completed'}}">
+              {{apPayment.status === 'pending' ? '待处理' : '已完成'}}
+            </text>
+          </view>
+        </view>
+      </view>
+
+      <view class="form-section" wx:if="{{!editing}}">
+        <text class="section-title">选择要核销的应付单 *</text>
+        <view class="invoice-selection">
+          <view wx:if="{{apInvoices.length === 0}}" class="empty-invoices">
+            <text>{{apPayment.supplierId ? '该供应商暂无未支付的应付单' : '请先选择供应商'}}</text>
+          </view>
+          <block wx:for="{{apInvoices}}" wx:key="_id">
+            <view 
+              class="invoice-item {{item.selected ? 'selected' : ''}}"
+              bindtap="selectInvoice"
+              data-id="{{item._id}}"
+            >
+              <view class="invoice-info">
+                <text class="invoice-code">应付单：{{item.code}}</text>
+                <text class="invoice-date">开票日期：{{item.invoiceDate}}</text>
+                <text class="due-date">到期日期：{{item.dueDate}}</text>
+              </view>
+              <view class="invoice-amount">
+                <text class="total">总额：{{item.formattedAmount}} 元</text>
+                <text class="balance">余额：{{item.formattedBalance}} 元</text>
+              </view>
+            </view>
+          </block>
+        </view>
+        <view class="selection-summary" wx:if="{{selectedInvoices.length > 0}}">
+          <text class="summary-text">已选择 {{selectedInvoices.length}} 张应付单，合计余额：{{formattedTotalSelectedBalance}} 元</text>
+        </view>
+      </view>
+
+      <view class="form-actions">
+        <button 
+          class="btn-submit"
+          type="primary"
+          form-type="submit"
+        >
+          {{editing ? '保存修改' : '保存付款单并核销'}}
+        </button>
+        <button 
+          class="btn-delete"
+          wx:if="{{editing}}"
+          bindtap="deleteApPayment"
+        >
+          删除付款单
+        </button>
+      </view>
+    </form>
+  </view>
+</view>

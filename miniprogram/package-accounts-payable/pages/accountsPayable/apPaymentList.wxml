@@ -1,0 +1,101 @@
+<view class="container">
+  <view class="header">
+    <text class="title">付款单管理</text>
+    <button class="add-btn" bindtap="addApPayment">+ 新增</button>
+  </view>
+
+  <view class="search-bar">
+    <input 
+      class="search-input" 
+      placeholder="搜索付款单编号或供应商名称" 
+      value="{{searchQuery}}"
+      bindinput="searchPayment"
+    />
+  </view>
+
+  <view class="filter-bar">
+    <view 
+      class="filter-item {{statusFilter === 'all' ? 'active' : ''}}"
+      bindtap="filterByStatus"
+      data-status="all"
+    >
+      全部
+    </view>
+    <view 
+      class="filter-item {{statusFilter === 'pending' ? 'active' : ''}}"
+      bindtap="filterByStatus"
+      data-status="pending"
+    >
+      待处理
+    </view>
+    <view 
+      class="filter-item {{statusFilter === 'completed' ? 'active' : ''}}"
+      bindtap="filterByStatus"
+      data-status="completed"
+    >
+      已完成
+    </view>
+  </view>
+
+  <view class="payment-list">
+    <view wx:if="{{filteredPayments.length === 0}}" class="empty">
+      <text>暂无付款单数据</text>
+    </view>
+    <block wx:for="{{filteredPayments}}" wx:key="_id">
+      <view class="payment-item">
+        <view class="payment-header">
+          <view class="payment-info">
+            <text class="payment-code">付款单：{{item.code}}</text>
+            <text class="supplier-name">{{item.supplierName}}</text>
+            <text class="payment-date">{{item.paymentDate}}</text>
+          </view>
+          <text class="status-badge {{item.status === 'pending' ? 'pending' : 'completed'}}">
+            {{item.status === 'pending' ? '待处理' : '已完成'}}
+          </text>
+        </view>
+        <view class="payment-details">
+          <view class="detail-row">
+            <view class="detail-item">
+              <text class="label">金额：</text>
+              <text class="value">{{item.amount.toLocaleString()}} 元</text>
+            </view>
+            <view class="detail-item">
+              <text class="label">结算方式：</text>
+              <text class="value">{{item.paymentMethod || '未指定'}}</text>
+            </view>
+          </view>
+          <view class="detail-row">
+            <view class="detail-item">
+              <text class="label">创建人：</text>
+              <text class="value">{{item.createdBy || '系统'}}</text>
+            </view>
+            <view class="detail-item">
+              <text class="label">付款人：</text>
+              <text class="value">{{item.payer || '未指定'}}</text>
+            </view>
+          </view>
+        </view>
+        <view class="payment-remark" wx:if="{{item.remark}}">
+          <text class="label">备注：</text>
+          <text class="value">{{item.remark}}</text>
+        </view>
+        <view class="payment-actions">
+          <button 
+            class="action-btn view" 
+            bindtap="viewApPayment"
+            data-id="{{item._id}}"
+          >
+            查看/编辑
+          </button>
+          <button 
+            class="action-btn delete" 
+            bindtap="deleteApPayment"
+            data-id="{{item._id}}"
+          >
+            删除
+          </button>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

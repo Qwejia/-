@@ -1,0 +1,78 @@
+<!-- 人力资源首页 -->
+<view class="container">
+  <!-- 页面头部 -->
+  <view class="header">
+    <text class="header-title">人力资源</text>
+  </view>
+
+  <!-- 统计信息 -->
+  <view class="stats-section">
+    <view class="stats-card">
+      <text class="stats-label">总员工数</text>
+      <text class="stats-value">{{hrStats.totalEmployees}}</text>
+    </view>
+    <view class="stats-card">
+      <text class="stats-label">在职员工</text>
+      <text class="stats-value active">{{hrStats.activeEmployees}}</text>
+    </view>
+    <view class="stats-card">
+      <text class="stats-label">部门数</text>
+      <text class="stats-value departments">{{hrStats.departments}}</text>
+    </view>
+    <view class="stats-card">
+      <text class="stats-label">薪资总额</text>
+      <text class="stats-value amount">{{hrStats.totalPayroll.toLocaleString('zh-CN', { style: 'currency', currency: 'CNY' })}}</text>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="menu-section">
+    <view class="menu-grid">
+      <view class="menu-item" bindtap="goToEmployeeManage">
+        <view class="menu-icon employee-icon">👤</view>
+        <text class="menu-text">人员管理</text>
+      </view>
+      <view class="menu-item" bindtap="goToPayrollManage">
+        <view class="menu-icon payroll-icon">💰</view>
+        <text class="menu-text">薪资管理</text>
+      </view>
+      <view class="menu-item" bindtap="goToAttendanceManage">
+        <view class="menu-icon attendance-icon">📅</view>
+        <text class="menu-text">考勤管理</text>
+      </view>
+      <view class="menu-item" bindtap="goToDepartmentManage">
+        <view class="menu-icon department-icon">🏢</view>
+        <text class="menu-text">部门管理</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 最近员工 -->
+  <view class="recent-employees-section">
+    <view class="section-header">
+      <text class="section-title">最近员工</text>
+      <text class="section-more" bindtap="goToEmployeeManage">查看全部</text>
+    </view>
+    <view class="employees-list">
+      <view wx:for="{{recentEmployees}}" wx:key="_id" class="employee-item" data-employee-id="{{_id}}" bindtap="goToEmployeeDetail">
+        <view class="employee-avatar">
+          <text class="avatar-text">{{item.name.charAt(0)}}</text>
+        </view>
+        <view class="employee-info">
+          <view class="employee-header">
+            <text class="employee-name">{{item.name}}</text>
+            <text class="employee-status {{item.status}}">{{item.status === 'active' ? '在职' : '离职'}}</text>
+          </view>
+          <view class="employee-details">
+            <text class="employee-department">{{item.departmentName}}</text>
+            <text class="employee-position">{{item.position}}</text>
+          </view>
+          <view class="employee-contact">
+            <text class="employee-phone">{{item.phone}}</text>
+            <text class="employee-entry-date">入职: {{item.entryDate}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,189 @@
+<view class="page-container">
+  <view class="header-section">
+    <view class="header-content">
+      <view class="header-left">
+        <text class="page-title">AI财务助手</text>
+        <text class="page-subtitle">专业智能 · 财务无忧</text>
+      </view>
+      <view class="header-actions">
+        <button class="icon-btn secondary" bindtap="toggleAPIMode">
+          <text class="btn-icon">{{useRealAPI ? '🌐' : '📡'}}</text>
+        </button>
+        <button class="icon-btn secondary" bindtap="clearChatHistory">
+          <text class="btn-icon">🗑️</text>
+        </button>
+        <button class="icon-btn primary" bindtap="navigateToSettings">
+          <text class="btn-icon">⚙️</text>
+        </button>
+      </view>
+    </view>
+  </view>
+
+  <scroll-view class="main-scroll" scroll-y scroll-into-view="scroll-bottom" scroll-top="{{scrollTop}}" bindscroll="onScroll">
+    <view class="content-wrapper">
+      <view wx:if="{{activeTab === 'chat'}}" class="tab-content">
+        <view wx:if="{{showWelcome}}" class="welcome-container">
+          <view class="welcome-card">
+            <view class="welcome-header">
+              <view class="avatar-large">
+                <text class="avatar-emoji">🤖</text>
+              </view>
+              <view class="welcome-text-group">
+                <text class="welcome-title">智能财务助手</text>
+                <text class="welcome-desc">专业的AI财务顾问，为您提供全方位的财务支持和解决方案</text>
+              </view>
+            </view>
+            <view class="feature-tags">
+              <view class="feature-tag">税务筹划</view>
+              <view class="feature-tag">财务分析</view>
+              <view class="feature-tag">风险预警</view>
+              <view class="feature-tag">成本优化</view>
+            </view>
+          </view>
+
+          <view class="quick-questions">
+            <view class="section-header">
+              <text class="section-title">快速提问</text>
+            </view>
+            <view class="questions-grid">
+              <view wx:for="{{quickQuestions}}" wx:key="index" class="question-item" bindtap="askQuickQuestion" data-question="{{item}}">
+                <text class="question-text">{{item}}</text>
+              </view>
+            </view>
+          </view>
+        </view>
+
+        <view class="chat-container" wx:else>
+          <view class="chat-messages" id="chat-messages">
+            <view class="message {{item.isAI ? 'ai-message' : 'user-message'}}" wx:for="{{chatHistory}}" wx:key="index" id="msg-{{index}}">
+              <view class="message-avatar">
+                <text class="avatar-emoji">{{item.isAI ? '🤖' : '👤'}}</text>
+              </view>
+              <view class="message-content">
+                <view class="message-bubble">
+                  <text class="message-text">{{item.isAI ? item.displayResponse : item.userMessage}}</text>
+                  <text class="typing-cursor" wx:if="{{item.isAI && item.isTyping}}">|</text>
+                  <view class="message-timestamp">
+                    <text class="time-icon">🕐</text>
+                    <text class="time-text">{{item.formattedTime}}</text>
+                  </view>
+                  <view class="message-actions">
+                    <text class="action-btn" bindtap="copyMessage" data-text="{{item.isAI ? item.aiResponse : item.userMessage}}">复制</text>
+                    <text class="action-btn delete" bindtap="deleteMessage" data-index="{{index}}" wx:if="{{!item.isAI}}">删除</text>
+                  </view>
+                </view>
+              </view>
+            </view>
+
+            <view class="message ai-message" wx:if="{{loading}}">
+              <view class="message-avatar">
+                <text class="avatar-emoji">🤖</text>
+              </view>
+              <view class="message-content">
+                <view class="message-bubble loading">
+                  <view class="typing-indicator">
+                    <view class="dot"></view>
+                    <view class="dot"></view>
+                    <view class="dot"></view>
+                  </view>
+                </view>
+              </view>
+            </view>
+
+            <view id="scroll-bottom"></view>
+          </view>
+        </view>
+      </view>
+
+      <view wx:if="{{activeTab === 'tools'}}" class="tab-content">
+        <view class="tools-container">
+          <view class="section-header">
+            <text class="section-title">财务工具</text>
+          </view>
+
+          <view class="tool-categories">
+            <view wx:for="{{toolCategories}}" wx:key="id" class="tool-category">
+              <view class="category-header">
+                <text class="category-icon">{{item.icon}}</text>
+                <text class="category-name">{{item.name}}</text>
+              </view>
+              <view class="tool-list">
+                <view wx:for="{{item.tools}}" wx:for-item="tool" wx:key="index" class="tool-item" bindtap="executeTool" data-action="{{tool.action}}">
+                  <view class="tool-info">
+                    <text class="tool-name">{{tool.name}}</text>
+                    <text class="tool-desc">{{tool.desc}}</text>
+                  </view>
+                  <text class="tool-arrow">→</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view wx:if="{{activeTab === 'analysis'}}" class="tab-content">
+        <view class="analysis-container">
+          <view class="section-header">
+            <text class="section-title">财务分析</text>
+          </view>
+
+          <view class="analysis-grid">
+            <view class="analysis-card" bindtap="openFinanceCheck">
+              <view class="card-icon">📊</view>
+              <text class="card-title">财务健康检查</text>
+              <text class="card-desc">全面评估企业财务状况，识别潜在风险</text>
+            </view>
+            
+            <view class="analysis-card" bindtap="openCostAnalysis">
+              <view class="card-icon">💰</view>
+              <text class="card-title">成本结构分析</text>
+              <text class="card-desc">深入分析企业成本构成，优化成本结构</text>
+            </view>
+            
+            <view class="analysis-card" bindtap="openCashFlowForecast">
+              <view class="card-icon">📈</view>
+              <text class="card-title">现金流预测</text>
+              <text class="card-desc">基于历史数据，预测未来现金流趋势</text>
+            </view>
+            
+            <view class="analysis-card" bindtap="openRiskAssessment">
+              <view class="card-icon">⚠️</view>
+              <text class="card-title">风险预警系统</text>
+              <text class="card-desc">实时监控财务指标，提前预警风险</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="bottom-spacing"></view>
+    </view>
+  </scroll-view>
+
+  <view class="input-section" wx:if="{{activeTab === 'chat'}}">
+    <view class="input-container">
+      <input class="message-input" placeholder="请输入您的问题..." value="{{userInput}}" bindinput="onInputChange" bindconfirm="sendMessage" confirm-type="send" />
+      <button class="send-btn" bindtap="sendMessage" disabled="{{!userInput || loading}}">
+        <text class="btn-icon">→</text>
+      </button>
+    </view>
+  </view>
+
+  <view class="tab-bar">
+    <view class="tab-item {{activeTab === 'chat' ? 'active' : ''}}" bindtap="switchTab" data-tab="chat">
+      <text class="tab-icon">💬</text>
+      <text class="tab-text">聊天</text>
+    </view>
+    <view class="tab-item {{activeTab === 'tools' ? 'active' : ''}}" bindtap="switchTab" data-tab="tools">
+      <text class="tab-icon">🛠️</text>
+      <text class="tab-text">工具</text>
+    </view>
+    <view class="tab-item {{activeTab === 'analysis' ? 'active' : ''}}" bindtap="switchTab" data-tab="analysis">
+      <text class="tab-icon">📊</text>
+      <text class="tab-text">分析</text>
+    </view>
+  </view>
+
+  <view class="scroll-to-top" wx:if="{{showScrollToTop}}" bindtap="scrollToTop">
+    <text class="top-icon">↑</text>
+  </view>
+</view>

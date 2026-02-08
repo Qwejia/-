@@ -1,0 +1,136 @@
+<!-- pages/accountsReceivable/arAgingAnalysis.wxml -->
+<view class="container">
+  <view class="header">
+    <text class="page-title">应收账款账龄分析</text>
+    <view class="export-btn" bindtap="exportAging">
+      <text class="export-text">导出</text>
+    </view>
+  </view>
+  
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-overlay">
+    <view class="loading-content">
+      <text class="loading-text">计算账龄中...</text>
+    </view>
+  </view>
+  
+  <view class="filter-section">
+    <view class="filter-row">
+      <view class="filter-item">
+          <text class="filter-label">客户：</text>
+          <picker class="filter-picker" bindchange="onCustomerChange" value="{{selectedCustomer}}" range="{{customers}}" range-key="name">
+            <text class="picker-text">{{customers && customers[selectedCustomer] ? customers[selectedCustomer].name : '全部客户'}}</text>
+          </picker>
+        </view>
+      
+      <view class="filter-item">
+        <text class="filter-label">截止日期：</text>
+        <picker mode="date" value="{{asOfDate}}" start="2023-01-01" end="2026-12-31" bindchange="onAsOfDateChange">
+          <text class="picker-text">{{asOfDate}}</text>
+        </picker>
+      </view>
+    </view>
+  </view>
+  
+  <view class="summary-section">
+    <view class="summary-card">
+      <view class="summary-title">账龄汇总</view>
+      
+      <!-- 图表展示 -->
+      <view class="chart-container">
+        <view class="chart-header">
+          <view class="chart-title">账龄分布图</view>
+          <view class="chart-type-selector">
+            <picker class="chart-type-picker" bindchange="onChartTypeChange" value="{{chartTypeIndex}}" range="{{chartTypes}}">
+              <text class="picker-text">{{chartTypes[chartTypeIndex]}}</text>
+            </picker>
+          </view>
+        </view>
+        
+        <!-- 柱状图 -->
+        <view class="chart bar-chart" wx:if="{{chartTypeIndex === 0}}">
+          <view class="chart-bar" wx:for="{{agingPeriods}}" wx:key="name" style="width: {{getBarWidth(item.name, totalAging.total)}}%;">
+            <view class="bar-label">{{item.name}}</view>
+            <view class="bar-value">{{totalAging[item.name] ? totalAging[item.name].toFixed(2) : '0.00'}}</view>
+          </view>
+        </view>
+        
+        <!-- 饼图 -->
+        <view class="chart pie-chart" wx:if="{{chartTypeIndex === 1}}">
+          <view class="pie-container">
+            <view class="pie-legend">
+              <view class="legend-item" wx:for="{{agingPeriods}}" wx:key="name">
+                <view class="legend-color" style="background-color: {{getPeriodColor(item.name)}}"></view>
+                <view class="legend-label">{{item.name}}</view>
+                <view class="legend-value">{{totalAging[item.name] ? totalAging[item.name].toFixed(2) : '0.00'}}</view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+      
+      <view class="summary-content">
+        <view class="summary-item">
+          <text class="summary-label">0-30天</text>
+          <text class="summary-value">{{totalAging && totalAging['0-30天'] ? totalAging['0-30天'].toFixed(2) : '0.00'}}</text>
+        </view>
+        <view class="summary-item">
+          <text class="summary-label">31-60天</text>
+          <text class="summary-value">{{totalAging && totalAging['31-60天'] ? totalAging['31-60天'].toFixed(2) : '0.00'}}</text>
+        </view>
+        <view class="summary-item">
+          <text class="summary-label">61-90天</text>
+          <text class="summary-value">{{totalAging && totalAging['61-90天'] ? totalAging['61-90天'].toFixed(2) : '0.00'}}</text>
+        </view>
+        <view class="summary-item">
+          <text class="summary-label">91-180天</text>
+          <text class="summary-value">{{totalAging && totalAging['91-180天'] ? totalAging['91-180天'].toFixed(2) : '0.00'}}</text>
+        </view>
+        <view class="summary-item">
+          <text class="summary-label">180天以上</text>
+          <text class="summary-value">{{totalAging && totalAging['180天以上'] ? totalAging['180天以上'].toFixed(2) : '0.00'}}</text>
+        </view>
+        <view class="summary-item total">
+          <text class="summary-label">合计</text>
+          <text class="summary-value total">{{totalAging && totalAging.total ? totalAging.total.toFixed(2) : '0.00'}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <view class="detail-section">
+    <view class="detail-header">
+      <text class="detail-title">客户账龄明细</text>
+    </view>
+    
+    <view class="table-container">
+      <view class="table-header">
+        <view class="table-cell customer">客户名称</view>
+        <view class="table-cell period">0-30天</view>
+        <view class="table-cell period">31-60天</view>
+        <view class="table-cell period">61-90天</view>
+        <view class="table-cell period">91-180天</view>
+        <view class="table-cell period">180天以上</view>
+        <view class="table-cell total">合计</view>
+      </view>
+      
+      <view class="table-body">
+        <block wx:for="{{agingData}}" wx:key="customerId">
+          <view class="table-row">
+            <view class="table-cell customer">{{item.customerName}}</view>
+            <view class="table-cell period">{{item['0-30天'] ? item['0-30天'].toFixed(2) : '0.00'}}</view>
+            <view class="table-cell period">{{item['31-60天'] ? item['31-60天'].toFixed(2) : '0.00'}}</view>
+            <view class="table-cell period">{{item['61-90天'] ? item['61-90天'].toFixed(2) : '0.00'}}</view>
+            <view class="table-cell period">{{item['91-180天'] ? item['91-180天'].toFixed(2) : '0.00'}}</view>
+            <view class="table-cell period">{{item['180天以上'] ? item['180天以上'].toFixed(2) : '0.00'}}</view>
+            <view class="table-cell total">{{item.total ? item.total.toFixed(2) : '0.00'}}</view>
+          </view>
+        </block>
+        
+        <view wx:if="{{!agingData || agingData.length === 0}}" class="empty-data">
+          <text>暂无账龄数据</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

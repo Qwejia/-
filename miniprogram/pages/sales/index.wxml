@@ -1,0 +1,73 @@
+<!-- 销售管理首页 -->
+<view class="container">
+  <!-- 页面头部 -->
+  <view class="header">
+    <text class="header-title">销售管理</text>
+  </view>
+
+  <!-- 统计信息 -->
+  <view class="stats-section">
+    <view class="stats-card">
+      <text class="stats-label">总订单数</text>
+      <text class="stats-value">{{salesStats.totalOrders}}</text>
+    </view>
+    <view class="stats-card">
+      <text class="stats-label">待处理订单</text>
+      <text class="stats-value pending">{{salesStats.pendingOrders}}</text>
+    </view>
+    <view class="stats-card">
+      <text class="stats-label">已完成订单</text>
+      <text class="stats-value completed">{{salesStats.completedOrders}}</text>
+    </view>
+    <view class="stats-card">
+      <text class="stats-label">销售总额</text>
+      <text class="stats-value amount">{{salesStats.totalAmount.toLocaleString('zh-CN', { style: 'currency', currency: 'CNY' })}}</text>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="menu-section">
+    <view class="menu-grid">
+      <view class="menu-item" bindtap="goToOrderList">
+        <view class="menu-icon order-icon">📋</view>
+        <text class="menu-text">销售订单</text>
+      </view>
+      <view class="menu-item" bindtap="goToOrderAdd">
+        <view class="menu-icon add-icon">➕</view>
+        <text class="menu-text">新增订单</text>
+      </view>
+      <view class="menu-item" bindtap="goToCustomerManage">
+        <view class="menu-icon customer-icon">👤</view>
+        <text class="menu-text">客户管理</text>
+      </view>
+      <view class="menu-item" bindtap="goToSalesAnalysis">
+        <view class="menu-icon analysis-icon">📊</view>
+        <text class="menu-text">销售分析</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 最近订单 -->
+  <view class="recent-orders-section">
+    <view class="section-header">
+      <text class="section-title">最近订单</text>
+      <text class="section-more" bindtap="goToOrderList">查看全部</text>
+    </view>
+    <view class="orders-list">
+      <view wx:for="{{recentOrders}}" wx:key="_id" class="order-item" data-order-id="{{_id}}" bindtap="goToOrderDetail">
+        <view class="order-header">
+          <text class="order-number">{{item.orderNumber}}</text>
+          <text class="order-status {{item.status}}">{{item.status === 'completed' ? '已完成' : item.status === 'pending' ? '待处理' : '处理中'}}</text>
+        </view>
+        <view class="order-info">
+          <text class="order-customer">{{item.customerName}}</text>
+          <text class="order-date">{{item.orderDate}}</text>
+        </view>
+        <view class="order-amount">
+          <text class="amount-label">订单金额:</text>
+          <text class="amount-value">{{item.totalAmount.toLocaleString('zh-CN', { style: 'currency', currency: 'CNY' })}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,187 @@
+<!--pages/finance/data-connection.wxml-->
+<view class="container">
+  <!-- 导航栏 -->
+  <view class="navbar">
+    <view class="navbar-left">
+      <text class="back-btn" bindtap="navigateBack">←</text>
+    </view>
+    <view class="navbar-center">
+      <text class="navbar-title">用友U8数据对接</text>
+    </view>
+    <view class="navbar-right">
+      <text class="help-btn" bindtap="showHelp">?</text>
+    </view>
+  </view>
+  
+  <!-- 页面内容 -->
+  <view class="content">
+    <!-- 连接状态区域 -->
+    <view class="connection-status">
+      <view class="status-header">
+        <text class="status-title">连接状态</text>
+        <text class="status-indicator {{isConnected ? 'connected' : 'disconnected'}}">{{isConnected ? '已连接' : '未连接'}}</text>
+      </view>
+      <text class="status-description">{{connectionDescription}}</text>
+      <button class="connect-btn" bindtap="{{isConnected ? 'disconnectU8' : 'showConnectModal'}}">{{isConnected ? '断开连接' : '连接用友U8'}}</button>
+    </view>
+    
+    <!-- 数据同步区域 -->
+    <view class="sync-section" wx:if="{{isConnected}}">
+      <view class="section-header">
+        <text class="section-title">数据同步</text>
+        <text class="sync-status">{{lastSyncTime ? '上次同步: ' + lastSyncTime : '未同步'}}</text>
+      </view>
+      
+      <!-- 同步模块 -->
+      <view class="sync-modules">
+        <!-- 基础数据 -->
+        <view class="module-card">
+          <view class="module-header">
+            <text class="module-icon">📋</text>
+            <text class="module-title">基础数据</text>
+          </view>
+          <view class="module-content">
+            <text class="module-description">同步客户、供应商、存货等基础档案</text>
+            <view class="sync-actions">
+              <button class="sync-btn" bindtap="syncBasicData">立即同步</button>
+              <text class="sync-status">{{syncStatus.basicData}}</text>
+            </view>
+          </view>
+        </view>
+        
+        <!-- 业务数据 -->
+        <view class="module-card">
+          <view class="module-header">
+            <text class="module-icon">📦</text>
+            <text class="module-title">业务数据</text>
+          </view>
+          <view class="module-content">
+            <text class="module-description">同步销售订单、采购订单、出入库单等业务单据</text>
+            <view class="sync-actions">
+              <button class="sync-btn" bindtap="syncBusinessData">立即同步</button>
+              <text class="sync-status">{{syncStatus.businessData}}</text>
+            </view>
+          </view>
+        </view>
+        
+        <!-- 财务数据 -->
+        <view class="module-card">
+          <view class="module-header">
+            <text class="module-icon">💰</text>
+            <text class="module-title">财务数据</text>
+          </view>
+          <view class="module-content">
+            <text class="module-description">同步凭证、发票、收付款单等财务单据</text>
+            <view class="sync-actions">
+              <button class="sync-btn" bindtap="syncFinanceData">立即同步</button>
+              <text class="sync-status">{{syncStatus.financeData}}</text>
+            </view>
+          </view>
+        </view>
+        
+        <!-- 报表数据 -->
+        <view class="module-card">
+          <view class="module-header">
+            <text class="module-icon">📊</text>
+            <text class="module-title">报表数据</text>
+          </view>
+          <view class="module-content">
+            <text class="module-description">同步资产负债表、利润表、现金流量表等报表</text>
+            <view class="sync-actions">
+              <button class="sync-btn" bindtap="syncReportData">立即同步</button>
+              <text class="sync-status">{{syncStatus.reportData}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 同步设置 -->
+      <view class="sync-settings">
+        <view class="settings-header">
+          <text class="settings-title">同步设置</text>
+        </view>
+        <view class="settings-content">
+          <view class="setting-item">
+            <text class="setting-label">自动同步</text>
+            <switch checked="{{autoSync}}" bindchange="toggleAutoSync" />
+          </view>
+          <view class="setting-item">
+            <text class="setting-label">同步频率</text>
+            <picker range="{{syncFrequencyOptions}}" value="{{syncFrequencyIndex}}" bindchange="changeSyncFrequency">
+              <text class="picker-value">{{syncFrequencyOptions[syncFrequencyIndex]}}</text>
+            </picker>
+          </view>
+          <view class="setting-item">
+            <text class="setting-label">数据映射</text>
+            <button class="setting-btn" bindtap="showMappingSettings">配置映射</button>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 未连接提示 -->
+    <view class="disconnected-tips" wx:else>
+      <text class="tips-icon">💡</text>
+      <text class="tips-title">连接用友U8系统</text>
+      <text class="tips-description">连接后可以实现数据自动同步，减少人工操作，提高工作效率。</text>
+      <view class="tips-features">
+        <text class="feature-item">• 基础数据自动同步</text>
+        <text class="feature-item">• 业务单据实时同步</text>
+        <text class="feature-item">• 财务数据无缝对接</text>
+        <text class="feature-item">• 报表数据自动生成</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 连接用友U8模态框 -->
+<view class="modal" wx:if="{{showConnectModal}}" catchtap="closeConnectModal">
+  <view class="modal-content" catchtap="catchTap">
+    <view class="modal-header">
+      <text class="modal-title">连接用友U8</text>
+      <text class="close-btn" bindtap="closeConnectModal">×</text>
+    </view>
+    <view class="modal-body">
+      <text class="modal-description">请输入用友U8连接信息</text>
+      <view class="form-group">
+        <text class="form-label">服务器地址</text>
+        <input type="text" placeholder="请输入服务器IP或域名" bindinput="bindServerInput" value="{{serverUrl}}" class="form-input" />
+      </view>
+      <view class="form-group">
+        <text class="form-label">端口号</text>
+        <input type="number" placeholder="请输入端口号，默认80" bindinput="bindPortInput" value="{{port}}" class="form-input" />
+      </view>
+      <view class="form-group">
+        <text class="form-label">账套号</text>
+        <input type="number" placeholder="请输入账套号" bindinput="bindAccountInput" value="{{accountId}}" class="form-input" />
+      </view>
+      <view class="form-group">
+        <text class="form-label">用户名</text>
+        <input type="text" placeholder="请输入用友U8用户名" bindinput="bindUsernameInput" value="{{username}}" class="form-input" />
+      </view>
+      <view class="form-group">
+        <text class="form-label">密码</text>
+        <input type="password" placeholder="请输入用友U8密码" bindinput="bindPasswordInput" value="{{password}}" class="form-input" />
+      </view>
+      <button class="connect-btn" bindtap="connectU8">测试连接</button>
+    </view>
+  </view>
+</view>
+
+<!-- 同步进度模态框 -->
+<view class="modal" wx:if="{{showSyncModal}}" catchtap="closeSyncModal">
+  <view class="modal-content" catchtap="catchTap">
+    <view class="modal-header">
+      <text class="modal-title">同步进度</text>
+      <text class="close-btn" bindtap="closeSyncModal">×</text>
+    </view>
+    <view class="modal-body">
+      <text class="sync-task">{{syncTask}}</text>
+      <view class="progress-bar">
+        <view class="progress-fill" style="width: {{syncProgress}}%"></view>
+      </view>
+      <text class="progress-text">{{syncProgress}}%</text>
+      <text class="sync-message">{{syncMessage}}</text>
+    </view>
+  </view>
+</view>

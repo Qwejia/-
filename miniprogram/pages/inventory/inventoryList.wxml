@@ -1,0 +1,49 @@
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <input 
+      class="search-input" 
+      placeholder="搜索商品名称或编码" 
+      value="{{searchKeyword}}"
+      bindinput="onSearchInput"
+    />
+    <button class="add-btn" bindtap="addInventory">+</button>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 库存列表 -->
+  <view wx:else class="inventory-list">
+    <view 
+      wx:for="{{inventory}}" 
+      wx:key="productId"
+      class="inventory-item"
+      data-product-id="{{item.productId}}"
+      bindtap="goToInventoryDetail"
+    >
+      <view class="inventory-info">
+        <view class="product-name">{{item.productName}}</view>
+        <view class="product-spec">{{item.spec}}</view>
+        <view class="product-category">{{item.category}}</view>
+      </view>
+      <view class="inventory-stats">
+        <view class="stock-info">
+          <text class="stock-label">库存:</text>
+          <text class="stock-value" style="color: {{item.stock < item.minStock ? '#c62828' : '#2e7d32'}};">{{item.stock}} {{item.unit}}</text>
+        </view>
+        <view class="price-info">
+          <text class="price-label">单价:</text>
+          <text class="price-value">¥{{item.price}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view wx:if="{{inventory.length === 0}}" class="empty-state">
+      <text>暂无库存数据</text>
+    </view>
+  </view>
+</view>

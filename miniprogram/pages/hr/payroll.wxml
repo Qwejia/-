@@ -1,0 +1,49 @@
+<view class="container">
+  <!-- 筛选栏 -->
+  <view class="filter-bar">
+    <picker class="period-picker" value="{{selectedPeriod}}" bindchange="selectPeriod">
+      <view class="picker-view">
+        <text>选择期间: {{selectedPeriod}}</text>
+      </view>
+    </picker>
+    <button class="export-btn" bindtap="exportPayrollReport">导出报表</button>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 薪资列表 -->
+  <view wx:else class="payroll-list">
+    <view 
+      wx:for="{{payrolls}}" 
+      wx:key="payrollId"
+      class="payroll-item"
+      data-payroll-id="{{item.payrollId}}"
+      bindtap="viewPayrollDetail"
+    >
+      <view class="payroll-header">
+        <view class="employee-name">{{item.employeeName}}</view>
+        <view class="payroll-period">{{item.period}}</view>
+      </view>
+      <view class="payroll-body">
+        <view class="payroll-info">
+          <text>部门: {{item.departmentName}}</text>
+        </view>
+        <view class="payroll-amount">
+          <text class="amount-label">实发工资:</text>
+          <text class="amount-value">¥{{item.netSalary}}</text>
+        </view>
+      </view>
+      <view class="payroll-footer">
+        <text class="status-tag">{{item.status === 'paid' ? '已发放' : '未发放'}}</text>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view wx:if="{{payrolls.length === 0}}" class="empty-state">
+      <text>暂无薪资数据</text>
+    </view>
+  </view>
+</view>

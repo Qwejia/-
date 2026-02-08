@@ -1,0 +1,124 @@
+.container {
+  padding: 20rpx;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+  background-color: #fff;
+  border-radius: 8rpx;
+  padding: 0 20rpx;
+  box-shadow: 0 2rpx 4rpx rgba(0,0,0,0.1);
+}
+
+.search-input {
+  flex: 1;
+  height: 80rpx;
+  font-size: 32rpx;
+}
+
+.add-btn {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  background-color: #07c160;
+  color: #fff;
+  font-size: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+.loading {
+  padding: 40rpx;
+  text-align: center;
+  color: #666;
+}
+
+.inventory-list {
+  background-color: #fff;
+  border-radius: 8rpx;
+  box-shadow: 0 2rpx 4rpx rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.inventory-item {
+  padding: 30rpx 20rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.inventory-item:last-child {
+  border-bottom: none;
+}
+
+.inventory-info {
+  flex: 1;
+  margin-right: 20rpx;
+}
+
+.product-name {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-bottom: 8rpx;
+}
+
+.product-spec {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 4rpx;
+}
+
+.product-category {
+  font-size: 28rpx;
+  color: #999;
+}
+
+.inventory-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.stock-info {
+  margin-bottom: 12rpx;
+}
+
+.stock-label {
+  font-size: 28rpx;
+  color: #666;
+  margin-right: 8rpx;
+}
+
+.stock-value {
+  font-size: 32rpx;
+  font-weight: bold;
+}
+
+.price-info {
+}
+
+.price-label {
+  font-size: 28rpx;
+  color: #666;
+  margin-right: 8rpx;
+}
+
+.price-value {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #ff6b6b;
+}
+
+.empty-state {
+  padding: 100rpx;
+  text-align: center;
+  color: #999;
+  font-size: 32rpx;
+}

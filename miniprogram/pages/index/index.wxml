@@ -1,0 +1,215 @@
+<view class="page-container">
+  <view class="header-bar">
+    <view class="header-left">
+      <text class="greeting">{{greeting}}</text>
+      <text class="date">{{currentDate}}</text>
+    </view>
+    <view class="header-right">
+      <view class="ai-btn" bindtap="navigateToAIAssistant">
+        <text class="ai-icon">🤖</text>
+      </view>
+    </view>
+  </view>
+
+  <scroll-view class="content-scroll" scroll-y>
+    <view class="content-wrapper">
+      <view class="entity-section">
+        <view class="entity-card">
+          <view class="entity-header">
+            <text class="entity-title">{{entityName}}</text>
+            <view class="period-badge" bindtap="openPeriodSelector">
+              <text class="period-text">{{currentPeriod}}</text>
+              <text class="period-arrow">▼</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="metrics-section">
+        <view class="metrics-grid">
+          <view class="metric-item income">
+            <view class="metric-header">
+              <text class="metric-label">本期收入</text>
+              <text class="metric-icon">📈</text>
+            </view>
+            <text class="metric-value">¥{{currentPeriodIncome}}</text>
+            <view class="metric-trend {{incomeChangeClass}}">
+              <text>{{incomeChangeText}}</text>
+              <text>{{incomeChangeAbs}}%</text>
+            </view>
+          </view>
+          <view class="metric-item expense">
+            <view class="metric-header">
+              <text class="metric-label">本期支出</text>
+              <text class="metric-icon">📉</text>
+            </view>
+            <text class="metric-value">¥{{currentPeriodExpense}}</text>
+            <view class="metric-trend {{expenseChangeClass}}">
+              <text>{{expenseChangeText}}</text>
+              <text>{{expenseChangeAbs}}%</text>
+            </view>
+          </view>
+          <view class="metric-item profit">
+            <view class="metric-header">
+              <text class="metric-label">本期利润</text>
+              <text class="metric-icon">💰</text>
+            </view>
+            <text class="metric-value">¥{{currentPeriodProfit}}</text>
+            <view class="metric-trend {{profitChangeClass}}">
+              <text>{{profitChangeText}}</text>
+              <text>{{profitChangeAbs}}%</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="overview-section">
+        <view class="section-header">
+          <text class="section-title">财务概览</text>
+          <navigator url="/pages/statistics/index" class="more-link">查看报表</navigator>
+        </view>
+        <view class="overview-grid">
+          <view class="overview-card">
+            <text class="card-label">总资产</text>
+            <text class="card-amount">¥{{totalAssets}}</text>
+          </view>
+          <view class="overview-card">
+            <text class="card-label">总负债</text>
+            <text class="card-amount">¥{{totalLiabilities}}</text>
+          </view>
+          <view class="overview-card">
+            <text class="card-label">净资产</text>
+            <text class="card-amount equity">¥{{netAssets}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="quick-actions-section">
+        <view class="section-header">
+          <text class="section-title">快捷操作</text>
+        </view>
+        <view class="actions-grid">
+          <navigator url="/pages/record/index?type=income" class="action-card">
+            <view class="action-icon-wrapper income">
+              <text class="action-icon">💵</text>
+            </view>
+            <text class="action-label">记收入</text>
+          </navigator>
+          <navigator url="/pages/record/index?type=expense" class="action-card">
+            <view class="action-icon-wrapper expense">
+              <text class="action-icon">💸</text>
+            </view>
+            <text class="action-label">记支出</text>
+          </navigator>
+          <navigator url="/pages/generalLedger/voucherEntry" class="action-card">
+            <view class="action-icon-wrapper voucher">
+              <text class="action-icon">📝</text>
+            </view>
+            <text class="action-label">录入凭证</text>
+          </navigator>
+          <navigator url="/pages/finance/invoice" class="action-card">
+            <view class="action-icon-wrapper invoice">
+              <text class="action-icon">🧾</text>
+            </view>
+            <text class="action-label">发票管理</text>
+          </navigator>
+          <navigator url="/pages/finance/tax" class="action-card">
+            <view class="action-icon-wrapper tax">
+              <text class="action-icon">📋</text>
+            </view>
+            <text class="action-label">税务申报</text>
+          </navigator>
+          <navigator url="/pages/generalLedger/index" class="action-card">
+            <view class="action-icon-wrapper ledger">
+              <text class="action-icon">📋</text>
+            </view>
+            <text class="action-label">查看总账</text>
+          </navigator>
+          <navigator url="/pages/accountsReceivable/index" class="action-card">
+            <view class="action-icon-wrapper ar">
+              <text class="action-icon">💰</text>
+            </view>
+            <text class="action-label">应收管理</text>
+          </navigator>
+          <navigator url="/pages/accountsPayable/index" class="action-card">
+            <view class="action-icon-wrapper ap">
+              <text class="action-icon">💳</text>
+            </view>
+            <text class="action-label">应付管理</text>
+          </navigator>
+        </view>
+      </view>
+
+      <view class="chart-section">
+        <view class="section-header">
+          <text class="section-title">财务趋势</text>
+          <view class="chart-toggle" bindtap="toggleChartType">
+            <text class="chart-type">{{chartTypeText}}</text>
+          </view>
+        </view>
+        <view class="chart-wrapper">
+          <canvas canvas-id="trendChart" class="chart-canvas"></canvas>
+        </view>
+      </view>
+
+      <view class="insight-section">
+        <view class="section-header">
+          <text class="section-title">AI财务洞察</text>
+          <view class="refresh-btn" bindtap="refreshAIInsight">
+            <text class="refresh-icon">🔄</text>
+          </view>
+        </view>
+        <view class="insight-card">
+          <view class="insight-content">
+            <text class="insight-text">{{currentInsightText}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="activities-section">
+        <view class="section-header">
+          <text class="section-title">近期活动</text>
+          <navigator url="/pages/record/index" class="more-link">查看全部</navigator>
+        </view>
+        <view class="tab-bar">
+          <view class="tab-item {{activeTab === 'all' ? 'active' : ''}}" bindtap="switchTab" data-tab="all">全部</view>
+          <view class="tab-item {{activeTab === 'income' ? 'active' : ''}}" bindtap="switchTab" data-tab="income">收入</view>
+          <view class="tab-item {{activeTab === 'expense' ? 'active' : ''}}" bindtap="switchTab" data-tab="expense">支出</view>
+        </view>
+        <view class="activities-list">
+          <view class="activity-row" wx:for="{{activities}}" wx:key="index">
+            <view class="activity-icon">{{item.icon}}</view>
+            <view class="activity-info">
+              <text class="activity-title">{{item.title}}</text>
+              <text class="activity-date">{{item.date}}</text>
+            </view>
+            <text class="activity-amount {{item.type === 'income' ? 'income' : 'expense'}}">{{item.type === 'income' ? '+' : '-'}}¥{{item.amount}}</text>
+          </view>
+          <view class="empty-activities" wx:if="{{activities.length === 0}}">
+            <text class="empty-text">暂无活动记录</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="calendar-section">
+        <view class="section-header">
+          <text class="section-title">会计日历</text>
+        </view>
+        <view class="calendar-grid">
+          <view class="calendar-item">
+            <text class="calendar-label">记账截止</text>
+            <text class="calendar-date">{{bookkeepingDeadline}}</text>
+          </view>
+          <view class="calendar-item">
+            <text class="calendar-label">报表生成</text>
+            <text class="calendar-date">{{reportGeneration}}</text>
+          </view>
+          <view class="calendar-item">
+            <text class="calendar-label">报税截止</text>
+            <text class="calendar-date">{{taxDeadline}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

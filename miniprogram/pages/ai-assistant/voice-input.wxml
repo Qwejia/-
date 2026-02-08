@@ -1,0 +1,137 @@
+<!--pages/ai-assistant/voice-input.wxml-->
+<view class="voice-input-page">
+  <!-- 顶部导航栏 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="navigateBack">
+      <text class="back-icon">←</text>
+      <text class="nav-title">语音输入</text>
+    </view>
+    <view class="nav-right" bindtap="showHelp">
+      <text class="help-icon">?</text>
+    </view>
+  </view>
+
+  <!-- 语音输入区域 -->
+  <view class="voice-input-area">
+    <view class="voice-status" wx:if="!isRecording">
+      <text class="voice-icon">🎤</text>
+      <text class="voice-text">点击开始语音输入</text>
+    </view>
+    <view class="voice-status recording" wx:else>
+      <text class="voice-icon recording-icon">🎤</text>
+      <text class="voice-text recording-text">正在录音...</text>
+      <view class="recording-animation">
+        <view class="animation-circle"></view>
+        <view class="animation-circle delay-1"></view>
+        <view class="animation-circle delay-2"></view>
+      </view>
+    </view>
+    
+    <!-- 语音按钮 -->
+    <view class="voice-button-container">
+      <view 
+        class="voice-button" 
+        bindtouchstart="startRecording" 
+        bindtouchend="stopRecording"
+        bindtouchcancel="stopRecording"
+      >
+        <text class="voice-button-icon">🎤</text>
+        <text class="voice-button-text">{{isRecording ? '松开结束' : '按住说话'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 识别结果区域 -->
+  <view class="result-area" wx:if="recognitionResult">
+    <view class="result-header">
+      <text class="result-title">识别结果</text>
+      <view class="result-actions">
+        <text class="action-btn" bindtap="sendToAssistant">发送</text>
+        <text class="action-btn" bindtap="copyResult">复制</text>
+        <text class="action-btn" bindtap="clearResult">清空</text>
+      </view>
+    </view>
+    <view class="result-content">
+      <text class="result-text">{{recognitionResult}}</text>
+    </view>
+  </view>
+
+  <!-- 提取数据区域 -->
+  <view class="extracted-data-area" wx:if="extractedData && extractedData.hasData">
+    <text class="extracted-data-title">识别到的财务数据</text>
+    <view class="extracted-data-grid">
+      <view class="data-item" wx:if="extractedData.sales">
+        <text class="data-label">销售额</text>
+        <text class="data-value">{{extractedData.sales}}元</text>
+      </view>
+      <view class="data-item" wx:if="extractedData.cost">
+        <text class="data-label">成本</text>
+        <text class="data-value">{{extractedData.cost}}元</text>
+      </view>
+      <view class="data-item" wx:if="extractedData.profit">
+        <text class="data-label">利润</text>
+        <text class="data-value">{{extractedData.profit}}元</text>
+      </view>
+      <view class="data-item" wx:if="extractedData.amount">
+        <text class="data-label">金额</text>
+        <text class="data-value">{{extractedData.amount}}元</text>
+      </view>
+      <view class="data-item" wx:if="extractedData.category">
+        <text class="data-label">类别</text>
+        <text class="data-value">{{extractedData.category}}</text>
+      </view>
+      <view class="data-item" wx:if="extractedData.rate">
+        <text class="data-label">税率</text>
+        <text class="data-value">{{extractedData.ratePercentage}}%</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能选项 -->
+  <view class="function-area">
+    <text class="function-title">语音功能</text>
+    <view class="function-grid">
+      <view class="function-item" bindtap="voiceToText">
+        <text class="function-icon">📝</text>
+        <text class="function-text">语音转文字</text>
+        <text class="function-desc">快速输入文字</text>
+      </view>
+      <view class="function-item" bindtap="voiceToCommand">
+        <text class="function-icon">⚙️</text>
+        <text class="function-text">语音指令</text>
+        <text class="function-desc">控制应用功能</text>
+      </view>
+      <view class="function-item" bindtap="voiceToNote">
+        <text class="function-icon">📋</text>
+        <text class="function-text">语音记笔记</text>
+        <text class="function-desc">记录重要信息</text>
+      </view>
+      <view class="function-item" bindtap="voiceToSearch">
+        <text class="function-icon">🔍</text>
+        <text class="function-text">语音搜索</text>
+        <text class="function-desc">查找相关内容</text>
+      </view>
+      <view class="function-item" bindtap="voiceToCalculate">
+        <text class="function-icon">🧮</text>
+        <text class="function-text">语音计算</text>
+        <text class="function-desc">快速财务计算</text>
+      </view>
+      <view class="function-item" bindtap="voiceToReport">
+        <text class="function-icon">📊</text>
+        <text class="function-text">语音生成报表</text>
+        <text class="function-desc">自动生成财务报表</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 历史记录 -->
+  <view class="history-area" wx:if="historyList.length > 0">
+    <text class="history-title">历史记录</text>
+    <view class="history-list">
+      <view class="history-item" wx:for="{{historyList}}" wx:key="index">
+        <view class="history-time">{{item.time}}</view>
+        <view class="history-content">{{item.content}}</view>
+      </view>
+    </view>
+  </view>
+</view>

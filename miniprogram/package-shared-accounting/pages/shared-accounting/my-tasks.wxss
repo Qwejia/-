@@ -1,0 +1,291 @@
+/* 我的任务页面样式 */
+
+.container {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding-bottom: 80px;
+}
+
+/* 顶部导航 */
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 50px;
+  background-color: #ffffff;
+  padding: 0 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nav-left {
+  width: 40px;
+}
+
+.nav-icon {
+  font-size: 20px;
+  color: #333333;
+}
+
+.nav-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333333;
+}
+
+.nav-right {
+  width: 40px;
+}
+
+/* 筛选区域 */
+.filter-section {
+  background-color: #ffffff;
+  margin-bottom: 10px;
+}
+
+.filter-tabs {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 0 16px;
+}
+
+.filter-tab {
+  padding: 12px 16px;
+  margin-right: 8px;
+  border-bottom: 2px solid transparent;
+}
+
+.filter-tab.active {
+  border-bottom-color: #1677ff;
+}
+
+.filter-tab.active .filter-text {
+  color: #1677ff;
+  font-weight: 500;
+}
+
+.filter-text {
+  font-size: 14px;
+  color: #333333;
+}
+
+/* 任务列表区域 */
+.task-section {
+  padding: 16px;
+}
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.task-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.task-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.task-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.task-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333333;
+  flex: 1;
+}
+
+.task-status {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 12px;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.task-description {
+  font-size: 14px;
+  color: #666666;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.task-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+}
+
+.meta-label {
+  color: #999999;
+  margin-right: 8px;
+  min-width: 80px;
+}
+
+.meta-value {
+  color: #666666;
+  flex: 1;
+}
+
+.task-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.action-btn {
+  flex: 1;
+  padding: 8px 16px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-btn.cancel {
+  background-color: #f5f5f5;
+}
+
+.action-btn.cancel .btn-text {
+  color: #666666;
+}
+
+.action-btn.complete {
+  background-color: #10b981;
+}
+
+.action-btn.complete .btn-text {
+  color: #ffffff;
+}
+
+.action-btn.review {
+  background-color: #1677ff;
+}
+
+.action-btn.review .btn-text {
+  color: #ffffff;
+}
+
+.btn-text {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 32px;
+}
+
+.empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+.empty-text {
+  font-size: 14px;
+  color: #999999;
+  margin-bottom: 24px;
+}
+
+.empty-action {
+  padding: 10px 24px;
+  background-color: #1677ff;
+  border-radius: 20px;
+}
+
+.empty-action .action-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+/* 底部操作栏 */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: #ffffff;
+  box-shadow: 0 -2px 12px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+}
+
+.bar-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 24px;
+  background-color: #1677ff;
+  border-radius: 24px;
+  color: #ffffff;
+}
+
+.bar-icon {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.bar-text {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* 响应式调整 */
+@media (max-width: 375px) {
+  .task-title {
+    font-size: 15px;
+  }
+  
+  .task-description {
+    font-size: 13px;
+  }
+  
+  .meta-item {
+    font-size: 11px;
+  }
+  
+  .meta-label {
+    min-width: 70px;
+  }
+  
+  .btn-text {
+    font-size: 13px;
+  }
+}

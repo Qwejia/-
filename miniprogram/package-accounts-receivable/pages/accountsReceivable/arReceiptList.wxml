@@ -1,0 +1,108 @@
+<!-- pages/accountsReceivable/arReceiptList.wxml -->
+<view class="container">
+  <view class="header-section">
+    <text class="page-title">收款记录管理</text>
+    <button class="add-btn" bindtap="addReceipt">
+      <text class="add-icon">+</text>新增收款
+    </button>
+  </view>
+  
+  <!-- 统计信息 -->
+  <view class="summary-section">
+    <view class="summary-item">
+      <text class="summary-label">收款记录数：</text>
+      <text class="summary-value">{{filteredReceipts.length}}</text>
+    </view>
+    <view class="summary-item">
+      <text class="summary-label">合计金额：</text>
+      <text class="summary-value">¥{{totalAmount.toFixed(2)}}</text>
+    </view>
+  </view>
+  
+  <!-- 筛选区域 -->
+  <view class="filter-section">
+    <view class="search-box">
+      <icon class="search-icon" type="search" size="20"></icon>
+      <input 
+        class="search-input" 
+        placeholder="搜索单据编号/客户/备注" 
+        value="{{searchKeyword}}"
+        bindinput="onSearchInput"
+      />
+    </view>
+    <button class="filter-btn" bindtap="toggleFilter">
+      <icon type="waiting" size="20"></icon>筛选
+    </button>
+  </view>
+  
+  <!-- 筛选面板 -->
+  <view class="filter-panel" wx:if="{{showFilter}}">
+    <view class="filter-item">
+      <text class="filter-label">日期范围：</text>
+      <view class="date-range">
+        <picker mode="date" bindchange="onStartDateChange" value="{{dateRange.startDate}}">
+          <view class="date-picker">
+            {{dateRange.startDate || '开始日期'}}
+          </view>
+        </picker>
+        <text class="date-separator">至</text>
+        <picker mode="date" bindchange="onEndDateChange" value="{{dateRange.endDate}}">
+          <view class="date-picker">
+            {{dateRange.endDate || '结束日期'}}
+          </view>
+        </picker>
+      </view>
+    </view>
+    
+    <button class="reset-btn" bindtap="resetFilter">重置筛选</button>
+  </view>
+  
+  <!-- 收款记录列表 -->
+  <view class="list-section">
+    <view class="empty" wx:if="{{filteredReceipts.length === 0}}">
+      <text class="empty-text">暂无收款记录</text>
+    </view>
+    
+    <view wx:for="{{filteredReceipts}}" wx:key="_id" class="receipt-item">
+      <view class="receipt-header">
+        <view class="receipt-info">
+          <view class="receipt-no">{{item.receiptNo}}</view>
+          <view class="receipt-date">{{item.receiptDate}}</view>
+        </view>
+        <view class="receipt-status">已收款</view>
+      </view>
+      
+      <view class="receipt-details">
+        <view class="detail-item">
+          <text class="detail-label">客户：</text>
+          <text class="detail-value">{{item.customerName}}</text>
+        </view>
+        <view class="detail-item">
+          <text class="detail-label">关联发票：</text>
+          <text class="detail-value">{{item.invoiceNo}}</text>
+        </view>
+        <view class="detail-item">
+          <text class="detail-label">收款金额：</text>
+          <text class="detail-value amount">¥{{item.amount.toFixed(2)}}</text>
+        </view>
+        <view class="detail-item" wx:if="{{item.remark}}">
+          <text class="detail-label">备注：</text>
+          <text class="detail-value">{{item.remark}}</text>
+        </view>
+      </view>
+      
+      <!-- 操作按钮 -->
+      <view class="action-buttons">
+        <button class="view-btn" bindtap="viewReceipt" data-id="{{item._id}}">
+          查看
+        </button>
+        <button class="edit-btn" bindtap="editReceipt" data-id="{{item._id}}">
+          编辑
+        </button>
+        <button class="delete-btn" bindtap="deleteReceipt" data-id="{{item._id}}">
+          删除
+        </button>
+      </view>
+    </view>
+  </view>
+</view>

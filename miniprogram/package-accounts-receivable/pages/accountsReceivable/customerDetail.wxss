@@ -1,0 +1,302 @@
+/* pages/accountsReceivable/customerDetail.wxss */
+.container {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  padding: 20rpx;
+}
+
+/* 头部区域 */
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30rpx;
+}
+
+.page-title {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+  border: none;
+  border-radius: 8rpx;
+  color: #666;
+  padding: 15rpx 30rpx;
+  font-size: 28rpx;
+}
+
+/* 表单区域 */
+.form-section {
+  background-color: white;
+  border-radius: 8rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.form-item {
+  margin-bottom: 30rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  font-size: 30rpx;
+  color: #333;
+  margin-bottom: 15rpx;
+  font-weight: 500;
+}
+
+.form-input {
+  border: 2rpx solid #e0e0e0;
+  border-radius: 8rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  color: #333;
+  background-color: #fafafa;
+}
+
+.form-input:focus {
+  border-color: #667eea;
+  background-color: white;
+}
+
+.form-value {
+  border: 2rpx solid #e0e0e0;
+  border-radius: 8rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  color: #666;
+  background-color: #f5f5f5;
+}
+
+.form-radio {
+  display: flex;
+  gap: 60rpx;
+  padding: 10rpx 0;
+}
+
+.form-radio radio {
+  margin-right: 10rpx;
+  transform: scale(1.5);
+}
+
+.form-radio radio::after {
+  width: 30rpx;
+  height: 30rpx;
+}
+
+/* 操作按钮 */
+.action-section {
+  display: flex;
+  gap: 20rpx;
+  padding: 0 20rpx;
+}
+
+.save-btn {
+  flex: 1;
+  background-color: #667eea;
+  border: none;
+  border-radius: 8rpx;
+  color: white;
+  padding: 25rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+}
+
+.cancel-btn {
+  flex: 1;
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 8rpx;
+  color: #333;
+  padding: 25rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+}
+
+/* 账龄统计区域 */
+.aging-section {
+  background-color: white;
+  border-radius: 8rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding-bottom: 15rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.header-text {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.refresh-btn {
+  background-color: #667eea;
+  border: none;
+  border-radius: 6rpx;
+  color: white;
+  padding: 10rpx 20rpx;
+  font-size: 24rpx;
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.summary-card {
+  margin-bottom: 30rpx;
+}
+
+.summary-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #666;
+  margin-bottom: 20rpx;
+}
+
+.summary-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15rpx;
+}
+
+.summary-item {
+  flex: 1;
+  min-width: 140rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15rpx;
+  background-color: #f5f7fa;
+  border-radius: 8rpx;
+}
+
+.summary-label {
+  font-size: 24rpx;
+  color: #666;
+  margin-bottom: 8rpx;
+}
+
+.summary-value {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.summary-item.total {
+  background-color: #e3f2fd;
+  border: 2rpx solid #2196f3;
+}
+
+.summary-value.total {
+  color: #2196f3;
+}
+
+/* 应收账款明细 */
+.invoice-list-section {
+  margin-top: 30rpx;
+}
+
+.section-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #666;
+  margin-bottom: 20rpx;
+}
+
+.invoice-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15rpx;
+}
+
+.invoice-item {
+  background-color: #fafafa;
+  border-radius: 8rpx;
+  padding: 20rpx;
+  border-left: 4rpx solid #667eea;
+}
+
+.invoice-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10rpx;
+}
+
+.invoice-no {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.invoice-balance {
+  font-size: 26rpx;
+  color: #f44336;
+  font-weight: bold;
+}
+
+.invoice-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10rpx;
+}
+
+.invoice-date {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.invoice-amount {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.invoice-status {
+  display: inline-block;
+  padding: 4rpx 12rpx;
+  border-radius: 4rpx;
+  font-size: 22rpx;
+  font-weight: 500;
+}
+
+.invoice-status.status-draft {
+  background-color: #fff3e0;
+  color: #ff9800;
+}
+
+.invoice-status.status-approved {
+  background-color: #e8f5e9;
+  color: #4caf50;
+}
+
+.invoice-status.status-writtenoff {
+  background-color: #e3f2fd;
+  color: #2196f3;
+}
+
+.invoice-status.status-closed {
+  background-color: #f5f5f5;
+  color: #9e9e9e;
+}
+
+.empty-invoice {
+  text-align: center;
+  padding: 60rpx 0;
+  color: #999;
+  font-size: 28rpx;
+}

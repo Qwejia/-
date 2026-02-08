@@ -1,0 +1,156 @@
+<!-- 经营仪表盘页面 -->
+<view class="container">
+  <!-- 顶部区域 -->
+  <view class="top-section">
+    <view class="header">
+      <text class="header-title">经营仪表盘</text>
+      <text class="header-subtitle">数据驱动，智慧决策</text>
+    </view>
+    
+    <!-- 时间范围选择器 -->
+    <view class="time-range-selector">
+      <view class="range-option {{selectedRange === 'day' ? 'active' : ''}}" bindtap="selectTimeRange" data-range="day">日</view>
+      <view class="range-option {{selectedRange === 'week' ? 'active' : ''}}" bindtap="selectTimeRange" data-range="week">周</view>
+      <view class="range-option {{selectedRange === 'month' ? 'active' : ''}}" bindtap="selectTimeRange" data-range="month">月</view>
+      <view class="range-option {{selectedRange === 'quarter' ? 'active' : ''}}" bindtap="selectTimeRange" data-range="quarter">季</view>
+      <view class="range-option {{selectedRange === 'year' ? 'active' : ''}}" bindtap="selectTimeRange" data-range="year">年</view>
+    </view>
+  </view>
+  
+  <!-- 核心指标卡片 -->
+  <view class="key-metrics">
+    <view class="metric-card">
+      <view class="metric-header">
+        <text class="metric-label">营收</text>
+        <text class="metric-change positive" wx:if="revenueChange > 0">+{{revenueChange}}%</text>
+        <text class="metric-change negative" wx:else>{{revenueChange}}%</text>
+      </view>
+      <text class="metric-value">¥{{revenue}}</text>
+      <text class="metric-desc">较上期</text>
+    </view>
+    
+    <view class="metric-card">
+      <view class="metric-header">
+        <text class="metric-label">成本</text>
+        <text class="metric-change positive" wx:if="costChange < 0">{{costChange}}%</text>
+        <text class="metric-change negative" wx:else>+{{costChange}}%</text>
+      </view>
+      <text class="metric-value">¥{{cost}}</text>
+      <text class="metric-desc">较上期</text>
+    </view>
+    
+    <view class="metric-card">
+      <view class="metric-header">
+        <text class="metric-label">利润</text>
+        <text class="metric-change positive" wx:if="profitChange > 0">+{{profitChange}}%</text>
+        <text class="metric-change negative" wx:else>{{profitChange}}%</text>
+      </view>
+      <text class="metric-value">¥{{profit}}</text>
+      <text class="metric-desc">较上期</text>
+    </view>
+    
+    <view class="metric-card">
+      <view class="metric-header">
+        <text class="metric-label">税负率</text>
+        <text class="metric-change positive" wx:if="taxRateChange < 0">{{taxRateChange}}%</text>
+        <text class="metric-change negative" wx:else>+{{taxRateChange}}%</text>
+      </view>
+      <text class="metric-value">{{taxRate}}%</text>
+      <text class="metric-desc">较上期</text>
+    </view>
+  </view>
+  
+  <!-- 营收趋势图表 -->
+  <view class="chart-section">
+    <view class="chart-header">
+      <text class="chart-title">营收趋势</text>
+      <view class="chart-actions">
+        <text class="refresh-chart" bindtap="refreshChart">刷新</text>
+      </view>
+    </view>
+    <view class="chart-container">
+      <canvas canvas-id="revenueChart" style="width: 100%; height: 300rpx;"></canvas>
+    </view>
+  </view>
+  
+  <!-- 成本结构图表 -->
+  <view class="chart-section">
+    <view class="chart-header">
+      <text class="chart-title">成本结构</text>
+    </view>
+    <view class="chart-container">
+      <canvas canvas-id="costChart" style="width: 100%; height: 400rpx;"></canvas>
+    </view>
+  </view>
+  
+  <!-- 行业对比分析 -->
+  <view class="industry-comparison">
+    <view class="comparison-header">
+      <text class="comparison-title">行业对比</text>
+      <view class="industry-selector" bindtap="openIndustrySelector">
+        <text class="industry-text">{{selectedIndustry}}</text>
+      </view>
+    </view>
+    
+    <view class="comparison-grid">
+      <view class="comparison-card">
+        <text class="comparison-label">利润率</text>
+        <view class="comparison-values">
+          <text class="company-value">{{companyProfitMargin}}%</text>
+          <text class="industry-value">行业平均: {{industryProfitMargin}}%</text>
+        </view>
+        <view class="comparison-bar">
+          <view class="bar-container">
+            <view class="company-bar" style="width: {{companyProfitMargin}}%"></view>
+            <view class="industry-bar" style="width: {{industryProfitMargin}}%"></view>
+          </view>
+        </view>
+      </view>
+      
+      <view class="comparison-card">
+        <text class="comparison-label">成本率</text>
+        <view class="comparison-values">
+          <text class="company-value">{{companyCostRate}}%</text>
+          <text class="industry-value">行业平均: {{industryCostRate}}%</text>
+        </view>
+        <view class="comparison-bar">
+          <view class="bar-container">
+            <view class="company-bar" style="width: {{companyCostRate}}%"></view>
+            <view class="industry-bar" style="width: {{industryCostRate}}%"></view>
+          </view>
+        </view>
+      </view>
+      
+      <view class="comparison-card">
+        <text class="comparison-label">税负率</text>
+        <view class="comparison-values">
+          <text class="company-value">{{companyTaxRate}}%</text>
+          <text class="industry-value">行业平均: {{industryTaxRate}}%</text>
+        </view>
+        <view class="comparison-bar">
+          <view class="bar-container">
+            <view class="company-bar" style="width: {{companyTaxRate}}%"></view>
+            <view class="industry-bar" style="width: {{industryTaxRate}}%"></view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 经营建议 -->
+  <view class="business-suggestions">
+    <view class="suggestions-header">
+      <text class="suggestions-title">经营建议</text>
+    </view>
+    
+    <view class="suggestions-list">
+      <view class="suggestion-item" wx:for="{{suggestions}}" wx:key="index">
+        <view class="suggestion-icon">{{item.icon}}</view>
+        <view class="suggestion-content">
+          <text class="suggestion-title">{{item.title}}</text>
+          <text class="suggestion-desc">{{item.description}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

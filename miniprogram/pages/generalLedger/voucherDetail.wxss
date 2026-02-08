@@ -1,0 +1,199 @@
+/* pages/generalLedger/voucherDetail.wxss */
+.container {
+  background-color: #f5f5f5;
+  padding: 20rpx;
+  min-height: 100vh;
+}
+
+/* 凭证头部信息 */
+.voucher-header {
+  background-color: #fff;
+  padding: 30rpx;
+  border-radius: 12rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.voucher-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.number {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10rpx;
+}
+
+.date {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.voucher-status {
+  padding: 12rpx 24rpx;
+  border-radius: 20rpx;
+  font-size: 26rpx;
+  font-weight: bold;
+}
+
+.voucher-status.draft {
+  background-color: #fff7e6;
+  color: #fa8c16;
+}
+
+.voucher-status.submitted {
+  background-color: #e6f7ff;
+  color: #1890ff;
+}
+
+.voucher-status.approved {
+  background-color: #f6ffed;
+  color: #52c41a;
+}
+
+.voucher-status.posted {
+  background-color: #f9f0ff;
+  color: #722ed1;
+}
+
+/* 凭证分录部分 */
+.entries-section {
+  background-color: #fff;
+  border-radius: 12rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.entries-header {
+  display: flex;
+  background-color: #fafafa;
+  border-bottom: 2rpx solid #e5e5e5;
+  padding: 0 20rpx;
+}
+
+.header-item {
+  flex: 1;
+  padding: 20rpx 10rpx;
+  font-size: 26rpx;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+}
+
+.entries-list {
+  max-height: calc(100vh - 500rpx);
+  overflow-y: auto;
+}
+
+.entry-row {
+  display: flex;
+  border-bottom: 2rpx solid #f0f0f0;
+  padding: 0 20rpx;
+}
+
+.entry-row:last-child {
+  border-bottom: none;
+}
+
+.entry-item {
+  flex: 1;
+  padding: 25rpx 10rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.text {
+  font-size: 28rpx;
+  color: #333;
+  text-align: center;
+  word-break: break-word;
+}
+
+.amount {
+  font-weight: bold;
+}
+
+.amount.debit {
+  color: #ff4d4f;
+}
+
+.amount.credit {
+  color: #52c41a;
+}
+
+/* 合计金额 */
+.total-section {
+  border-top: 4rpx double #e5e5e5;
+  background-color: #fafafa;
+  padding: 0 20rpx;
+}
+
+.total-row {
+  display: flex;
+  padding: 25rpx 10rpx;
+  font-weight: bold;
+}
+
+.total-label {
+  flex: 1;
+  font-size: 30rpx;
+  color: #333;
+  text-align: center;
+}
+
+.total-amount {
+  flex: 1;
+  font-size: 30rpx;
+  text-align: center;
+}
+
+.total-amount.debit {
+  color: #ff4d4f;
+}
+
+.total-amount.credit {
+  color: #52c41a;
+}
+
+/* 操作按钮 */
+.actions-section {
+  background-color: #fff;
+  padding: 20rpx;
+  border-radius: 12rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+  padding-bottom: 15rpx;
+  border-bottom: 2rpx solid #e5e5e5;
+}
+
+.actions-row {
+  display: flex;
+  gap: 20rpx;
+  flex-wrap: wrap;
+}
+
+/* 返回按钮 */
+.back-section {
+  padding: 20rpx;
+  background-color: #fff;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.back-section button {
+  width: 100%;
+}

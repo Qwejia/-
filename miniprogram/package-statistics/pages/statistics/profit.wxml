@@ -1,0 +1,59 @@
+<view class="container">
+  <!-- 页面顶部 -->
+  <view class="page-header">
+    <text class="page-title">利润表</text>
+    <view class="header-actions">
+      <view class="type-tabs">
+        <view class="tab-item {{reportType === 'month' ? 'active' : ''}}" bindtap="switchReportType" data-type="month">
+          <text>月度</text>
+        </view>
+        <view class="tab-item {{reportType === 'year' ? 'active' : ''}}" bindtap="switchReportType" data-type="year">
+          <text>年度</text>
+        </view>
+      </view>
+      <picker mode="{{reportType === 'month' ? 'month' : 'year'}}" value="{{reportPeriod}}" bindchange="onPeriodChange" class="period-picker">
+        <view class="picker-content">{{reportPeriod}}</view>
+      </picker>
+      <view class="export-btn" bindtap="exportReport">
+        <text class="export-icon">📤</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 报表内容 -->
+  <view class="report-content">
+    <view class="table">
+      <!-- 利润表项目 -->
+      <block wx:for="{{profitItems}}" wx:for-item="category" wx:key="category">
+        <!-- 分类标题 -->
+        <view class="table-row category-header">
+          <view class="table-cell category-title" colspan="2">{{category.category}}</view>
+        </view>
+        
+        <!-- 分类下的项目 -->
+        <block wx:for="{{category.items}}" wx:for-item="item" wx:key="name">
+          <view class="table-row item-row">
+            <view class="table-cell item-name">{{item.name}}</view>
+            <view class="table-cell item-amount {{item.type}}">{{item.type === 'income' ? '+' : '-'}}¥{{item.amount.toFixed(2)}}</view>
+          </view>
+        </block>
+        
+        <!-- 分类总计 -->
+        <view class="table-row total-row">
+          <view class="table-cell total-label">
+            <text class="total-prefix">{{category.category === '营业收入' || category.category === '营业利润' || category.category === '利润总额' || category.category === '净利润' ? '' : '合计'}}</text>
+            {{category.category}}
+          </view>
+          <view class="table-cell total-amount {{category.totalType}}">
+            {{category.totalType === 'income' || category.totalType === 'profit' || category.totalType === 'netprofit' ? '+' : '-'}}¥{{category.total.toFixed(2)}}
+          </view>
+        </view>
+        
+        <!-- 分隔线 -->
+        <view class="table-row separator-row">
+          <view class="table-cell separator" colspan="2"></view>
+        </view>
+      </block>
+    </view>
+  </view>
+</view>

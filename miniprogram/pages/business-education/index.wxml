@@ -1,0 +1,165 @@
+<!-- 财商课堂页面 -->
+<view class="container">
+  <!-- 顶部区域 -->
+  <view class="top-section">
+    <view class="header">
+      <text class="header-title">财商课堂</text>
+      <text class="header-subtitle">知识赋能，智慧经营</text>
+    </view>
+    
+    <!-- 搜索框 -->
+    <view class="search-container">
+      <input 
+        class="search-input" 
+        placeholder="搜索课程或文章..."
+        bindinput="onSearchInput"
+        bindconfirm="onSearch"
+      />
+      <view class="search-icon">🔍</view>
+    </view>
+  </view>
+  
+  <!-- 课程分类 -->
+  <view class="category-section">
+    <view class="category-header">
+      <text class="category-title">课程分类</text>
+    </view>
+    <view class="category-grid">
+      <view class="category-item" bindtap="navigateToCourses" data-category="tax">
+        <view class="category-icon tax">📋</view>
+        <text class="category-text">税务筹划</text>
+      </view>
+      <view class="category-item" bindtap="navigateToCourses" data-category="accounting">
+        <view class="category-icon accounting">📊</view>
+        <text class="category-text">账务处理</text>
+      </view>
+      <view class="category-item" bindtap="navigateToCourses" data-category="finance">
+        <view class="category-icon finance">💰</view>
+        <text class="category-text">财务管理</text>
+      </view>
+      <view class="category-item" bindtap="navigateToCourses" data-category="business">
+        <view class="category-icon business">📈</view>
+        <text class="category-text">经营分析</text>
+      </view>
+      <view class="category-item" bindtap="navigateToCourses" data-category="ecommerce">
+        <view class="category-icon ecommerce">🛒</view>
+        <text class="category-text">电商财务</text>
+      </view>
+      <view class="category-item" bindtap="navigateToCourses" data-category="startup">
+        <view class="category-icon startup">🚀</view>
+        <text class="category-text">创业财务</text>
+      </view>
+      <view class="category-item" bindtap="navigateToCourses" data-category="investment">
+        <view class="category-icon investment">💹</view>
+        <text class="category-text">投资分析</text>
+      </view>
+      <view class="category-item" bindtap="navigateToCourses" data-category="risk">
+        <view class="category-icon risk">🛡️</view>
+        <text class="category-text">风险控制</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 推荐课程 -->
+  <view class="recommended-section">
+    <view class="section-header">
+      <text class="section-title">推荐课程</text>
+      <view class="section-action" bindtap="navigateToCourses">
+        <text class="action-text">查看全部</text>
+        <text class="action-arrow">→</text>
+      </view>
+    </view>
+    
+    <view class="course-list">
+      <view class="course-card" wx:for="{{recommendedCourses}}" wx:key="id">
+        <view class="course-cover">
+          <text class="cover-icon">{{item.icon}}</text>
+          <view class="course-duration">{{item.duration}}</view>
+          <view class="course-level">{{item.level}}</view>
+        </view>
+        <view class="course-info">
+          <text class="course-title">{{item.title}}</text>
+          <text class="course-description">{{item.description}}</text>
+          <view class="course-meta">
+            <text class="course-author">{{item.author}}</text>
+            <view class="course-stats">
+              <text class="course-rating">⭐ {{item.rating}}</text>
+              <text class="course-students">{{item.students}}人学习</text>
+            </view>
+            <text class="course-price" wx:if="item.isFree">免费</text>
+            <text class="course-price" wx:else>¥{{item.price}}</text>
+          </view>
+          <view class="course-action">
+            <button class="enroll-btn" bindtap="enrollCourse" data-id="{{item.id}}">立即学习</button>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 精选文章 -->
+  <view class="articles-section">
+    <view class="section-header">
+      <text class="section-title">精选文章</text>
+      <view class="section-action" bindtap="navigateToArticles">
+        <text class="action-text">查看全部</text>
+        <text class="action-arrow">→</text>
+      </view>
+    </view>
+    
+    <view class="article-list">
+      <view class="article-card" wx:for="{{featuredArticles}}" wx:key="id">
+        <view class="article-content">
+          <text class="article-title">{{item.title}}</text>
+          <text class="article-excerpt">{{item.excerpt}}</text>
+          <view class="article-meta">
+            <text class="article-author">{{item.author}}</text>
+            <text class="article-date">{{item.date}}</text>
+            <view class="article-stats">
+              <text class="article-reads">{{item.reads}}阅读</text>
+              <text class="article-likes">❤️ {{item.likes}}</text>
+              <text class="article-comments">💬 {{item.comments}}</text>
+            </view>
+          </view>
+          <view class="article-action">
+            <button class="read-btn" bindtap="readArticle" data-id="{{item.id}}">阅读全文</button>
+          </view>
+        </view>
+        <view class="article-icon">
+          {{item.icon}}
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 学习进度 -->
+  <view class="progress-section">
+    <view class="section-header">
+      <text class="section-title">学习进度</text>
+    </view>
+    
+    <view class="progress-list">
+      <view class="progress-card" wx:for="{{learningProgress}}" wx:key="id">
+        <view class="progress-info">
+          <text class="progress-title">{{item.title}}</text>
+          <view class="progress-details">
+            <text class="progress-percentage">{{item.percentage}}%</text>
+            <text class="progress-status">{{item.percentage < 100 ? '学习中' : '已完成'}}</text>
+          </view>
+        </view>
+        <view class="progress-bar">
+          <view class="progress-fill" style="width: {{item.percentage}}%"></view>
+        </view>
+        <view class="progress-action">
+          <button class="continue-btn" bindtap="continueLearning" data-id="{{item.id}}">继续学习</button>
+        </view>
+      </view>
+      <view class="empty-progress" wx:if="{{learningProgress.length === 0}}">
+        <text class="empty-icon">📚</text>
+        <text class="empty-text">暂无学习记录</text>
+        <text class="empty-subtext">开始学习课程，追踪您的学习进度</text>
+        <button class="start-btn" bindtap="navigateToCourses">浏览课程</button>
+      </view>
+    </view>
+  </view>
+</view>

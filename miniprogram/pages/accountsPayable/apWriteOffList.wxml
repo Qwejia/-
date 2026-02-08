@@ -1,0 +1,56 @@
+<view class="container">
+  <view class="header">
+    <text class="title">应付账款核销记录</text>
+  </view>
+
+  <view class="search-bar">
+    <input 
+      class="search-input" 
+      placeholder="搜索核销记录（供应商、应付单号、备注）" 
+      value="{{searchQuery}}"
+      bindinput="searchWriteOff"
+    />
+  </view>
+
+  <view class="writeoff-list">
+    <view wx:if="{{filteredWriteOffs.length === 0}}" class="empty">
+      <text>暂无核销记录</text>
+    </view>
+    <block wx:for="{{filteredWriteOffs}}" wx:key="_id">
+      <view class="writeoff-item">
+        <view class="writeoff-header">
+          <text class="supplier-name">{{item.supplierName}}</text>
+          <text class="writeoff-date">{{item.writeOffDate}}</text>
+        </view>
+        <view class="writeoff-details">
+          <view class="detail-row">
+            <view class="detail-item">
+              <text class="label">应付单号：</text>
+              <text class="value">{{item.invoiceCode}}</text>
+            </view>
+            <view class="detail-item">
+              <text class="label">核销金额：</text>
+              <text class="value amount">{{item.amount.toLocaleString()}} 元</text>
+            </view>
+          </view>
+          <view class="detail-row">
+            <view class="detail-item">
+              <text class="label">开票日期：</text>
+              <text class="value">{{item.invoiceDate}}</text>
+            </view>
+            <view class="detail-item">
+              <text class="label">核销类型：</text>
+              <text class="value">{{item.type === 'ap' ? '应付核销' : '其他'}}</text>
+            </view>
+          </view>
+          <view class="detail-row" wx:if="{{item.remark}}">
+            <view class="detail-item full-width">
+              <text class="label">备注：</text>
+              <text class="value">{{item.remark}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>

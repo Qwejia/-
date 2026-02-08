@@ -1,0 +1,77 @@
+<view class="container">
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 员工详情 -->
+  <view wx:else class="employee-detail" wx:if="{{employee}}">
+    <!-- 员工基本信息 -->
+    <view class="info-section">
+      <view class="section-title">基本信息</view>
+      <view class="info-item">
+        <text class="info-label">姓名:</text>
+        <text class="info-value">{{employee.name}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">工号:</text>
+        <text class="info-value">{{employee.employeeId}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">性别:</text>
+        <text class="info-value">{{employee.gender}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">出生日期:</text>
+        <text class="info-value">{{employee.birthDate}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">入职日期:</text>
+        <text class="info-value">{{employee.entryDate}}</text>
+      </view>
+    </view>
+
+    <!-- 联系信息 -->
+    <view class="info-section">
+      <view class="section-title">联系信息</view>
+      <view class="info-item">
+        <text class="info-label">电话:</text>
+        <text class="info-value">{{employee.phone}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">邮箱:</text>
+        <text class="info-value">{{employee.email}}</text>
+      </view>
+    </view>
+
+    <!-- 工作信息 -->
+    <view class="info-section">
+      <view class="section-title">工作信息</view>
+      <view class="info-item">
+        <text class="info-label">部门:</text>
+        <text class="info-value">{{employee.departmentName}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">职位:</text>
+        <text class="info-value">{{employee.position}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">状态:</text>
+        <text class="info-value">{{employee.status === 'active' ? '在职' : '离职'}}</text>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-buttons">
+      <button class="action-btn" bindtap="editEmployee">编辑信息</button>
+      <button class="action-btn" bindtap="viewAttendanceRecord">考勤记录</button>
+      <button class="action-btn" bindtap="viewPayrollRecord">薪资记录</button>
+      <button class="action-btn" bindtap="shareEmployee">分享</button>
+    </view>
+  </view>
+
+  <!-- 无数据状态 -->
+  <view wx:else class="empty-state">
+    <text>未找到员工信息</text>
+  </view>
+</view>

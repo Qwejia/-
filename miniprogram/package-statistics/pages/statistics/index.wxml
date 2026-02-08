@@ -1,0 +1,230 @@
+<view class="page-container">
+  <view class="header-bar">
+    <text class="page-title">统计分析</text>
+    <view class="period-selector" bindtap="openPeriodPicker">
+      <text class="period-text">{{selectedPeriod}}</text>
+      <text class="period-arrow">▼</text>
+    </view>
+  </view>
+
+  <scroll-view class="content-scroll" scroll-y>
+    <view class="content-wrapper">
+      <view class="type-tabs">
+        <view class="tab-item {{statsType === 'month' ? 'active' : ''}}" bindtap="switchStatsType" data-type="month">月度</view>
+        <view class="tab-item {{statsType === 'year' ? 'active' : ''}}" bindtap="switchStatsType" data-type="year">年度</view>
+        <view class="tab-item ai-tab" bindtap="openAIAnalysis">🤖 AI分析</view>
+      </view>
+
+      <view class="overview-card">
+        <view class="overview-header">
+          <text class="card-title">收支概览</text>
+          <view class="refresh-btn" bindtap="refreshData">
+            <text class="refresh-icon">🔄</text>
+          </view>
+        </view>
+        <view class="overview-grid">
+          <view class="overview-item income">
+            <text class="item-label">{{statsType === 'month' ? '本月收入' : '本年收入'}}</text>
+            <text class="item-value">¥{{periodIncome}}</text>
+            <view class="item-trend {{incomeChange >= 0 ? 'up' : 'down'}}">
+              <text>{{incomeChange >= 0 ? '↑' : '↓'}}</text>
+              <text>{{Math.abs(incomeChange).toFixed(1)}}%</text>
+            </view>
+          </view>
+          <view class="overview-item expense">
+            <text class="item-label">{{statsType === 'month' ? '本月支出' : '本年支出'}}</text>
+            <text class="item-value">¥{{periodExpense}}</text>
+            <view class="item-trend {{expenseChange <= 0 ? 'up' : 'down'}}">
+              <text>{{expenseChange <= 0 ? '↓' : '↑'}}</text>
+              <text>{{Math.abs(expenseChange).toFixed(1)}}%</text>
+            </view>
+          </view>
+          <view class="overview-item balance">
+            <text class="item-label">{{statsType === 'month' ? '本月结余' : '本年结余'}}</text>
+            <text class="item-value">¥{{periodBalance}}</text>
+            <view class="item-trend {{balanceChange >= 0 ? 'up' : 'down'}}">
+              <text>{{balanceChange >= 0 ? '↑' : '↓'}}</text>
+              <text>{{Math.abs(balanceChange).toFixed(1)}}%</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="chart-section">
+        <view class="section-header">
+          <text class="section-title">收支分析</text>
+          <view class="chart-tabs">
+            <view class="chart-tab {{chartType === 'pie' ? 'active' : ''}}" bindtap="switchChartType" data-type="pie">饼图</view>
+            <view class="chart-tab {{chartType === 'bar' ? 'active' : ''}}" bindtap="switchChartType" data-type="bar">柱状图</view>
+          </view>
+        </view>
+        <view class="chart-wrapper">
+          <canvas canvas-id="expensePieChart" class="chart-canvas" wx:if="{{chartType === 'pie'}}"></canvas>
+          <canvas canvas-id="expenseBarChart" class="chart-canvas" wx:else></canvas>
+        </view>
+      </view>
+
+      <view class="category-section">
+        <view class="section-header">
+          <text class="section-title">分类统计</text>
+          <view class="category-tabs">
+            <view class="category-tab {{categoryType === 'expense' ? 'active' : ''}}" bindtap="switchCategoryType" data-type="expense">支出</view>
+            <view class="category-tab {{categoryType === 'income' ? 'active' : ''}}" bindtap="switchCategoryType" data-type="income">收入</view>
+          </view>
+        </view>
+        <view class="category-list">
+          <view class="category-item" wx:for="{{currentCategoryStats}}" wx:key="name">
+            <view class="category-left">
+              <view class="category-icon">{{item.icon}}</view>
+              <view class="category-info">
+                <text class="category-name">{{item.name}}</text>
+                <text class="category-amount">¥{{item.amount}}</text>
+              </view>
+            </view>
+            <view class="category-right">
+              <text class="category-percent">{{item.percentage}}%</text>
+            </view>
+            <view class="category-bar">
+              <view class="category-bar-fill" style="width: {{item.percentage}}%"></view>
+            </view>
+          </view>
+          <view class="empty-state" wx:if="{{currentCategoryStats.length === 0}}">
+            <text class="empty-text">暂无分类数据</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="trend-section">
+        <view class="section-header">
+          <text class="section-title">趋势分析</text>
+        </view>
+        <view class="trend-wrapper">
+          <canvas canvas-id="trendChart" class="trend-canvas"></canvas>
+        </view>
+      </view>
+
+      <view class="habits-section">
+        <view class="section-header">
+          <text class="section-title">消费习惯</text>
+        </view>
+        <view class="habits-grid">
+          <view class="habit-card">
+            <text class="habit-icon">📊</text>
+            <text class="habit-label">主要消费</text>
+            <text class="habit-value">{{habits.mainCategory}}</text>
+          </view>
+          <view class="habit-card">
+            <text class="habit-icon">📅</text>
+            <text class="habit-label">消费天数</text>
+            <text class="habit-value">{{habits.consumptionDays}}天</text>
+          </view>
+          <view class="habit-card">
+            <text class="habit-icon">💰</text>
+            <text class="habit-label">日均消费</text>
+            <text class="habit-value">¥{{habits.dailyAverage.toFixed(2)}}</text>
+          </view>
+          <view class="habit-card">
+            <text class="habit-icon">📈</text>
+            <text class="habit-label">消费趋势</text>
+            <text class="habit-value {{habits.trend === 'up' ? 'up' : habits.trend === 'down' ? 'down' : ''}}">{{habits.trend === 'up' ? '上升' : habits.trend === 'down' ? '下降' : '稳定'}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="transactions-section">
+        <view class="section-header">
+          <text class="section-title">近期交易</text>
+          <navigator url="/pages/record/index" class="more-link">查看全部</navigator>
+        </view>
+        <view class="transactions-list">
+          <view class="transaction-row" wx:for="{{periodRecords}}" wx:key="_id">
+            <view class="transaction-icon">{{item.categoryIcon}}</view>
+            <view class="transaction-info">
+              <text class="transaction-name">{{item.description || item.category}}</text>
+              <text class="transaction-date">{{formatDate(item.date)}}</text>
+            </view>
+            <text class="transaction-amount {{item.type === 'income' ? 'income' : 'expense'}}">{{item.type === 'income' ? '+' : '-'}}¥{{item.amount}}</text>
+          </view>
+          <view class="empty-state" wx:if="{{periodRecords.length === 0}}">
+            <text class="empty-text">暂无交易记录</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="quick-functions-section">
+        <view class="section-header">
+          <text class="section-title">快捷功能</text>
+        </view>
+        <view class="functions-grid">
+          <navigator url="/pages/generalLedger/index" class="function-card">
+            <view class="function-icon-wrapper">
+              <text class="function-icon">📋</text>
+            </view>
+            <text class="function-label">总账管理</text>
+          </navigator>
+          <navigator url="/pages/accountsReceivable/index" class="function-card">
+            <view class="function-icon-wrapper">
+              <text class="function-icon">💰</text>
+            </view>
+            <text class="function-label">应收账款</text>
+          </navigator>
+          <navigator url="/pages/record/index" class="function-card">
+            <view class="function-icon-wrapper">
+              <text class="function-icon">✏️</text>
+            </view>
+            <text class="function-label">新增记录</text>
+          </navigator>
+        </view>
+      </view>
+
+      <view class="ai-insight-section" wx:if="{{aiAnalysisResult}}">
+        <view class="section-header">
+          <text class="section-title">AI分析洞察</text>
+          <view class="refresh-btn" bindtap="analyzeReportWithAI">
+            <text class="refresh-icon">🔄</text>
+          </view>
+        </view>
+        <view class="insight-card">
+          <text class="insight-text">{{aiAnalysisResult}}</text>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>
+
+<view class="ai-modal" wx:if="{{showAIAnalysis}}">
+  <view class="modal-overlay" catchtap="closeAIAnalysis"></view>
+  <view class="modal-content">
+    <view class="modal-header">
+      <text class="modal-title">AI报表分析</text>
+      <view class="close-btn" bindtap="closeAIAnalysis">✕</view>
+    </view>
+    <view class="modal-body">
+      <view class="analysis-info">
+        <text class="info-label">分析期间</text>
+        <text class="info-value">{{selectedPeriod}}</text>
+      </view>
+      <view class="analysis-data">
+        <view class="data-item">
+          <text class="data-label">收入</text>
+          <text class="data-value income">¥{{periodIncome}}</text>
+        </view>
+        <view class="data-item">
+          <text class="data-label">支出</text>
+          <text class="data-value expense">¥{{periodExpense}}</text>
+        </view>
+        <view class="data-item">
+          <text class="data-label">结余</text>
+          <text class="data-value balance">¥{{periodBalance}}</text>
+        </view>
+      </view>
+      <button class="analyze-btn" bindtap="analyzeReportWithAI" disabled="{{loadingAI}}">
+        {{loadingAI ? 'AI分析中...' : '开始AI分析'}}
+      </button>
+      <view class="result-section" wx:if="{{aiAnalysisResult}}">
+        <text class="result-label">分析结果</text>
+        <text class="result-text">{{aiAnalysisResult}}</text>
+      </view>
+    </view>
+  </view>
+</view>

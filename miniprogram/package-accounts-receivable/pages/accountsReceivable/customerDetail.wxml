@@ -1,0 +1,172 @@
+<!-- pages/accountsReceivable/customerDetail.wxml -->
+<view class="container">
+  <view class="header-section">
+    <text class="page-title">{{action === 'add' ? '添加客户' : '编辑客户'}}</text>
+    <button class="back-btn" bindtap="goBack">
+      <icon type="left" size="25"></icon>返回
+    </button>
+  </view>
+  
+  <form class="form-section">
+    <!-- 客户编号 -->
+    <view class="form-item">
+      <text class="form-label">客户编号</text>
+      <input 
+        class="form-input" 
+        placeholder="自动生成客户编号" 
+        value="{{customer.code}}"
+        data-field="code"
+        bindinput="onInputChange"
+        wx:if="{{action === 'add'}}"
+      />
+      <view class="form-value" wx:else>{{customer.code}}</view>
+    </view>
+    
+    <!-- 客户名称 -->
+    <view class="form-item">
+      <text class="form-label">客户名称 *</text>
+      <input 
+        class="form-input" 
+        placeholder="请输入客户名称" 
+        value="{{customer.name}}"
+        data-field="name"
+        bindinput="onInputChange"
+      />
+    </view>
+    
+    <!-- 联系人 -->
+    <view class="form-item">
+      <text class="form-label">联系人 *</text>
+      <input 
+        class="form-input" 
+        placeholder="请输入联系人姓名" 
+        value="{{customer.contact}}"
+        data-field="contact"
+        bindinput="onInputChange"
+      />
+    </view>
+    
+    <!-- 联系电话 -->
+    <view class="form-item">
+      <text class="form-label">联系电话 *</text>
+      <input 
+        class="form-input" 
+        placeholder="请输入联系电话" 
+        value="{{customer.phone}}"
+        data-field="phone"
+        bindinput="onInputChange"
+        type="number"
+      />
+    </view>
+    
+    <!-- 联系地址 -->
+    <view class="form-item">
+      <text class="form-label">联系地址</text>
+      <input 
+        class="form-input" 
+        placeholder="请输入客户地址" 
+        value="{{customer.address}}"
+        data-field="address"
+        bindinput="onInputChange"
+      />
+    </view>
+    
+    <!-- 信用额度 -->
+    <view class="form-item">
+      <text class="form-label">信用额度</text>
+      <input 
+        class="form-input" 
+        placeholder="请输入信用额度" 
+        value="{{customer.creditLimit}}"
+        data-field="creditLimit"
+        bindinput="onInputChange"
+        type="digit"
+      />
+    </view>
+    
+    <!-- 客户状态 -->
+    <view class="form-item">
+      <text class="form-label">客户状态</text>
+      <radio-group class="form-radio" bindchange="onStatusChange" value="{{customer.status}}">
+        <radio value="active">正常</radio>
+        <radio value="inactive">停用</radio>
+      </radio-group>
+    </view>
+  </form>
+  
+  <!-- 客户账龄统计 -->
+  <view class="aging-section" wx:if="{{action === 'edit'}}">
+    <view class="section-header">
+      <text class="header-text">应收账款账龄统计</text>
+      <button class="refresh-btn" bindtap="refreshAgingData">
+        <icon type="refresh" size="16"></icon>刷新
+      </button>
+    </view>
+    
+    <view class="summary-card">
+      <view class="summary-title">账龄汇总</view>
+      <view class="summary-content">
+        <view class="summary-item">
+          <text class="summary-label">0-30天</text>
+          <text class="summary-value">{{agingData['0-30天'] ? agingData['0-30天'].toFixed(2) : '0.00'}}</text>
+        </view>
+        <view class="summary-item">
+          <text class="summary-label">31-60天</text>
+          <text class="summary-value">{{agingData['31-60天'] ? agingData['31-60天'].toFixed(2) : '0.00'}}</text>
+        </view>
+        <view class="summary-item">
+          <text class="summary-label">61-90天</text>
+          <text class="summary-value">{{agingData['61-90天'] ? agingData['61-90天'].toFixed(2) : '0.00'}}</text>
+        </view>
+        <view class="summary-item">
+          <text class="summary-label">91-180天</text>
+          <text class="summary-value">{{agingData['91-180天'] ? agingData['91-180天'].toFixed(2) : '0.00'}}</text>
+        </view>
+        <view class="summary-item">
+          <text class="summary-label">180天以上</text>
+          <text class="summary-value">{{agingData['180天以上'] ? agingData['180天以上'].toFixed(2) : '0.00'}}</text>
+        </view>
+        <view class="summary-item total">
+          <text class="summary-label">合计</text>
+          <text class="summary-value total">{{agingData.total ? agingData.total.toFixed(2) : '0.00'}}</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 应收账款明细 -->
+    <view class="invoice-list-section">
+      <view class="section-title">应收账款明细</view>
+      <view class="invoice-list">
+        <view wx:for="{{customerInvoices}}" wx:key="_id" class="invoice-item" bindtap="viewInvoice" data-id="{{item._id}}">
+          <view class="invoice-header">
+            <view class="invoice-no">{{item.invoiceNo}}</view>
+            <view class="invoice-balance">余额: ¥{{item.balance.toFixed(2)}}</view>
+          </view>
+          <view class="invoice-info">
+            <text class="invoice-date">{{item.invoiceDate}}</text>
+            <text class="invoice-amount">金额: ¥{{item.amount.toFixed(2)}}</text>
+          </view>
+          <view class="invoice-status status-{{item.status}}">
+            {{item.status === 'draft' ? '草稿' : item.status === 'approved' ? '已审核' : item.status === 'writtenoff' ? '已核销' : '已关闭'}}
+          </view>
+        </view>
+        <view wx:if="{{customerInvoices.length === 0}}" class="empty-invoice">
+          <text>暂无应收账款</text>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 操作按钮 -->
+  <view class="action-section">
+    <button 
+      class="save-btn" 
+      bindtap="saveCustomer"
+      loading="{{isSubmitting}}"
+      disabled="{{isSubmitting}}"
+    >
+      {{action === 'add' ? '保存并新增' : '保存修改'}}
+    </button>
+    <button class="cancel-btn" bindtap="goBack">取消</button>
+  </view>
+</view>

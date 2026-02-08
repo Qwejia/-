@@ -1,0 +1,198 @@
+<!-- pages/accountsReceivable/index.wxml -->
+<view class="container">
+  <view class="header-section">
+    <view class="header-title">
+      <text class="title">应收款管理</text>
+      <button class="ai-assistant-btn" bindtap="openAIAssistant">
+        <view class="ai-btn-icon">🤖</view>
+        <text class="ai-btn-text">AI助手</text>
+      </button>
+    </view>
+    <view class="summary-section">
+      <view class="summary-card">
+        <view class="summary-label">客户数量</view>
+        <view class="summary-value">{{customers.length}}</view>
+      </view>
+      <view class="summary-card">
+        <view class="summary-label">应收单</view>
+        <view class="summary-value">{{arInvoices.length}}</view>
+      </view>
+      <view class="summary-card">
+        <view class="summary-label">收款单</view>
+        <view class="summary-value">{{arReceipts.length}}</view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- AI提醒区域 -->
+  <view class="ai-reminder-section">
+    <view class="section-header">
+      <text class="header-text">AI提醒</text>
+      <button class="refresh-btn" bindtap="refreshAIReminders">
+        <text class="refresh-text">刷新</text>
+      </button>
+    </view>
+    <view class="reminder-list">
+      <view wx:for="{{aiReminders}}" wx:key="index" class="reminder-item" data-type="{{item.type}}" data-id="{{item.id}}">
+        <view class="reminder-icon">{{item.icon}}</view>
+        <view class="reminder-content">
+          <view class="reminder-title">{{item.title}}</view>
+          <view class="reminder-desc">{{item.description}}</view>
+          <view class="reminder-amount">{{item.amount}}</view>
+        </view>
+        <view class="reminder-action">
+          <button class="action-btn" bindtap="handleReminderAction">处理</button>
+        </view>
+      </view>
+      <view wx:if="{{aiReminders.length === 0}}" class="empty-reminder">
+        <view class="empty-icon">✅</view>
+        <text class="empty-text">暂无待处理事项</text>
+      </view>
+    </view>
+  </view>
+  
+  <view class="menu-section">
+    <view class="menu-grid">
+      <view wx:for="{{menuItems}}" wx:key="id" class="menu-item" bindtap="navigateToPage" data-path="{{item.path}}">
+        <view class="menu-icon">{{item.icon}}</view>
+        <view class="menu-name">{{item.name}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能模块快速访问 -->
+  <view class="quick-access-section">
+    <view class="section-header">
+      <text class="header-text">功能模块</text>
+    </view>
+    <view class="quick-access-grid">
+      <navigator url="/pages/generalLedger/index" class="quick-access-item">
+        <view class="quick-icon">📋</view>
+        <view class="quick-name">总账管理</view>
+      </navigator>
+      <navigator url="/pages/category/index" class="quick-access-item">
+        <view class="quick-icon">🏷️</view>
+        <view class="quick-name">分类管理</view>
+      </navigator>
+      <navigator url="/pages/statistics/index" class="quick-access-item">
+        <view class="quick-icon">📊</view>
+        <view class="quick-name">收支统计</view>
+      </navigator>
+      <navigator url="/pages/record/index" class="quick-access-item">
+        <view class="quick-icon">✏️</view>
+        <view class="quick-name">新增记录</view>
+      </navigator>
+    </view>
+  </view>
+  
+  <!-- 应收账款汇总报表 -->
+  <view class="summary-report-section">
+    <view class="section-header">
+      <text class="header-text">应收账款汇总</text>
+      <button class="refresh-btn" bindtap="refreshSummaryReport">
+        <icon type="refresh" size="16"></icon>刷新
+      </button>
+    </view>
+    
+    <view class="report-cards">
+      <view class="report-card">
+        <view class="report-icon">💰</view>
+        <view class="report-content">
+          <view class="report-label">应收总额</view>
+          <view class="report-value">¥{{summaryReport.totalAmount.toFixed(2)}}</view>
+        </view>
+      </view>
+      
+      <view class="report-card">
+        <view class="report-icon">✅</view>
+        <view class="report-content">
+          <view class="report-label">已核销金额</view>
+          <view class="report-value">¥{{summaryReport.writtenOffAmount.toFixed(2)}}</view>
+        </view>
+      </view>
+      
+      <view class="report-card">
+        <view class="report-icon">⏰</view>
+        <view class="report-content">
+          <view class="report-label">未核销金额</view>
+          <view class="report-value">¥{{summaryReport.outstandingAmount.toFixed(2)}}</view>
+        </view>
+      </view>
+      
+      <view class="report-card">
+        <view class="report-icon">📈</view>
+        <view class="report-content">
+          <view class="report-label">核销率</view>
+          <view class="report-value">{{summaryReport.writeOffRate.toFixed(1)}}%</view>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 账龄分布 -->
+    <view class="aging-distribution">
+      <view class="distribution-title">账龄分布</view>
+      <view class="distribution-chart">
+        <view class="distribution-item" wx:for="{{summaryReport.agingDistribution}}" wx:key="name">
+          <view class="distribution-label">{{item.name}}</view>
+          <view class="distribution-bar">
+            <view class="bar-fill" style="width: {{item.percentage}}%; background-color: {{item.color}};"></view>
+          </view>
+          <view class="distribution-value">¥{{item.amount.toFixed(2)}}</view>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 逾期统计 -->
+    <view class="overdue-section">
+      <view class="overdue-title">逾期统计</view>
+      <view class="overdue-cards">
+        <view class="overdue-card">
+          <view class="overdue-label">逾期笔数</view>
+          <view class="overdue-value">{{summaryReport.overdueCount}}</view>
+        </view>
+        <view class="overdue-card">
+          <view class="overdue-label">逾期金额</view>
+          <view class="overdue-value">¥{{summaryReport.overdueAmount.toFixed(2)}}</view>
+        </view>
+        <view class="overdue-card">
+          <view class="overdue-label">最大逾期天数</view>
+          <view class="overdue-value">{{summaryReport.maxOverdueDays}}天</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- AI助手弹窗 -->
+<view class="ai-assistant-modal" wx:if="{{showAIAssistant}}">
+  <view class="modal-content">
+    <view class="modal-header">
+      <text class="modal-title">AI应收助手</text>
+      <button class="close-btn" bindtap="closeAIAssistant">✕</button>
+    </view>
+    <view class="modal-body">
+      <view class="ai-chat-container">
+        <view class="chat-messages">
+          <view wx:for="{{aiChatMessages}}" wx:key="index" class="chat-message {{item.role === 'assistant' ? 'assistant-message' : 'user-message'}}">
+            <view class="message-content">{{item.content}}</view>
+          </view>
+          <view wx:if="{{isAILoading}}" class="chat-message assistant-message">
+            <view class="message-content">
+              <view class="loading-dots">
+                <view class="dot"></view>
+                <view class="dot"></view>
+                <view class="dot"></view>
+              </view>
+            </view>
+          </view>
+        </view>
+        <view class="chat-input">
+          <input type="text" class="input-field" placeholder="输入您的问题，如：如何处理逾期应收账款？" value="{{aiQuestion}}" bindinput="onAIQuestionInput" />
+          <button class="send-btn" bindtap="sendAIQuestion" disabled="{{isAILoading || !aiQuestion.trim()}}">
+            <text class="send-text">发送</text>
+          </button>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,90 @@
+<!-- 采购订单列表页面 -->
+<view class="container">
+  <!-- 页面头部 -->
+  <view class="header">
+    <view class="header-left">
+      <button class="back-button" bindtap="goBack">
+        <text class="back-icon">←</text>
+      </button>
+    </view>
+    <view class="header-center">
+      <text class="header-title">采购订单列表</text>
+    </view>
+    <view class="header-right">
+      <button class="add-button" bindtap="goToOrderAdd">
+        <text class="add-icon">+</text>
+      </button>
+    </view>
+  </view>
+
+  <!-- 搜索和过滤 -->
+  <view class="search-filter-section">
+    <view class="search-bar">
+      <input 
+        type="text" 
+        placeholder="搜索订单编号或供应商" 
+        value="{{searchKeyword}}"
+        bindinput="handleSearchInput"
+        class="search-input"
+      />
+      <text class="search-icon">🔍</text>
+    </view>
+    <view class="filter-row">
+      <view class="filter-item">
+        <text class="filter-label">订单状态:</text>
+        <picker 
+          range="{{statuses}}" 
+          value="{{statusFilter}}"
+          bindchange="handleStatusChange"
+          class="filter-picker"
+        >
+          <view class="picker-text">
+            {{statusFilter || '全部'}}
+          </view>
+        </picker>
+      </view>
+      <view class="filter-item">
+        <text class="filter-label">排序方式:</text>
+        <picker 
+          range="['订单编号', '供应商', '订单日期', '订单金额', '创建时间']" 
+          range-key="name"
+          value="{{sortByIndex}}"
+          bindchange="handleSortChange"
+          class="filter-picker"
+        >
+          <view class="picker-text">
+            {{sortBy === 'orderNumber' ? '订单编号' : sortBy === 'supplierName' ? '供应商' : sortBy === 'orderDate' ? '订单日期' : sortBy === 'totalAmount' ? '订单金额' : '创建时间'}} {{sortOrder === 'asc' ? '↑' : '↓'}}
+          </view>
+        </picker>
+      </view>
+    </view>
+  </view>
+
+  <!-- 订单列表 -->
+  <view class="orders-section">
+    <view wx:for="{{filteredOrders}}" wx:key="_id" class="order-item" data-order-id="{{_id}}" bindtap="goToOrderDetail">
+      <view class="order-header">
+        <text class="order-number">{{item.orderNumber}}</text>
+        <text class="order-status {{item.status}}">{{item.status === 'completed' ? '已完成' : item.status === 'pending' ? '待处理' : '处理中'}}</text>
+      </view>
+      <view class="order-info">
+        <text class="order-supplier">{{item.supplierName}}</text>
+        <text class="order-date">{{item.orderDate}}</text>
+      </view>
+      <view class="order-amount">
+        <text class="amount-label">订单金额:</text>
+        <text class="amount-value">{{item.totalAmount.toLocaleString('zh-CN', { style: 'currency', currency: 'CNY' })}}</text>
+      </view>
+      <view class="order-items">
+        <text class="items-label">商品数量:</text>
+        <text class="items-value">{{item.items.length}} 项</text>
+      </view>
+      <view class="order-footer">
+        <text class="expected-delivery">预计到货: {{item.expectedDeliveryDate}}</text>
+      </view>
+    </view>
+    <view wx:if="{{filteredOrders.length === 0}}" class="empty-state">
+      <text class="empty-text">暂无采购订单</text>
+    </view>
+  </view>
+</view>

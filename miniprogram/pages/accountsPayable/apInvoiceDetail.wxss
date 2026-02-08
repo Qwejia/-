@@ -1,0 +1,139 @@
+.container {
+  padding: 20rpx;
+  background-color: transparent;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 2rpx solid #e0e0e0;
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.back-btn {
+  background-color: #3399ff;
+  color: white;
+  border-radius: 20rpx;
+  font-size: 28rpx;
+  padding: 12rpx 24rpx;
+}
+
+.form-container {
+  background-color: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+.form-section {
+  margin-bottom: 30rpx;
+}
+
+.form-item {
+  margin-bottom: 30rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 10rpx;
+  font-weight: 500;
+}
+
+.form-input {
+  background-color: #f9f9f9;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  border: 1rpx solid #e0e0e0;
+}
+
+.form-picker {
+  background-color: #f9f9f9;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  border: 1rpx solid #e0e0e0;
+}
+
+.picker-text {
+  color: #333;
+}
+
+.form-textarea {
+  background-color: #f9f9f9;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  border: 1rpx solid #e0e0e0;
+  min-height: 120rpx;
+}
+
+.form-value {
+  background-color: #f9f9f9;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  color: #333;
+  border: 1rpx solid #e0e0e0;
+}
+
+.status-value {
+  padding: 20rpx 0;
+}
+
+.status-badge {
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+}
+
+.status-badge.unpaid {
+  background-color: #fdeeee;
+  color: #e64340;
+}
+
+.status-badge.partiallypaid {
+  background-color: #dbeafe;
+  color: #1e3a8a;
+}
+
+.status-badge.paid {
+  background-color: #e6f4ea;
+  color: #1aad19;
+}
+
+.form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.btn-submit {
+  background-color: #1aad19;
+  color: white;
+  font-size: 30rpx;
+  border-radius: 20rpx;
+  padding: 20rpx;
+  font-weight: bold;
+}
+
+.btn-delete {
+  background-color: #e64340;
+  color: white;
+  font-size: 30rpx;
+  border-radius: 20rpx;
+  padding: 20rpx;
+  font-weight: bold;
+}

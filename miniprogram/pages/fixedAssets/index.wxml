@@ -1,0 +1,80 @@
+<!-- 固定资产模块首页 -->
+<view class="container">
+  <!-- 资产概览 -->
+  <view class="overview-section">
+    <view class="section-title">
+      <text>资产概览</text>
+    </view>
+    <view class="overview-cards">
+      <view class="overview-card">
+        <view class="card-icon">💰</view>
+        <view class="card-content">
+          <text class="card-label">资产总值</text>
+          <text class="card-value">¥{{totalAssets}}</text>
+        </view>
+      </view>
+      <view class="overview-card">
+        <view class="card-icon">📉</view>
+        <view class="card-content">
+          <text class="card-label">累计折旧</text>
+          <text class="card-value">¥{{totalDepreciation}}</text>
+        </view>
+      </view>
+      <view class="overview-card">
+        <view class="card-icon">📈</view>
+        <view class="card-content">
+          <text class="card-label">净值</text>
+          <text class="card-value">¥{{netAssets}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 资产类别 -->
+  <view class="category-section">
+    <view class="section-title">
+      <text>资产类别</text>
+    </view>
+    <view class="category-grid">
+      <view wx:for="{{assetCategories}}" wx:key="id" class="category-item">
+        <view class="category-icon">{{item.icon}}</view>
+        <text class="category-name">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="menu-section">
+    <view class="section-title">
+      <text>功能菜单</text>
+    </view>
+    <view class="menu-grid">
+      <view wx:for="{{menuItems}}" wx:key="id" class="menu-item" bindtap="navigateToPage" data-url="{{item.url}}">
+        <view class="menu-icon">{{item.icon}}</view>
+        <text class="menu-name">{{item.name}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 最近资产 -->
+  <view class="recent-section">
+    <view class="section-title">
+      <text>最近资产</text>
+    </view>
+    <view class="recent-list">
+      <view wx:for="{{assets.slice(0, 5)}}" wx:key="_id" class="recent-item" bindtap="goToAssetDetail" data-asset-id="{{item._id}}">
+        <view class="item-info">
+          <text class="item-name">{{item.name}}</text>
+          <text class="item-category">{{item.category}}</text>
+        </view>
+        <view class="item-value">
+          <text class="value">¥{{item.originalValue}}</text>
+          <text class="depreciation">折旧: ¥{{item.accumulatedDepreciation}}</text>
+        </view>
+      </view>
+      <view wx:if="assets.length === 0" class="empty-state">
+        <text>暂无资产数据</text>
+      </view>
+    </view>
+  </view>
+</view>

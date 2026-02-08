@@ -1,0 +1,168 @@
+<view class="container">
+  <view class="header">
+    <text class="title">发票管理</text>
+    <view class="header-actions">
+      <button class="action-icon-btn" bindtap="scanInvoice">
+        <text class="icon">📷</text>
+      </button>
+      <button class="action-icon-btn" bindtap="exportInvoice">
+        <text class="icon">📤</text>
+      </button>
+      <button class="add-btn" bindtap="addInvoice">
+        <text class="icon">+</text>
+        <text>新增</text>
+      </button>
+    </view>
+  </view>
+
+  <view class="stats-bar">
+    <view class="stat-item">
+      <text class="stat-label">总金额</text>
+      <text class="stat-value amount">¥{{totalAmount}}</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-label">总税额</text>
+      <text class="stat-value tax">¥{{totalTax}}</text>
+    </view>
+    <view class="stat-item">
+      <text class="stat-label">发票数量</text>
+      <text class="stat-value">{{invoiceList.length}}</text>
+    </view>
+  </view>
+
+  <view class="filter-bar">
+    <view class="search-box">
+      <text class="search-icon">🔍</text>
+      <input 
+        class="search-input" 
+        placeholder="搜索发票号、购买方、销售方" 
+        value="{{searchText}}"
+        bindinput="onSearchInput"
+      />
+    </view>
+  </view>
+
+  <view class="filter-row">
+    <picker 
+      class="filter-picker" 
+      mode="selector" 
+      range="{{['全部', '待认证', '已认证', '已作废']}}" 
+      bindchange="onStatusFilterChange"
+    >
+      <view class="picker-content">
+        <text class="picker-label">状态: {{statusFilter}}</text>
+        <text class="picker-arrow">▼</text>
+      </view>
+    </picker>
+    <picker 
+      class="filter-picker" 
+      mode="selector" 
+      range="{{['全部', '增值税专用发票', '增值税普通发票']}}" 
+      bindchange="onTypeFilterChange"
+    >
+      <view class="picker-content">
+        <text class="picker-label">类型: {{typeFilter}}</text>
+        <text class="picker-arrow">▼</text>
+      </view>
+    </picker>
+  </view>
+
+  <view class="batch-actions" wx:if="{{showBatchActions}}">
+    <text class="selected-count">已选择 {{selectedInvoices.length}} 张发票</text>
+    <view class="batch-buttons">
+      <button class="batch-btn cancel-btn" bindtap="cancelSelection">取消</button>
+      <button class="batch-btn confirm-btn" bindtap="batchVerify">批量认证</button>
+    </view>
+  </view>
+
+  <view class="content">
+    <view wx:if="{{loading}}" class="loading-container">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">加载中...</text>
+    </view>
+
+    <scroll-view wx:else class="invoice-list" scroll-y="true" refresher-enabled="{{true}}" refresher-triggered="{{refreshing}}" bindrefresherrefresh="onPullDownRefresh">
+      <view 
+        wx:for="{{filteredList}}" 
+        wx:key="id" 
+        class="invoice-card {{item.status}} {{selectedInvoices.includes(item.id) ? 'selected' : ''}}"
+        data-id="{{item.id}}"
+        bindtap="onSelectInvoice"
+      >
+        <view class="card-header">
+          <view class="invoice-info">
+            <view class="checkbox {{selectedInvoices.includes(item.id) ? 'checked' : ''}}">
+              <text wx:if="{{selectedInvoices.includes(item.id)}}">✓</text>
+            </view>
+            <view class="invoice-details">
+              <text class="invoice-no">{{item.invoiceNo}}</text>
+              <text class="invoice-type">{{item.invoiceType}}</text>
+            </view>
+          </view>
+          <view class="status-badge {{item.status === '待认证' ? 'status-pending' : item.status === '已认证' ? 'status-verified' : 'status-cancelled'}}">
+            {{item.status}}
+          </view>
+        </view>
+
+        <view class="card-body">
+          <view class="info-row">
+            <text class="label">购买方</text>
+            <text class="value">{{item.buyerName}}</text>
+          </view>
+          <view class="info-row">
+            <text class="label">销售方</text>
+            <text class="value">{{item.sellerName}}</text>
+          </view>
+          <view class="info-row">
+            <text class="label">金额</text>
+            <text class="value amount">¥{{item.amount}}</text>
+          </view>
+          <view class="info-row">
+            <text class="label">税额</text>
+            <text class="value tax">¥{{item.tax}}</text>
+          </view>
+          <view class="info-row">
+            <text class="label">价税合计</text>
+            <text class="value total">¥{{item.totalAmount}}</text>
+          </view>
+          <view class="info-row">
+            <text class="label">开票日期</text>
+            <text class="value">{{item.invoiceDate}}</text>
+          </view>
+          <view class="info-row">
+            <text class="label">类别</text>
+            <text class="value category">{{item.category}}</text>
+          </view>
+        </view>
+
+        <view class="card-footer">
+          <button 
+            class="action-btn detail-btn" 
+            bindtap="viewInvoiceDetail"
+            data-id="{{item.id}}"
+            catchtap="true"
+          >
+            查看详情
+          </button>
+          <button 
+            wx:if="{{item.status === '待认证'}}"
+            class="action-btn primary-btn" 
+            bindtap="verifyInvoice"
+            data-id="{{item.id}}"
+            catchtap="true"
+          >
+            认证
+          </button>
+          <view wx:else class="action-btn disabled-btn">
+            {{item.status === '已认证' ? '已认证' : '已作废'}}
+          </view>
+        </view>
+      </view>
+
+      <view wx:if="{{filteredList.length === 0}}" class="empty-state">
+        <text class="empty-icon">📄</text>
+        <text class="empty-text">{{searchText || statusFilter !== '全部' || typeFilter !== '全部' ? '未找到匹配的发票' : '暂无发票数据'}}</text>
+      </view>
+    </scroll-view>
+  </view>
+</view>

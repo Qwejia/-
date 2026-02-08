@@ -1,0 +1,37 @@
+<!-- 聊天页面 -->
+<view class="container">
+  <!-- 页面头部 -->
+  <view class="header">
+    <view class="back-btn" bindtap="onBack">
+      <text>←</text>
+    </view>
+    <view class="header-info">
+      <text class="header-name">{{conversationName}}</text>
+      <text class="header-status">在线</text>
+    </view>
+    <view class="header-right">
+      <text class="header-icon">ℹ️</text>
+    </view>
+  </view>
+
+  <!-- 消息内容 -->
+  <view class="message-content" id="messageContent">
+    <view class="message-item" wx:for="{{messages}}" wx:key="index" style="flex-direction: {{item.sender === 'me' ? 'row-reverse' : 'row'}};">
+      <view class="message-avatar">
+        <text class="avatar-text">{{item.avatar}}</text>
+      </view>
+      <view class="message-bubble" style="background: {{item.sender === 'me' ? '#1677ff' : '#f3f4f6'}};">
+        <text class="message-text" style="color: {{item.sender === 'me' ? 'white' : '#333333'}};">{{item.content}}</text>
+        <text class="message-time">{{item.time}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 消息输入框 -->
+  <view class="message-input-container">
+    <input class="message-input" placeholder="输入消息..." value="{{messageInput}}" bindinput="onMessageInput" />
+    <button class="send-btn" bindtap="sendMessage">
+      <text class="send-icon">➤</text>
+    </button>
+  </view>
+</view>

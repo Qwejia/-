@@ -1,0 +1,93 @@
+<!-- pages/generalLedger/accountEntry.wxml -->
+<view class="container">
+  <view class="form-card">
+    <view class="form-header">
+      <text class="form-title">{{isEdit ? '编辑会计科目' : '新增会计科目'}}</text>
+    </view>
+    
+    <form bindsubmit="saveAccount" class="account-form">
+      <view class="form-section">
+        <text class="section-title">基本信息</text>
+        
+        <view class="form-item">
+          <text class="form-label">科目代码</text>
+          <input type="text" name="code" value="{{formData.code}}" placeholder="请输入科目代码" bindinput="onInput" data-field="code" class="form-input" required />
+        </view>
+        
+        <view class="form-item">
+          <text class="form-label">科目名称</text>
+          <input type="text" name="name" value="{{formData.name}}" placeholder="请输入科目名称" bindinput="onInput" data-field="name" class="form-input" required />
+        </view>
+        
+        <view class="form-item">
+          <text class="form-label">科目类别</text>
+          <picker mode="selector" range="{{categoryOptions}}" range-key="text" value="{{formData.categoryIndex}}" bindchange="onCategoryChange" class="form-picker">
+            <view class="picker-text">{{categoryOptions[formData.categoryIndex].text}}</view>
+          </picker>
+        </view>
+        
+        <view class="form-item">
+          <text class="form-label">上级科目</text>
+          <picker mode="selector" range="{{parentAccountOptions}}" range-key="displayName" value="{{formData.parentAccountIndex}}" bindchange="onParentAccountChange" class="form-picker">
+            <view class="picker-text">{{parentAccountOptions[formData.parentAccountIndex].displayName}}</view>
+          </picker>
+        </view>
+        
+        <view class="form-item">
+          <text class="form-label">余额方向</text>
+          <picker mode="selector" range="{{balanceDirectionOptions}}" range-key="text" value="{{formData.balanceDirectionIndex}}" bindchange="onBalanceDirectionChange" class="form-picker">
+            <view class="picker-text">{{balanceDirectionOptions[formData.balanceDirectionIndex].text}}</view>
+          </picker>
+        </view>
+      </view>
+      
+      <view class="form-section">
+        <text class="section-title">辅助核算</text>
+        
+        <view class="aux-accounting-list">
+          <view class="aux-item" wx:for="{{auxAccountingOptions}}" wx:key="type">
+            <view class="aux-info">
+              <text class="aux-name">{{item.text}}</text>
+              <text class="aux-desc">{{item.description}}</text>
+            </view>
+            <switch checked="{{formData.auxAccounting.includes(item.type)}}" bindchange="onAuxAccountingChange" data-type="{{item.type}}" />
+          </view>
+        </view>
+      </view>
+      
+      <view class="form-section">
+        <text class="section-title">科目属性</text>
+        
+        <view class="form-item">
+          <text class="form-label">科目状态</text>
+          <view class="status-toggle">
+            <switch checked="{{formData.isEnabled}}" bindchange="onEnabledChange" />
+            <text class="status-text">{{formData.isEnabled ? '启用' : '禁用'}}</text>
+          </view>
+        </view>
+        
+        <view class="form-item">
+          <text class="form-label">是否末级科目</text>
+          <view class="leaf-toggle">
+            <switch checked="{{formData.isLeaf}}" bindchange="onLeafChange" />
+            <text class="leaf-text">{{formData.isLeaf ? '是' : '否'}}</text>
+          </view>
+        </view>
+      </view>
+      
+      <view class="form-section">
+        <text class="section-title">期初余额</text>
+        
+        <view class="form-item">
+          <text class="form-label">余额金额</text>
+          <input type="number" name="initialBalance" value="{{formData.initialBalance || ''}}" placeholder="请输入期初余额" bindinput="onInput" data-field="initialBalance" class="form-input" />
+        </view>
+      </view>
+      
+      <view class="form-actions">
+        <button type="default" size="mini" bindtap="cancel">取消</button>
+        <button type="primary" form-type="submit" class="submit-btn">保存</button>
+      </view>
+    </form>
+  </view>
+</view>

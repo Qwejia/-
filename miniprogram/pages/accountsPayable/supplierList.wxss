@@ -1,0 +1,291 @@
+.container {
+  padding: 20rpx;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 2rpx solid #e0e0e0;
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.add-btn {
+  background-color: #1aad19;
+  color: white;
+  border-radius: 20rpx;
+  font-size: 28rpx;
+  padding: 12rpx 24rpx;
+}
+
+.search-bar {
+  margin-bottom: 20rpx;
+}
+
+.search-input {
+  background-color: white;
+  border-radius: 20rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+.filter-bar {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20rpx;
+  padding: 10rpx 0;
+  background-color: white;
+  border-radius: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+.filter-item {
+  padding: 12rpx 24rpx;
+  font-size: 28rpx;
+  border-radius: 20rpx;
+  color: #666;
+}
+
+.filter-item.active {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  color: white;
+}
+
+.supplier-list {
+  background-color: white;
+  border-radius: 20rpx;
+  padding: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+.empty {
+  text-align: center;
+  padding: 100rpx 0;
+  color: #999;
+  font-size: 32rpx;
+}
+
+.supplier-item {
+  border-bottom: 1rpx solid #f0f0f0;
+  padding: 20rpx 0;
+}
+
+.supplier-item:last-child {
+  border-bottom: none;
+}
+
+.supplier-header {
+  margin-bottom: 16rpx;
+}
+
+.supplier-info {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.supplier-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-right: 10rpx;
+}
+
+.supplier-code {
+  font-size: 26rpx;
+  color: #666;
+  margin-right: 10rpx;
+}
+
+.status-badge {
+  padding: 6rpx 16rpx;
+  border-radius: 10rpx;
+  font-size: 20rpx;
+  margin-left: 10rpx;
+}
+
+.status-badge.active {
+  background: #dbeafe;
+  color: #1e3a8a;
+}
+
+.status-badge.inactive {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.supplier-details {
+  margin-bottom: 16rpx;
+}
+
+.detail-item {
+  display: flex;
+  margin-bottom: 10rpx;
+  font-size: 28rpx;
+}
+
+.label {
+  color: #666;
+  width: 120rpx;
+}
+
+.value {
+  color: #333;
+  flex: 1;
+  word-break: break-word;
+}
+
+.supplier-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16rpx;
+}
+
+.action-btn {
+  padding: 8rpx 20rpx;
+  font-size: 26rpx;
+  border-radius: 16rpx;
+  min-width: 80rpx;
+}
+
+.action-btn.view {
+  background: #dbeafe;
+  color: #1e3a8a;
+}
+
+.action-btn.edit {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.action-btn.delete {
+  background: #dbeafe;
+  color: #dc2626;
+}
+
+.action-btn.disable {
+  background: #dbeafe;
+  color: #dc2626;
+}
+
+.action-btn.enable {
+  background: #dbeafe;
+  color: #1e3a8a;
+}
+
+/* 模态框样式 */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 20rpx;
+  width: 90%;
+  max-height: 80%;
+  overflow-y: auto;
+  box-shadow: 0 10rpx 40rpx rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.modal-header text:first-child {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.close-btn {
+  font-size: 48rpx;
+  color: #999;
+}
+
+.modal-body {
+  padding: 30rpx;
+}
+
+.form-item {
+  margin-bottom: 26rpx;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 10rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+
+.form-input {
+  width: 100%;
+  padding: 20rpx;
+  border: 1rpx solid #ddd;
+  border-radius: 10rpx;
+  font-size: 28rpx;
+  box-sizing: border-box;
+}
+
+.radio-group {
+  display: flex;
+  gap: 40rpx;
+  padding: 10rpx 0;
+}
+
+.radio-item {
+  display: flex;
+  align-items: center;
+  font-size: 28rpx;
+}
+
+.radio-item text {
+  margin-left: 10rpx;
+}
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20rpx;
+  padding: 20rpx 30rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.btn-cancel {
+  padding: 12rpx 36rpx;
+  font-size: 28rpx;
+  border-radius: 20rpx;
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.btn-confirm {
+  padding: 12rpx 36rpx;
+  font-size: 28rpx;
+  border-radius: 20rpx;
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  color: white;
+  box-shadow: 0 4rpx 12rpx rgba(30, 58, 138, 0.3);
+}

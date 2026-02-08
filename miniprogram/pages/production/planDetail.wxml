@@ -1,0 +1,66 @@
+<view class="container">
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 生产计划详情 -->
+  <view wx:else class="plan-detail" wx:if="{{productionPlan}}">
+    <!-- 计划基本信息 -->
+    <view class="info-section">
+      <view class="section-title">基本信息</view>
+      <view class="info-item">
+        <text class="info-label">计划编号:</text>
+        <text class="info-value">{{productionPlan.planNumber}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">产品名称:</text>
+        <text class="info-value">{{productionPlan.productName}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">计划数量:</text>
+        <text class="info-value">{{productionPlan.quantity}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">计划状态:</text>
+        <text class="info-value" style="color: {{productionPlan.status === 'completed' ? '#2e7d32' : productionPlan.status === 'inProgress' ? '#1565c0' : '#ef6c00'}};">
+          {{productionPlan.status === 'completed' ? '已完成' : productionPlan.status === 'inProgress' ? '进行中' : '待开始'}}
+        </text>
+      </view>
+    </view>
+
+    <!-- 计划时间信息 -->
+    <view class="info-section">
+      <view class="section-title">时间信息</view>
+      <view class="info-item">
+        <text class="info-label">开始日期:</text>
+        <text class="info-value">{{productionPlan.startDate}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">结束日期:</text>
+        <text class="info-value">{{productionPlan.endDate}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">创建时间:</text>
+        <text class="info-value">{{productionPlan.createdAt.split('T')[0]}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">更新时间:</text>
+        <text class="info-value">{{productionPlan.updatedAt.split('T')[0]}}</text>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-buttons">
+      <button class="action-btn" bindtap="editProductionPlan">编辑计划</button>
+      <button class="action-btn" bindtap="viewMaterialRequirements">物料需求</button>
+      <button class="action-btn" bindtap="viewProductionProgress">生产进度</button>
+      <button class="action-btn" bindtap="shareProductionPlan">分享</button>
+    </view>
+  </view>
+
+  <!-- 无数据状态 -->
+  <view wx:else class="empty-state">
+    <text>未找到生产计划信息</text>
+  </view>
+</view>

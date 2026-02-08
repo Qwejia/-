@@ -1,0 +1,96 @@
+<!--pages/ai-assistant/tax-planning.wxml-->
+<view class="container">
+  <!-- 导航栏 -->
+  <view class="navbar">
+    <view class="navbar-left">
+      <text class="back-btn" bindtap="navigateBack">←</text>
+    </view>
+    <view class="navbar-center">
+      <text class="navbar-title">税务筹划</text>
+    </view>
+    <view class="navbar-right">
+      <text class="help-btn" bindtap="showHelp">?</text>
+    </view>
+  </view>
+  
+  <!-- 页面内容 -->
+  <view class="content">
+    <!-- 税务筹划工具区域 -->
+    <view class="planning-tools">
+      <!-- 税额计算器 -->
+      <view class="tool-card">
+        <view class="tool-header">
+          <text class="tool-icon">🧮</text>
+          <text class="tool-title">税额计算器</text>
+        </view>
+        <view class="tool-content">
+          <view class="form-group">
+            <text class="form-label">计算类型</text>
+            <picker bindchange="bindTaxTypeChange" value="{{taxTypeIndex}}" range="{{taxTypes}}" class="form-picker">
+              <view class="picker-view">{{taxTypes[taxTypeIndex]}}</view>
+            </picker>
+          </view>
+          <view class="form-group">
+            <text class="form-label">金额</text>
+            <input type="number" placeholder="请输入金额" bindinput="bindAmountInput" value="{{amount}}" class="form-input" />
+          </view>
+          <view class="form-group" wx:if="taxTypeIndex === 0">
+            <text class="form-label">税率(%)</text>
+            <input type="number" placeholder="请输入税率" bindinput="bindRateInput" value="{{rate}}" class="form-input" />
+          </view>
+          <button class="calculate-btn" bindtap="calculateTax">计算税额</button>
+          <view class="result-container" wx:if="showResult">
+            <text class="result-label">计算结果</text>
+            <text class="result-value">¥{{calculatedTax}}</text>
+            <text class="result-detail">{{resultDetail}}</text>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 税务筹划建议 -->
+      <view class="tool-card">
+        <view class="tool-header">
+          <text class="tool-icon">💡</text>
+          <text class="tool-title">智能税务建议</text>
+        </view>
+        <view class="tool-content">
+          <view class="form-group">
+            <text class="form-label">企业类型</text>
+            <picker bindchange="bindCompanyTypeChange" value="{{companyTypeIndex}}" range="{{companyTypes}}" class="form-picker">
+              <view class="picker-view">{{companyTypes[companyTypeIndex]}}</view>
+            </picker>
+          </view>
+          <view class="form-group">
+            <text class="form-label">年营业额</text>
+            <input type="number" placeholder="请输入年营业额" bindinput="bindRevenueInput" value="{{revenue}}" class="form-input" />
+          </view>
+          <button class="suggest-btn" bindtap="generateSuggestions">获取建议</button>
+          <view class="suggestions-container" wx:if="showSuggestions">
+            <text class="suggestions-title">税务筹划建议</text>
+            <view class="suggestion-item" wx:for="{{suggestions}}" wx:key="index">
+              <text class="suggestion-icon">{{item.icon}}</text>
+              <text class="suggestion-text">{{item.text}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 税收优惠政策 -->
+      <view class="tool-card">
+        <view class="tool-header">
+          <text class="tool-icon">📋</text>
+          <text class="tool-title">税收优惠政策</text>
+        </view>
+        <view class="tool-content">
+          <view class="policy-list">
+            <view class="policy-item" wx:for="{{taxPolicies}}" wx:key="index">
+              <text class="policy-title">{{item.title}}</text>
+              <text class="policy-tag">{{item.tag}}</text>
+              <text class="policy-date">{{item.date}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

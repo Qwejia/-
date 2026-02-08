@@ -1,0 +1,308 @@
+/* pages/finance/tax.wxss */
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* 导航栏样式 */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 88rpx;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 0 32rpx;
+  position: relative;
+  animation: slideDown 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.navbar-left {
+  flex: 1;
+}
+
+.back-btn {
+  font-size: 40rpx;
+  color: #1e3a8a;
+  line-height: 88rpx;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.back-btn:active {
+  transform: scale(0.9);
+  color: #667eea;
+}
+
+.navbar-center {
+  flex: 2;
+  text-align: center;
+}
+
+.navbar-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #1e3a8a;
+}
+
+.navbar-right {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 32rpx;
+}
+
+.more-btn {
+  font-size: 32rpx;
+  color: #1e3a8a;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.more-btn:active {
+  transform: scale(0.9);
+  color: #667eea;
+}
+
+.settings-btn {
+  font-size: 32rpx;
+  color: #1e3a8a;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.settings-btn:active {
+  transform: scale(0.9);
+  color: #667eea;
+}
+
+/* 内容区域样式 */
+.content {
+  flex: 1;
+  padding: 32rpx;
+}
+
+.tax-overview {
+  width: 100%;
+}
+
+/* 状态卡片样式 */
+.status-card {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 20rpx;
+  padding: 32rpx;
+  margin-bottom: 32rpx;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.1);
+  border: 1rpx solid rgba(255, 255, 255, 0.2);
+  animation: fadeInUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.status-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid rgba(30, 58, 138, 0.1);
+  transition: all 0.3s ease;
+}
+
+.status-item:last-child {
+  border-bottom: none;
+}
+
+.status-item:active {
+  transform: translateX(8rpx);
+}
+
+.status-label {
+  font-size: 28rpx;
+  color: #64748b;
+}
+
+.status-value {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #1e3a8a;
+}
+
+/* 申报提醒样式 */
+.reminder-section {
+  margin-bottom: 32rpx;
+  animation: fadeInUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.2s both;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #1e3a8a;
+  margin-bottom: 24rpx;
+}
+
+.reminder-list {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 20rpx;
+  overflow: hidden;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.1);
+  border: 1rpx solid rgba(255, 255, 255, 0.2);
+}
+
+.reminder-item {
+  display: flex;
+  align-items: center;
+  padding: 32rpx;
+  border-bottom: 1rpx solid rgba(30, 58, 138, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.reminder-item:last-child {
+  border-bottom: none;
+}
+
+.reminder-item:active {
+  transform: translateX(8rpx);
+  background: rgba(102, 126, 234, 0.05);
+}
+
+.reminder-item:hover {
+  background: rgba(102, 126, 234, 0.02);
+}
+
+.reminder-date {
+  font-size: 24rpx;
+  color: #94a3b8;
+  margin-right: 32rpx;
+  min-width: 160rpx;
+}
+
+.reminder-content {
+  flex: 1;
+  font-size: 28rpx;
+  color: #1e3a8a;
+  font-weight: 500;
+}
+
+.reminder-status {
+  font-size: 22rpx;
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.reminder-status.pending {
+  background-color: #fef3c7;
+  color: #d97706;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.reminder-status.completed {
+  background-color: #d1fae5;
+  color: #059669;
+}
+
+/* 税务工具样式 */
+.tools-section {
+  margin-bottom: 32rpx;
+  animation: fadeInUp 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.3s both;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24rpx;
+}
+
+.tool-item {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 20rpx;
+  padding: 48rpx 32rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.1);
+  border: 1rpx solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.tool-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.tool-item:hover::before {
+  opacity: 1;
+}
+
+.tool-item:active {
+  transform: translateY(-4rpx) scale(0.98);
+  box-shadow: 0 12rpx 32rpx rgba(102, 126, 234, 0.3);
+}
+
+.tool-item:hover {
+  transform: translateY(-6rpx);
+  box-shadow: 0 12rpx 32rpx rgba(102, 126, 234, 0.25);
+}
+
+.tool-icon {
+  font-size: 64rpx;
+  margin-bottom: 16rpx;
+  transition: transform 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.tool-item:hover .tool-icon {
+  transform: scale(1.1);
+}
+
+.tool-name {
+  font-size: 28rpx;
+  color: #1e3a8a;
+  font-weight: 500;
+  position: relative;
+  z-index: 1;
+}

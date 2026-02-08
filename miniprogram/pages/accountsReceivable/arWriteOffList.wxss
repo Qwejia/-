@@ -1,0 +1,273 @@
+/* pages/accountsReceivable/arWriteOffList.wxss */
+.container {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  padding: 20rpx;
+}
+
+/* 头部区域 */
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.page-title {
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #2196f3;
+  border: none;
+  border-radius: 8rpx;
+  color: white;
+  padding: 15rpx 30rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+}
+
+.add-icon {
+  margin-right: 10rpx;
+  font-size: 32rpx;
+}
+
+/* 统计信息 */
+.summary-section {
+  display: flex;
+  justify-content: space-between;
+  background-color: white;
+  border-radius: 8rpx;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.summary-item {
+  display: flex;
+  align-items: center;
+}
+
+.summary-label {
+  font-size: 28rpx;
+  color: #666;
+  margin-right: 10rpx;
+}
+
+.summary-value {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+/* 筛选区域 */
+.filter-section {
+  display: flex;
+  margin-bottom: 20rpx;
+  gap: 15rpx;
+}
+
+.search-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background-color: white;
+  border-radius: 8rpx;
+  padding: 0 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.search-icon {
+  color: #999;
+  margin-right: 10rpx;
+}
+
+.search-input {
+  flex: 1;
+  height: 70rpx;
+  font-size: 28rpx;
+}
+
+.filter-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border: none;
+  border-radius: 8rpx;
+  color: #666;
+  padding: 0 30rpx;
+  font-size: 28rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+/* 筛选面板 */
+.filter-panel {
+  background-color: white;
+  border-radius: 8rpx;
+  padding: 20rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+}
+
+.filter-item {
+  margin-bottom: 20rpx;
+}
+
+.filter-label {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 15rpx;
+  font-weight: 500;
+}
+
+.date-range {
+  display: flex;
+  align-items: center;
+  gap: 15rpx;
+}
+
+.date-picker {
+  background: #dbeafe;
+  border: 1rpx solid rgba(30, 58, 138, 0.2);
+  border-radius: 6rpx;
+  padding: 15rpx 20rpx;
+  font-size: 26rpx;
+  color: #666;
+  min-width: 200rpx;
+  text-align: center;
+}
+
+.date-separator {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.reset-btn {
+  background-color: #f5f5f5;
+  border: none;
+  border-radius: 8rpx;
+  color: #666;
+  padding: 15rpx;
+  font-size: 28rpx;
+  width: 100%;
+}
+
+/* 列表区域 */
+.list-section {
+  margin-bottom: 20rpx;
+}
+
+.empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300rpx;
+  background-color: white;
+  border-radius: 8rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+}
+
+/* 核销记录项 */
+.writeoff-item {
+  background-color: white;
+  border-radius: 8rpx;
+  padding: 20rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.writeoff-item:active {
+  transform: translateY(2rpx);
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.1);
+}
+
+.writeoff-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.writeoff-info {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.writeoff-no {
+  font-size: 26rpx;
+  color: #666;
+  padding: 5rpx 15rpx;
+  background-color: #f5f5f5;
+  border-radius: 4rpx;
+}
+
+.writeoff-date {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.writeoff-status {
+  font-size: 24rpx;
+  color: white;
+  background-color: #2196f3;
+  padding: 5rpx 15rpx;
+  border-radius: 4rpx;
+}
+
+.writeoff-details {
+  margin-bottom: 20rpx;
+}
+
+.detail-item {
+  display: flex;
+  margin-bottom: 10rpx;
+  font-size: 26rpx;
+}
+
+.detail-label {
+  width: 120rpx;
+  color: #666;
+}
+
+.detail-value {
+  color: #333;
+  flex: 1;
+}
+
+.detail-value.amount {
+  font-weight: bold;
+  color: #1e3a8a;
+}
+
+/* 操作按钮 */
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #f0f0f0;
+}
+
+.view-btn {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  border: none;
+  border-radius: 6rpx;
+  color: white;
+  padding: 8rpx 20rpx;
+  font-size: 24rpx;
+  box-shadow: 0 2rpx 8rpx rgba(30, 58, 138, 0.3);
+}

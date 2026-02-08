@@ -1,0 +1,73 @@
+<!-- 库存管理首页 -->
+<view class="container">
+  <!-- 页面头部 -->
+  <view class="header">
+    <text class="header-title">库存管理</text>
+  </view>
+
+  <!-- 统计信息 -->
+  <view class="stats-section">
+    <view class="stats-card">
+      <text class="stats-label">总商品数</text>
+      <text class="stats-value">{{inventoryStats.totalProducts}}</text>
+    </view>
+    <view class="stats-card">
+      <text class="stats-label">低库存商品</text>
+      <text class="stats-value low-stock">{{inventoryStats.lowStockProducts}}</text>
+    </view>
+    <view class="stats-card">
+      <text class="stats-label">库存总值</text>
+      <text class="stats-value amount">{{inventoryStats.totalValue.toLocaleString('zh-CN', { style: 'currency', currency: 'CNY' })}}</text>
+    </view>
+    <view class="stats-card">
+      <text class="stats-label">在库商品</text>
+      <text class="stats-value in-stock">{{inventoryStats.inStockProducts}}</text>
+    </view>
+  </view>
+
+  <!-- 功能菜单 -->
+  <view class="menu-section">
+    <view class="menu-grid">
+      <view class="menu-item" bindtap="goToInventoryList">
+        <view class="menu-icon list-icon">📋</view>
+        <text class="menu-text">库存列表</text>
+      </view>
+      <view class="menu-item" bindtap="goToInventoryCheck">
+        <view class="menu-icon check-icon">✅</view>
+        <text class="menu-text">库存盘点</text>
+      </view>
+      <view class="menu-item" bindtap="goToInventoryTransfer">
+        <view class="menu-icon transfer-icon">🔄</view>
+        <text class="menu-text">库存调拨</text>
+      </view>
+      <view class="menu-item" bindtap="goToInventoryAnalysis">
+        <view class="menu-icon analysis-icon">📊</view>
+        <text class="menu-text">库存分析</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 最近库存变动 -->
+  <view class="recent-inventory-section">
+    <view class="section-header">
+      <text class="section-title">最近库存</text>
+      <text class="section-more" bindtap="goToInventoryList">查看全部</text>
+    </view>
+    <view class="inventory-list">
+      <view wx:for="{{recentInventory}}" wx:key="_id" class="inventory-item" data-product-id="{{_id}}" bindtap="goToInventoryDetail">
+        <view class="inventory-header">
+          <text class="inventory-name">{{item.productName}}</text>
+          <text class="inventory-status {{item.status}}">{{item.status === 'active' ? '正常' : '停用'}}</text>
+        </view>
+        <view class="inventory-info">
+          <text class="inventory-spec">{{item.spec}}</text>
+          <text class="inventory-stock">{{item.stock}} {{item.unit}}</text>
+        </view>
+        <view class="inventory-price">
+          <text class="price-label">单价:</text>
+          <text class="price-value">{{item.price.toLocaleString('zh-CN', { style: 'currency', currency: 'CNY' })}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

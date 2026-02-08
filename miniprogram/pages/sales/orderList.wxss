@@ -1,0 +1,121 @@
+.container {
+  padding: 20rpx;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+  background-color: #fff;
+  border-radius: 8rpx;
+  padding: 0 20rpx;
+  box-shadow: 0 2rpx 4rpx rgba(0,0,0,0.1);
+}
+
+.search-input {
+  flex: 1;
+  height: 80rpx;
+  font-size: 32rpx;
+}
+
+.add-btn {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  background-color: #07c160;
+  color: #fff;
+  font-size: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+.loading {
+  padding: 40rpx;
+  text-align: center;
+  color: #666;
+}
+
+.sales-order-list {
+  background-color: #fff;
+  border-radius: 8rpx;
+  box-shadow: 0 2rpx 4rpx rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.sales-order-item {
+  padding: 30rpx 20rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.sales-order-item:last-child {
+  border-bottom: none;
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.order-number {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.status-tag {
+  padding: 8rpx 16rpx;
+  border-radius: 16rpx;
+  font-size: 24rpx;
+}
+
+.order-body {
+}
+
+.order-info {
+  display: flex;
+  margin-bottom: 12rpx;
+}
+
+.info-label {
+  width: 120rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+
+.info-value {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333;
+  font-weight: bold;
+}
+
+.info-value.price {
+  color: #ff6b6b;
+}
+
+.order-dates {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.date-label {
+  margin-right: 8rpx;
+}
+
+.date-value {
+  font-weight: bold;
+  color: #333;
+}
+
+.empty-state {
+  padding: 100rpx;
+  text-align: center;
+  color: #999;
+  font-size: 32rpx;
+}

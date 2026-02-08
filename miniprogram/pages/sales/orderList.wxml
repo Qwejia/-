@@ -1,0 +1,56 @@
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <input 
+      class="search-input" 
+      placeholder="搜索订单编号或客户名称" 
+      value="{{searchKeyword}}"
+      bindinput="onSearchInput"
+    />
+    <button class="add-btn" bindtap="addSalesOrder">+</button>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 销售订单列表 -->
+  <view wx:else class="sales-order-list">
+    <view 
+      wx:for="{{salesOrders}}" 
+      wx:key="orderNumber"
+      class="sales-order-item"
+      data-order-id="{{item._id}}"
+      bindtap="goToOrderDetail"
+    >
+      <view class="order-header">
+        <view class="order-number">{{item.orderNumber}}</view>
+        <view class="order-status">
+          <text class="status-tag" style="background-color: {{item.status === 'completed' ? '#e8f5e9' : item.status === 'pending' ? '#fff3e0'}}; color: {{item.status === 'completed' ? '#2e7d32' : item.status === 'pending' ? '#ef6c00'}};">
+            {{item.status === 'completed' ? '已完成' : '待处理'}}
+          </text>
+        </view>
+      </view>
+      <view class="order-body">
+        <view class="order-info">
+          <text class="info-label">客户名称:</text>
+          <text class="info-value">{{item.customerName}}</text>
+        </view>
+        <view class="order-info">
+          <text class="info-label">订单金额:</text>
+          <text class="info-value price">¥{{item.totalAmount.toLocaleString()}}</text>
+        </view>
+        <view class="order-dates">
+          <text class="date-label">下单日期:</text>
+          <text class="date-value">{{item.orderDate}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view wx:if="{{salesOrders.length === 0}}" class="empty-state">
+      <text>暂无销售订单</text>
+    </view>
+  </view>
+</view>

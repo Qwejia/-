@@ -1,0 +1,93 @@
+<!-- 会计详情页面 -->
+<view class="container">
+  <!-- 页面头部 -->
+  <view class="header">
+    <view class="back-btn" bindtap="onBack">
+      <text>←</text>
+    </view>
+    <text class="title">会计详情</text>
+    <view class="header-right">
+      <text class="header-icon">👤</text>
+    </view>
+  </view>
+
+  <!-- 会计信息卡片 -->
+  <view class="accountant-card">
+    <view class="accountant-header">
+      <view class="accountant-avatar">
+        <text class="avatar-text">{{accountant.avatar}}</text>
+      </view>
+      <view class="accountant-info">
+        <text class="accountant-name">{{accountant.name}}</text>
+        <text class="accountant-title">{{accountant.title}}</text>
+        <view class="accountant-rating">
+          <text class="rating-text">{{accountant.rating}}⭐</text>
+          <text class="review-count">({{accountant.reviews.length}}条评价)</text>
+        </view>
+      </view>
+      <view class="contact-btn" bindtap="contactAccountant">
+        <text class="btn-text">联系TA</text>
+      </view>
+    </view>
+
+    <!-- 服务信息 -->
+    <view class="service-info">
+      <view class="info-row">
+        <text class="info-label">服务专长：</text>
+        <view class="service-tags">
+          <view class="tag" wx:for="{{accountant.specialties}}" wx:key="index">
+            <text class="tag-text">{{tag}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="info-row">
+        <text class="info-label">服务年限：</text>
+        <text class="info-value">{{accountant.experience}}年</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">平均响应时间：</text>
+        <text class="info-value">{{accountant.responseTime}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">服务价格：</text>
+        <text class="info-value">¥{{accountant.priceRange}}/次</text>
+      </view>
+    </view>
+
+    <!-- 个人简介 -->
+    <view class="bio-section">
+      <text class="section-title">个人简介</text>
+      <text class="bio-text">{{accountant.bio}}</text>
+    </view>
+  </view>
+
+  <!-- 评价列表 -->
+  <view class="reviews-section">
+    <text class="section-title">用户评价</text>
+    <view class="reviews-list" wx:if="accountant.reviews.length > 0">
+      <view class="review-item" wx:for="{{accountant.reviews}}" wx:key="index">
+        <view class="review-header">
+          <text class="reviewer-name">{{item.reviewerName}}</text>
+          <text class="review-rating">{{item.rating}}⭐</text>
+          <text class="review-date">{{item.date}}</text>
+        </view>
+        <text class="review-content">{{item.content}}</text>
+        <view class="review-service" wx:if="item.service">
+          <text class="service-label">服务项目：</text>
+          <text class="service-name">{{item.service}}</text>
+        </view>
+      </view>
+    </view>
+    <view class="empty-reviews" wx:else>
+      <text class="empty-text">暂无评价</text>
+    </view>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <button class="hire-btn" bindtap="hireAccountant">
+      <text class="btn-icon">📋</text>
+      <text class="btn-text">立即预约</text>
+    </button>
+  </view>
+</view>

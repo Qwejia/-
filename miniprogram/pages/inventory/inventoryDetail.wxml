@@ -1,0 +1,77 @@
+<view class="container">
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 库存详情 -->
+  <view wx:else class="inventory-detail" wx:if="{{inventoryItem}}">
+    <!-- 商品基本信息 -->
+    <view class="info-section">
+      <view class="section-title">基本信息</view>
+      <view class="info-item">
+        <text class="info-label">商品名称:</text>
+        <text class="info-value">{{inventoryItem.productName}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">商品编码:</text>
+        <text class="info-value">{{inventoryItem.productId}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">商品规格:</text>
+        <text class="info-value">{{inventoryItem.spec}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">商品类别:</text>
+        <text class="info-value">{{inventoryItem.category}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">计量单位:</text>
+        <text class="info-value">{{inventoryItem.unit}}</text>
+      </view>
+    </view>
+
+    <!-- 库存信息 -->
+    <view class="info-section">
+      <view class="section-title">库存信息</view>
+      <view class="info-item">
+        <text class="info-label">当前库存:</text>
+        <text class="info-value" style="color: {{inventoryItem.stock < inventoryItem.minStock ? '#c62828' : '#2e7d32'}};">{{inventoryItem.stock}} {{inventoryItem.unit}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">安全库存:</text>
+        <text class="info-value">{{inventoryItem.minStock}} {{inventoryItem.unit}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">最大库存:</text>
+        <text class="info-value">{{inventoryItem.maxStock}} {{inventoryItem.unit}}</text>
+      </view>
+    </view>
+
+    <!-- 价格信息 -->
+    <view class="info-section">
+      <view class="section-title">价格信息</view>
+      <view class="info-item">
+        <text class="info-label">单价:</text>
+        <text class="info-value price">¥{{inventoryItem.price}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">库存总值:</text>
+        <text class="info-value price">¥{{(inventoryItem.stock * inventoryItem.price).toLocaleString()}}</text>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-buttons">
+      <button class="action-btn" bindtap="editInventory">编辑信息</button>
+      <button class="action-btn" bindtap="viewInventoryHistory">变动记录</button>
+      <button class="action-btn" bindtap="generatePurchaseSuggestion">采购建议</button>
+      <button class="action-btn" bindtap="shareInventory">分享</button>
+    </view>
+  </view>
+
+  <!-- 无数据状态 -->
+  <view wx:else class="empty-state">
+    <text>未找到库存信息</text>
+  </view>
+</view>

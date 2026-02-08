@@ -1,0 +1,74 @@
+<!-- 会计列表页面 -->
+<view class="container">
+  <!-- 顶部导航 -->
+  <view class="nav-bar">
+    <view class="nav-left" bindtap="onBack">
+      <text class="nav-icon">←</text>
+    </view>
+    <text class="nav-title">推荐会计</text>
+    <view class="nav-right"></view>
+  </view>
+  
+  <!-- 筛选和排序 -->
+  <view class="filter-section">
+    <view class="filter-bar">
+      <view class="filter-item" bindtap="toggleFilter" data-type="specialty">
+        <text class="filter-text">服务专长</text>
+        <text class="filter-arrow">{{showSpecialtyFilter ? '↑' : '↓'}}</text>
+      </view>
+      <view class="filter-item" bindtap="toggleFilter" data-type="rating">
+        <text class="filter-text">评分排序</text>
+        <text class="filter-arrow">{{showRatingFilter ? '↑' : '↓'}}</text>
+      </view>
+      <view class="filter-item" bindtap="toggleFilter" data-type="price">
+        <text class="filter-text">价格排序</text>
+        <text class="filter-arrow">{{showPriceFilter ? '↑' : '↓'}}</text>
+      </view>
+    </view>
+    
+    <!-- 专长筛选弹窗 -->
+    <view class="filter-popup" wx:if="showSpecialtyFilter">
+      <view class="filter-content">
+        <view class="filter-header">
+          <text class="filter-title">服务专长</text>
+          <text class="filter-close" bindtap="toggleFilter" data-type="specialty">✕</text>
+        </view>
+        <view class="filter-options">
+          <view class="filter-option" wx:for="{{specialtyOptions}}" wx:key="id" bindtap="selectSpecialty" data-specialty="{{item.value}}">
+            <text class="option-text">{{item.label}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 会计列表 -->
+  <view class="accountant-section">
+    <view class="accountant-list">
+      <view class="accountant-card" wx:for="{{filteredAccountants}}" wx:key="id" bindtap="viewAccountantDetail" data-id="{{item.id}}">
+        <view class="accountant-avatar">
+          <text class="avatar-text">{{item.avatar}}</text>
+        </view>
+        <view class="accountant-info">
+          <view class="accountant-header">
+            <text class="accountant-name">{{item.name}}</text>
+            <text class="accountant-rating">{{item.rating}}⭐</text>
+          </view>
+          <text class="accountant-specialty">{{item.specialty}}</text>
+          <text class="accountant-experience">{{item.experience}}年经验 | {{item.completedTasks}}单</text>
+          <view class="accountant-price">
+            <text class="price-text">¥{{item.price}}/次</text>
+          </view>
+        </view>
+        <view class="accountant-action" bindtap="hireAccountant" data-id="{{item.id}}">
+          <text class="action-btn">立即预约</text>
+        </view>
+      </view>
+      
+      <!-- 空状态 -->
+      <view class="empty-state" wx:if="filteredAccountants.length === 0">
+        <text class="empty-text">暂无符合条件的会计</text>
+      </view>
+    </view>
+  </view>
+</view>

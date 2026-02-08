@@ -1,0 +1,217 @@
+/* 固定资产模块首页样式 */
+.container {
+  padding: 20rpx;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.section {
+  margin-bottom: 30rpx;
+  background-color: #fff;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.08);
+}
+
+.section-title {
+  font-size: 24rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+  padding-bottom: 10rpx;
+  border-bottom: 1rpx solid #e8e8e8;
+}
+
+/* 概览卡片样式 */
+.overview-cards {
+  display: flex;
+  justify-content: space-between;
+  gap: 15rpx;
+}
+
+.overview-card {
+  flex: 1;
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  border-radius: 12rpx;
+  padding: 20rpx;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 4rpx 12rpx rgba(30, 58, 138, 0.3);
+}
+
+.card-icon {
+  font-size: 48rpx;
+  margin-right: 15rpx;
+}
+
+.card-content {
+  flex: 1;
+}
+
+.card-label {
+  font-size: 18rpx;
+  opacity: 0.9;
+  display: block;
+  margin-bottom: 5rpx;
+}
+
+.card-value {
+  font-size: 24rpx;
+  font-weight: bold;
+  display: block;
+}
+
+/* 资产类别样式 */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 15rpx;
+}
+
+.category-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20rpx 10rpx;
+  background-color: #f8f9fa;
+  border-radius: 12rpx;
+  transition: all 0.3s ease;
+}
+
+.category-item:hover {
+  background-color: #e9ecef;
+  transform: translateY(-2rpx);
+}
+
+.category-icon {
+  font-size: 40rpx;
+  margin-bottom: 10rpx;
+}
+
+.category-name {
+  font-size: 16rpx;
+  color: #666;
+  text-align: center;
+}
+
+/* 功能菜单样式 */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20rpx;
+}
+
+.menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30rpx 20rpx;
+  background-color: #f8f9fa;
+  border-radius: 12rpx;
+  transition: all 0.3s ease;
+}
+
+.menu-item:hover {
+  background-color: #e9ecef;
+  transform: translateY(-2rpx);
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+}
+
+.menu-icon {
+  font-size: 48rpx;
+  margin-bottom: 15rpx;
+}
+
+.menu-name {
+  font-size: 20rpx;
+  color: #333;
+  text-align: center;
+}
+
+/* 最近资产样式 */
+.recent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15rpx;
+}
+
+.recent-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx;
+  background-color: #f8f9fa;
+  border-radius: 12rpx;
+  transition: all 0.3s ease;
+}
+
+.recent-item:hover {
+  background-color: #e9ecef;
+  transform: translateX(5rpx);
+}
+
+.item-info {
+  flex: 1;
+}
+
+.item-name {
+  font-size: 20rpx;
+  font-weight: 500;
+  color: #333;
+  display: block;
+  margin-bottom: 5rpx;
+}
+
+.item-category {
+  font-size: 16rpx;
+  color: #666;
+  display: block;
+}
+
+.item-value {
+  text-align: right;
+}
+
+.value {
+  font-size: 20rpx;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin-bottom: 5rpx;
+}
+
+.depreciation {
+  font-size: 16rpx;
+  color: #999;
+  display: block;
+}
+
+/* 空状态样式 */
+.empty-state {
+  text-align: center;
+  padding: 60rpx 20rpx;
+  color: #999;
+  font-size: 20rpx;
+  background-color: #f8f9fa;
+  border-radius: 12rpx;
+}
+
+/* 响应式设计 */
+@media (max-width: 375px) {
+  .overview-cards {
+    flex-direction: column;
+  }
+  
+  .overview-card {
+    margin-bottom: 15rpx;
+  }
+  
+  .category-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .menu-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

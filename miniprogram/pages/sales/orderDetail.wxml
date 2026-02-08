@@ -1,0 +1,85 @@
+<view class="container">
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 销售订单详情 -->
+  <view wx:else class="order-detail" wx:if="{{salesOrder}}">
+    <!-- 订单基本信息 -->
+    <view class="info-section">
+      <view class="section-title">基本信息</view>
+      <view class="info-item">
+        <text class="info-label">订单编号:</text>
+        <text class="info-value">{{salesOrder.orderNumber}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">客户名称:</text>
+        <text class="info-value">{{salesOrder.customerName}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">订单状态:</text>
+        <text class="info-value" style="color: {{salesOrder.status === 'completed' ? '#2e7d32' : '#ef6c00'}};">
+          {{salesOrder.status === 'completed' ? '已完成' : '待处理'}}
+        </text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">订单金额:</text>
+        <text class="info-value price">¥{{salesOrder.totalAmount.toLocaleString()}}</text>
+      </view>
+    </view>
+
+    <!-- 订单时间信息 -->
+    <view class="info-section">
+      <view class="section-title">时间信息</view>
+      <view class="info-item">
+        <text class="info-label">下单日期:</text>
+        <text class="info-value">{{salesOrder.orderDate}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">预计交货:</text>
+        <text class="info-value">{{salesOrder.expectedDeliveryDate}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">创建时间:</text>
+        <text class="info-value">{{salesOrder.createdAt.split('T')[0]}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">更新时间:</text>
+        <text class="info-value">{{salesOrder.updatedAt.split('T')[0]}}</text>
+      </view>
+    </view>
+
+    <!-- 商品信息 -->
+    <view class="info-section">
+      <view class="section-title">商品信息</view>
+      <view class="order-items">
+        <view 
+          wx:for="{{salesOrder.items}}" 
+          wx:key="productId"
+          class="order-item"
+        >
+          <view class="item-name">{{item.productName}}</view>
+          <view class="item-info">
+            <text class="item-quantity">数量: {{item.quantity}}</text>
+            <text class="item-price">单价: ¥{{item.unitPrice}}</text>
+            <text class="item-amount">金额: ¥{{item.amount}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-buttons">
+      <button class="action-btn" bindtap="editSalesOrder">编辑订单</button>
+      <button class="action-btn" bindtap="viewCustomerInfo">客户信息</button>
+      <button class="action-btn" bindtap="printSalesOrder">打印订单</button>
+      <button class="action-btn" bindtap="shareSalesOrder">分享</button>
+    </view>
+  </view>
+
+  <!-- 无数据状态 -->
+  <view wx:else class="empty-state">
+    <text>未找到订单信息</text>
+  </view>
+</view>

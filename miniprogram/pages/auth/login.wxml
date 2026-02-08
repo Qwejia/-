@@ -1,0 +1,59 @@
+<!-- 登录页面结构 -->
+<view class="login-container">
+  <view class="login-header">
+    <image src="../../images/icons/logo.png" class="login-logo" mode="aspectFit" />
+    <text class="login-title">用友U8企业管理系统</text>
+    <text class="login-subtitle">移动办公平台</text>
+  </view>
+
+  <view class="login-form">
+    <view class="form-group">
+      <text class="form-label">用户名</text>
+      <view class="form-input-wrapper">
+        <input 
+          type="text" 
+          class="form-input" 
+          placeholder="请输入用户名" 
+          value="{{username}}" 
+          bindinput="handleUsernameInput"
+        />
+      </view>
+    </view>
+
+    <view class="form-group">
+      <text class="form-label">密码</text>
+      <view class="form-input-wrapper">
+        <input 
+          type="password" 
+          class="form-input" 
+          placeholder="请输入密码" 
+          value="{{password}}" 
+          bindinput="handlePasswordInput"
+        />
+      </view>
+    </view>
+
+    <view wx:if="{{error}}" class="error-message">
+      {{error}}
+    </view>
+
+    <button 
+      class="login-button" 
+      bindtap="login" 
+      loading="{{loading}}" 
+      disabled="{{loading}}"
+    >
+      登录
+    </button>
+
+    <view class="login-links">
+      <navigator url="/pages/auth/register" class="login-link">立即注册</navigator>
+      <navigator url="/pages/auth/forgotPassword" class="login-link">忘记密码</navigator>
+    </view>
+  </view>
+
+  <view class="login-footer">
+    <text class="footer-text">© 2026 用友软件股份有限公司</text>
+    <text class="footer-text">版本 1.0.0</text>
+  </view>
+</view>

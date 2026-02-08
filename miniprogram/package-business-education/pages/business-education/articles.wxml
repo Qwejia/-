@@ -1,0 +1,61 @@
+<!--pages/business-education/articles.wxml-->
+<view class="articles-page">
+  <!-- 页面标题 -->
+  <view class="page-header">
+    <text class="page-title">全部文章</text>
+  </view>
+
+  <!-- 分类选择 -->
+  <view class="category-section">
+    <scroll-view scroll-x="true" class="category-scroll">
+      <view class="category-list">
+        <view 
+          wx:for="{{categories}}" 
+          wx:key="id"
+          class="category-item {{selectedCategory === item.id ? 'active' : ''}}"
+          bindtap="filterArticles"
+          data-category-id="{{item.id}}"
+        >
+          <text class="category-text">{{item.name}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 文章列表 -->
+  <view class="articles-section">
+    <view wx:if="{{loading}}" class="loading-container">
+      <text class="loading-text">加载中...</text>
+    </view>
+    
+    <view wx:elif="{{filteredArticles.length === 0}}" class="empty-container">
+      <text class="empty-icon">📝</text>
+      <text class="empty-text">暂无文章</text>
+      <text class="empty-subtext">该分类下暂无文章，请选择其他分类</text>
+    </view>
+    
+    <view wx:else class="articles-list">
+      <view class="article-card" wx:for="{{filteredArticles}}" wx:key="id">
+        <view class="article-content">
+          <text class="article-title">{{item.title}}</text>
+          <text class="article-excerpt">{{item.excerpt}}</text>
+          <view class="article-meta">
+            <text class="article-author">{{item.author}}</text>
+            <text class="article-date">{{item.date}}</text>
+            <view class="article-stats">
+              <text class="article-reads">{{item.reads}}阅读</text>
+              <text class="article-likes">❤️ {{item.likes}}</text>
+              <text class="article-comments">💬 {{item.comments}}</text>
+            </view>
+          </view>
+          <view class="article-action">
+            <button class="read-btn" bindtap="readArticle" data-id="{{item.id}}">阅读全文</button>
+          </view>
+        </view>
+        <view class="article-icon">
+          {{item.icon}}
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

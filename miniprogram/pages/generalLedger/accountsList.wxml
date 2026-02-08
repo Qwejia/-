@@ -1,0 +1,74 @@
+<!-- pages/generalLedger/accountsList.wxml -->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-section">
+    <view class="search-box">
+      <text class="search-icon">🔍</text>
+      <input type="text" placeholder="搜索会计科目" value="{{searchKeyword}}" bindinput="onSearch" class="search-input" />
+    </view>
+  </view>
+  
+  <!-- 筛选条件 -->
+  <view class="filter-section">
+    <view class="filter-row">
+      <view class="filter-item">
+        <text class="label">科目类别</text>
+        <picker mode="selector" range="{{categoryOptions}}" range-key="text" value="{{categoryFilter}}" bindchange="onCategoryChange" class="picker">
+          <view class="picker-text">{{categoryOptions[categoryFilter].text}}</view>
+        </picker>
+      </view>
+      <view class="filter-item">
+        <text class="label">科目级次</text>
+        <picker mode="selector" range="{{levelOptions}}" range-key="text" value="{{levelFilter}}" bindchange="onLevelChange" class="picker">
+          <view class="picker-text">{{levelOptions[levelFilter].text}}</view>
+        </picker>
+      </view>
+    </view>
+    <view class="reset-btn">
+      <button type="default" bindtap="resetFilters" size="mini">重置筛选</button>
+    </view>
+  </view>
+  
+  <!-- 会计科目列表 -->
+  <view class="accounts-section">
+    <view class="section-header">
+      <text class="title">会计科目列表</text>
+      <text class="count">({{filteredAccounts.length}})</text>
+    </view>
+    
+    <view class="accounts-list">
+      <view wx:for="{{filteredAccounts}}" wx:key="_id" class="account-item" bindtap="viewAccountDetail" data-id="{{item._id}}">
+        <view class="account-info">
+          <view class="account-code-name">
+            <text class="account-code">{{item.code}}</text>
+            <text class="account-name">{{item.name}}</text>
+          </view>
+          <text class="account-category">{{item.categoryName}}</text>
+        </view>
+        <view class="account-details">
+          <view class="detail-item">
+            <text class="label">级次</text>
+            <text class="value">{{item.level}}</text>
+          </view>
+          <view class="detail-item">
+            <text class="label">辅助核算</text>
+            <text class="value">{{item.auxAccountingText || '无'}}</text>
+          </view>
+          <view class="detail-item">
+            <text class="label">余额方向</text>
+            <text class="value">{{item.balanceDirection === 'debit' ? '借方' : '贷方'}}</text>
+          </view>
+        </view>
+      </view>
+      
+      <view wx:if="filteredAccounts.length === 0" class="empty-state">
+        <text class="empty-text">暂无会计科目数据</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 新增按钮 -->
+  <view class="add-button">
+    <button type="primary" bindtap="addAccount" class="btn">+ 新增科目</button>
+  </view>
+</view>

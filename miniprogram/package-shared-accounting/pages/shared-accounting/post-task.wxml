@@ -1,0 +1,152 @@
+<!-- 发布会计任务页面 -->
+<view class="container">
+  <!-- 页面头部 -->
+  <view class="header">
+    <view class="back-btn" bindtap="onBack">
+      <text>←</text>
+    </view>
+    <text class="title">发布任务</text>
+    <view class="header-right">
+      <text class="header-icon">💡</text>
+    </view>
+  </view>
+
+  <!-- 任务表单 -->
+  <view class="form-container">
+    <!-- 服务类型选择 -->
+    <view class="form-section">
+      <text class="section-title">服务类型</text>
+      <view class="service-type-grid">
+        <view class="service-type-item {{selectedService === 'tax' ? 'active' : ''}}" bindtap="selectService" data-service="tax">
+          <view class="service-type-icon">📋</view>
+          <text class="service-type-text">税务申报</text>
+        </view>
+        <view class="service-type-item {{selectedService === 'accounting' ? 'active' : ''}}" bindtap="selectService" data-service="accounting">
+          <view class="service-type-icon">📊</view>
+          <text class="service-type-text">账务处理</text>
+        </view>
+        <view class="service-type-item {{selectedService === 'audit' ? 'active' : ''}}" bindtap="selectService" data-service="audit">
+          <view class="service-type-icon">🔍</view>
+          <text class="service-type-text">财务审计</text>
+        </view>
+        <view class="service-type-item {{selectedService === 'consulting' ? 'active' : ''}}" bindtap="selectService" data-service="consulting">
+          <view class="service-type-icon">💡</view>
+          <text class="service-type-text">财务咨询</text>
+        </view>
+        <view class="service-type-item {{selectedService === 'taxPlanning' ? 'active' : ''}}" bindtap="selectService" data-service="taxPlanning">
+          <view class="service-type-icon">💰</view>
+          <text class="service-type-text">税务筹划</text>
+        </view>
+        <view class="service-type-item {{selectedService === 'financialAnalysis' ? 'active' : ''}}" bindtap="selectService" data-service="financialAnalysis">
+          <view class="service-type-icon">📈</view>
+          <text class="service-type-text">财务分析</text>
+        </view>
+        <view class="service-type-item {{selectedService === 'costAccounting' ? 'active' : ''}}" bindtap="selectService" data-service="costAccounting">
+          <view class="service-type-icon">📉</view>
+          <text class="service-type-text">成本核算</text>
+        </view>
+        <view class="service-type-item {{selectedService === 'fundManagement' ? 'active' : ''}}" bindtap="selectService" data-service="fundManagement">
+          <view class="service-type-icon">💵</view>
+          <text class="service-type-text">资金管理</text>
+        </view>
+        <view class="service-type-item {{selectedService === 'financialTraining' ? 'active' : ''}}" bindtap="selectService" data-service="financialTraining">
+          <view class="service-type-icon">📚</view>
+          <text class="service-type-text">财务培训</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 任务标题 -->
+    <view class="form-section">
+      <text class="section-title">任务标题</text>
+      <input type="text" class="form-input" placeholder="请输入任务标题" value="{{taskTitle}}" bindinput="onTitleInput" maxlength="50" />
+    </view>
+
+    <!-- 任务描述 -->
+    <view class="form-section">
+      <text class="section-title">任务描述</text>
+      <textarea class="form-textarea" placeholder="请详细描述您的任务需求，包括具体服务内容、时间要求等" value="{{taskDescription}}" bindinput="onDescriptionInput" maxlength="500" />
+    </view>
+
+    <!-- 预算设置 -->
+    <view class="form-section">
+      <text class="section-title">预算范围</text>
+      <view class="budget-options">
+        <view class="budget-item {{selectedBudget === 'veryLow' ? 'active' : ''}}" bindtap="selectBudget" data-budget="veryLow">
+          <text class="budget-text">¥100以下</text>
+        </view>
+        <view class="budget-item {{selectedBudget === 'low' ? 'active' : ''}}" bindtap="selectBudget" data-budget="low">
+          <text class="budget-text">¥100-300</text>
+        </view>
+        <view class="budget-item {{selectedBudget === 'mediumLow' ? 'active' : ''}}" bindtap="selectBudget" data-budget="mediumLow">
+          <text class="budget-text">¥300-500</text>
+        </view>
+        <view class="budget-item {{selectedBudget === 'medium' ? 'active' : ''}}" bindtap="selectBudget" data-budget="medium">
+          <text class="budget-text">¥500-800</text>
+        </view>
+        <view class="budget-item {{selectedBudget === 'mediumHigh' ? 'active' : ''}}" bindtap="selectBudget" data-budget="mediumHigh">
+          <text class="budget-text">¥800-1000</text>
+        </view>
+        <view class="budget-item {{selectedBudget === 'high' ? 'active' : ''}}" bindtap="selectBudget" data-budget="high">
+          <text class="budget-text">¥1000-2000</text>
+        </view>
+        <view class="budget-item {{selectedBudget === 'veryHigh' ? 'active' : ''}}" bindtap="selectBudget" data-budget="veryHigh">
+          <text class="budget-text">¥2000+</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 时间要求 -->
+    <view class="form-section">
+      <text class="section-title">完成时间</text>
+      <picker mode="date" value="{{deadlineDate}}" start="{{minDate}}" bindchange="onDeadlineChange" class="date-picker">
+        <view class="picker-content">{{deadlineDate}}</view>
+      </picker>
+    </view>
+
+    <!-- 联系方式 -->
+    <view class="form-section">
+      <text class="section-title">联系方式</text>
+      <input type="number" class="form-input" placeholder="请输入手机号码" value="{{contactPhone}}" bindinput="onPhoneInput" maxlength="11" />
+    </view>
+
+    <!-- 附件上传 -->
+    <view class="form-section">
+      <text class="section-title">附件上传</text>
+      <view class="upload-section">
+        <view class="upload-area" bindtap="chooseFile">
+          <view class="upload-icon">📎</view>
+          <text class="upload-text">点击上传附件</text>
+          <text class="upload-hint">支持PDF、Word、Excel等格式</text>
+        </view>
+        <view class="file-list" wx:if="attachedFiles.length > 0">
+          <view class="file-item" wx:for="{{attachedFiles}}" wx:key="index">
+            <view class="file-info">
+              <text class="file-name">{{item.name}}</text>
+              <text class="file-size">{{item.size}}</text>
+            </view>
+            <view class="file-action" bindtap="removeFile" data-index="{{index}}">
+              <text>删除</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-section">
+    <button class="submit-btn" bindtap="submitTask" disabled="{{!canSubmit}}">
+      发布任务
+    </button>
+  </view>
+
+  <!-- 提示信息 -->
+  <view class="tips-section">
+    <text class="tips-title">发布须知</text>
+    <text class="tips-content">• 请详细描述任务需求，以便会计更好地理解
+• 预算设置应合理，符合市场价格
+• 联系方式需真实有效，便于会计联系
+• 发布任务后，会计将在24小时内响应</text>
+  </view>
+</view>

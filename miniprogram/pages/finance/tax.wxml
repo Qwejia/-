@@ -1,0 +1,78 @@
+<!--pages/finance/tax.wxml-->
+<view class="container">
+  <!-- 导航栏 -->
+  <view class="navbar">
+    <view class="navbar-left">
+      <text class="back-btn" bindtap="navigateBack">←</text>
+    </view>
+    <view class="navbar-center">
+      <text class="navbar-title">税务概览</text>
+    </view>
+    <view class="navbar-right">
+      <text class="more-btn" bindtap="showMoreOptions">•••</text>
+      <text class="settings-btn" bindtap="navigateToSettings">⚙</text>
+    </view>
+  </view>
+  
+  <!-- 页面内容 -->
+  <view class="content">
+    <!-- 税务概览内容区域 -->
+    <view class="tax-overview">
+      <!-- 税务状态卡片 -->
+      <view class="status-card">
+        <view class="status-item">
+          <text class="status-label">本月应纳税额</text>
+          <text class="status-value">¥0.00</text>
+        </view>
+        <view class="status-item">
+          <text class="status-label">已申报税额</text>
+          <text class="status-value">¥0.00</text>
+        </view>
+        <view class="status-item">
+          <text class="status-label">待申报税额</text>
+          <text class="status-value">¥0.00</text>
+        </view>
+      </view>
+      
+      <!-- 税务申报提醒 -->
+      <view class="reminder-section">
+        <text class="section-title">申报提醒</text>
+        <view class="reminder-list">
+          <view class="reminder-item">
+            <text class="reminder-date">2024-01-15</text>
+            <text class="reminder-content">增值税月度申报</text>
+            <text class="reminder-status pending">待申报</text>
+          </view>
+          <view class="reminder-item">
+            <text class="reminder-date">2024-01-20</text>
+            <text class="reminder-content">企业所得税季度申报</text>
+            <text class="reminder-status pending">待申报</text>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 税务工具 -->
+      <view class="tools-section">
+        <text class="section-title">税务工具</text>
+        <view class="tools-grid">
+          <view class="tool-item" bindtap="navigateToTaxCalculator">
+            <text class="tool-icon">🧮</text>
+            <text class="tool-name">税额计算</text>
+          </view>
+          <view class="tool-item" bindtap="navigateToTaxPlanning">
+            <text class="tool-icon">📋</text>
+            <text class="tool-name">税务筹划</text>
+          </view>
+          <view class="tool-item" bindtap="navigateToTaxInquiry">
+            <text class="tool-icon">🔍</text>
+            <text class="tool-name">税务查询</text>
+          </view>
+          <view class="tool-item" bindtap="navigateToTaxTips">
+            <text class="tool-icon">💡</text>
+            <text class="tool-name">税务小贴士</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

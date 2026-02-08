@@ -1,0 +1,110 @@
+.container {
+  padding: 20rpx;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+  background-color: #fff;
+  border-radius: 8rpx;
+  padding: 0 20rpx;
+  box-shadow: 0 2rpx 4rpx rgba(0,0,0,0.1);
+}
+
+.search-input {
+  flex: 1;
+  height: 80rpx;
+  font-size: 32rpx;
+}
+
+.add-btn {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  background-color: #07c160;
+  color: #fff;
+  font-size: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+.loading {
+  padding: 40rpx;
+  text-align: center;
+  color: #666;
+}
+
+.customer-list {
+  background-color: #fff;
+  border-radius: 8rpx;
+  box-shadow: 0 2rpx 4rpx rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.customer-item {
+  padding: 30rpx 20rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.customer-item:last-child {
+  border-bottom: none;
+}
+
+.customer-header {
+  margin-bottom: 16rpx;
+}
+
+.customer-name {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.customer-code {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.customer-body {
+  margin-bottom: 16rpx;
+}
+
+.customer-info {
+  font-size: 26rpx;
+  color: #666;
+  margin-bottom: 8rpx;
+}
+
+.divider {
+  margin: 0 12rpx;
+  color: #999;
+}
+
+.customer-address {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.4;
+}
+
+.customer-footer {
+  text-align: right;
+}
+
+.status-tag {
+  padding: 8rpx 16rpx;
+  border-radius: 16rpx;
+  font-size: 24rpx;
+}
+
+.empty-state {
+  padding: 100rpx;
+  text-align: center;
+  color: #999;
+  font-size: 32rpx;
+}

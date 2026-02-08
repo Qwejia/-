@@ -1,0 +1,143 @@
+<!-- pages/generalLedger/ledger.wxml -->
+<view class="container">
+  <!-- 页面头部 -->
+  <view class="page-header">
+    <text class="page-title">总账管理</text>
+  </view>
+
+  <!-- 搜索栏 -->
+  <view class="search-section">
+    <view class="search-box">
+      <text class="search-icon">🔍</text>
+      <input type="text" placeholder="搜索科目代码或名称" value="{{searchKeyword}}" bindinput="onSearch" class="search-input" />
+    </view>
+  </view>
+  
+  <!-- 筛选条件 -->
+  <view class="filter-section">
+    <view class="filter-row">
+      <view class="filter-item">
+        <text class="label">科目类别</text>
+        <picker mode="selector" range="{{categoryOptions}}" range-key="text" value="{{categoryFilter}}" bindchange="onCategoryChange" class="picker">
+          <view class="picker-text">{{categoryOptions[categoryFilter || 0].text}}</view>
+        </picker>
+      </view>
+      <view class="filter-item">
+        <text class="label">期间</text>
+        <picker mode="selector" range="{{periodOptions}}" range-key="text" value="{{periodIndex}}" bindchange="onPeriodChange" class="picker">
+          <view class="picker-text">{{periodText}}</view>
+        </picker>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 快捷操作按钮 -->
+  <view class="quick-actions-section">
+    <view class="quick-actions-container">
+      <!-- 可见的操作按钮 -->
+      <view wx:for="{{visibleActions}}" wx:key="id" class="quick-action-btn" bindtap="handleQuickAction" data-action="{{item.action}}">
+        <text class="action-icon">{{item.icon}}</text>
+        <text class="action-name">{{item.name}}</text>
+      </view>
+      
+      <!-- 更多/收起按钮 -->
+      <view class="quick-action-more" bindtap="toggleMoreActions">
+        <text class="more-icon">{{showMoreActions ? '📋' : '➕'}}</text>
+        <text class="more-name">{{showMoreActions ? '收起' : '更多'}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 总账列表 -->
+  <view class="ledger-section">
+    <view class="section-header">
+      <text class="title">总账</text>
+    </view>
+    
+    <view class="ledger-header">
+      <text class="header-item code">科目代码</text>
+      <text class="header-item name">科目名称</text>
+      <text class="header-item category">类别</text>
+      <text class="header-item amount">借方发生额</text>
+      <text class="header-item amount">贷方发生额</text>
+      <text class="header-item amount balance">余额</text>
+    </view>
+    
+    <view class="ledger-list" bindscrolltolower="loadMoreLedger" bindscroll="onScroll">
+      <!-- 加载指示器 -->
+      <view wx:if="{{loading}}" class="loading-state">
+        <view class="loading-animation">
+          <view class="loading-circle"></view>
+          <view class="loading-circle"></view>
+          <view class="loading-circle"></view>
+        </view>
+        <text class="loading-text">正在加载总账数据...</text>
+        
+        <!-- 加载进度条 -->
+        <view wx:if="{{showProgress}}" class="progress-container">
+          <view class="progress-bar">
+            <view class="progress-fill" style="width: {{loadingProgress}}%"></view>
+          </view>
+          <text class="progress-text">{{loadingProgress}}%</text>
+        </view>
+      </view>
+      
+      <!-- 正常数据列表 -->
+      <view wx:elif="{{ledgerData.length > 0}}" class="data-list">
+        <view wx:for="{{ledgerData}}" wx:key="account._id" class="ledger-item" bindtap="viewSubLedger" data-id="{{item.account._id}}">
+          <text class="item-code">{{item.account.code}}</text>
+          <text class="item-name">{{item.account.name}}</text>
+          <text class="item-category">{{item.categoryName}}</text>
+          <text class="item-debit">¥{{item.debitAmount.toFixed(2)}}</text>
+          <text class="item-credit">¥{{item.creditAmount.toFixed(2)}}</text>
+          <text class="item-balance {{item.balance >= 0 ? 'debit' : 'credit'}}">¥{{item.balance.toFixed(2)}}</text>
+        </view>
+        
+        <!-- 加载更多指示器 -->
+        <view wx:if="{{loadingMore}}" class="loading-more">
+          <text class="loading-more-text">加载更多...</text>
+        </view>
+        
+        <!-- 没有更多数据提示 -->
+        <view wx:if="{{!hasMoreData && !loadingMore}}" class="no-more">
+          <text class="no-more-text">没有更多数据了</text>
+        </view>
+        
+        <!-- 总金额行 -->
+        <view class="total-row">
+          <text class="total-label">合计</text>
+          <text class="total-spacer"></text>
+          <text class="total-spacer"></text>
+          <text class="total-debit">¥{{totalDebit.toFixed(2)}}</text>
+          <text class="total-credit">¥{{totalCredit.toFixed(2)}}</text>
+          <text class="total-balance"></text>
+        </view>
+      </view>
+      
+      <!-- 错误状态 -->
+      <view wx:elif="{{error}}" class="empty-state error">
+        <text class="empty-icon">❌</text>
+        <text class="empty-text">加载失败</text>
+        <text class="empty-subtext">{{error}}</text>
+        <button class="retry-btn" bindtap="loadLedgerData">重试</button>
+      </view>
+      
+      <!-- 空数据状态 -->
+      <view wx:else class="empty-state">
+        <view class="empty-container">
+          <text class="empty-icon">📊</text>
+          <text class="empty-text">暂无总账数据</text>
+          <text class="empty-subtext">
+            {{searchKeyword ? '没有找到匹配的科目' : '当前条件下没有总账记录'}}
+          </text>
+          <text class="empty-subtext">
+            {{searchKeyword ? '请尝试其他搜索关键词' : '请调整筛选条件或添加新的凭证'}}
+          </text>
+          <button wx:if="{{searchKeyword}}" class="reset-btn" bindtap="resetSearch">
+            清除搜索
+          </button>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

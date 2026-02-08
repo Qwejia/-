@@ -1,0 +1,49 @@
+<view class="container">
+  <!-- 筛选栏 -->
+  <view class="filter-bar">
+    <picker mode="date" value="{{selectedDate}}" bindchange="bindDateChange" class="date-picker">
+      <view class="picker-view">
+        <text>选择日期: {{selectedDate}}</text>
+      </view>
+    </picker>
+    <button class="export-btn" bindtap="exportAttendanceReport">导出报表</button>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 考勤列表 -->
+  <view wx:else class="attendance-list">
+    <view 
+      wx:for="{{attendanceData}}" 
+      wx:key="_id"
+      class="attendance-item"
+      data-employee-id="{{item.employeeId}}"
+      bindtap="viewAttendanceDetail"
+    >
+      <view class="attendance-header">
+        <view class="employee-name">{{item.employeeName}}</view>
+        <view class="attendance-status">
+          <text class="status-tag" style="background-color: {{item.status === '正常' ? '#e8f5e9' : '#ffebee'}}; color: {{item.status === '正常' ? '#2e7d32' : '#c62828'}};">{{item.status}}</text>
+        </view>
+      </view>
+      <view class="attendance-body">
+        <view class="attendance-info">
+          <text>部门: {{item.departmentName}}</text>
+        </view>
+        <view class="attendance-times">
+          <text>上班: {{item.checkInTime}}</text>
+          <text class="divider">|</text>
+          <text>下班: {{item.checkOutTime}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view wx:if="{{attendanceData.length === 0}}" class="empty-state">
+      <text>暂无考勤数据</text>
+    </view>
+  </view>
+</view>

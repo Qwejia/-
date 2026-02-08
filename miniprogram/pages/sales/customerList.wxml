@@ -1,0 +1,51 @@
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <input 
+      class="search-input" 
+      placeholder="搜索客户名称或编码" 
+      value="{{searchKeyword}}"
+      bindinput="onSearchInput"
+    />
+    <button class="add-btn" bindtap="addCustomer">+</button>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 客户列表 -->
+  <view wx:else class="customer-list">
+    <view 
+      wx:for="{{customers}}" 
+      wx:key="code"
+      class="customer-item"
+      data-customer-id="{{item.code}}"
+      bindtap="viewCustomerDetail"
+    >
+      <view class="customer-header">
+        <view class="customer-name">{{item.name}}</view>
+        <view class="customer-code">{{item.code}}</view>
+      </view>
+      <view class="customer-body">
+        <view class="customer-info">
+          <text>联系人: {{item.contact}}</text>
+          <text class="divider">|</text>
+          <text>电话: {{item.phone}}</text>
+        </view>
+        <view class="customer-address">
+          <text>地址: {{item.address}}</text>
+        </view>
+      </view>
+      <view class="customer-footer">
+        <text class="status-tag" style="background-color: {{item.status === 'active' ? '#e8f5e9' : '#ffebee'}}; color: {{item.status === 'active' ? '#2e7d32' : '#c62828'}};">{{item.status === 'active' ? '启用' : '禁用'}}</text>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view wx:if="{{customers.length === 0}}" class="empty-state">
+      <text>暂无客户数据</text>
+    </view>
+  </view>
+</view>

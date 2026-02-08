@@ -1,0 +1,69 @@
+<!-- pages/generalLedger/balanceSheet.wxml -->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-section">
+    <view class="search-box">
+      <text class="search-icon">🔍</text>
+      <input type="text" placeholder="搜索科目代码或名称" value="{{searchKeyword}}" bindinput="onSearch" class="search-input" />
+    </view>
+  </view>
+  
+  <!-- 筛选条件 -->
+  <view class="filter-section">
+    <view class="filter-row">
+      <view class="filter-item">
+        <text class="label">科目类别</text>
+        <picker mode="selector" range="{{categoryOptions}}" range-key="text" value="{{categoryFilter}}" bindchange="onCategoryChange" class="picker">
+          <view class="picker-text">{{categoryOptions[categoryFilter].text}}</view>
+        </picker>
+      </view>
+      <view class="filter-item">
+        <text class="label">科目级次</text>
+        <picker mode="selector" range="{{levelOptions}}" range-key="text" value="{{levelFilter}}" bindchange="onLevelChange" class="picker">
+          <view class="picker-text">{{levelOptions[levelFilter].text}}</view>
+        </picker>
+      </view>
+    </view>
+    <view class="filter-row">
+      <view class="filter-item">
+        <text class="label">期间</text>
+        <picker mode="selector" range="{{periodOptions}}" range-key="text" value="{{periodIndex}}" bindchange="onPeriodChange" class="picker">
+          <view class="picker-text">{{periodText}}</view>
+        </picker>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 余额表 -->
+  <view class="balance-section">
+    <view class="section-header">
+      <text class="title">余额表</text>
+    </view>
+    
+    <view class="balance-header">
+      <text class="header-item">科目代码</text>
+      <text class="header-item">科目名称</text>
+      <text class="header-item">类别</text>
+      <text class="header-item">期初余额</text>
+      <text class="header-item">借方发生额</text>
+      <text class="header-item">贷方发生额</text>
+      <text class="header-item">期末余额</text>
+    </view>
+    
+    <view class="balance-list">
+      <view wx:for="{{filteredBalanceData}}" wx:key="account._id" class="balance-item" bindtap="viewSubLedger" data-id="{{item.account._id}}">
+        <text class="item-code">{{item.account.code}}</text>
+        <text class="item-name">{{item.account.name}}</text>
+        <text class="item-category">{{item.categoryName}}</text>
+        <text class="item-opening {{item.openingBalance >= 0 ? 'debit' : 'credit'}}">¥{{item.openingBalance.toFixed(2)}}</text>
+        <text class="item-debit">¥{{item.currentDebit.toFixed(2)}}</text>
+        <text class="item-credit">¥{{item.currentCredit.toFixed(2)}}</text>
+        <text class="item-closing {{item.closingBalance >= 0 ? 'debit' : 'credit'}}">¥{{item.closingBalance.toFixed(2)}}</text>
+      </view>
+      
+      <view wx:if="filteredBalanceData.length === 0" class="empty-state">
+        <text class="empty-text">暂无余额数据</text>
+      </view>
+    </view>
+  </view>
+</view>

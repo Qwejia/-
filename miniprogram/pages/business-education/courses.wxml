@@ -1,0 +1,63 @@
+<!--pages/business-education/courses.wxml-->
+<view class="courses-page">
+  <!-- 页面标题 -->
+  <view class="page-header">
+    <text class="page-title">全部课程</text>
+  </view>
+
+  <!-- 分类选择 -->
+  <view class="category-section">
+    <scroll-view scroll-x="true" class="category-scroll">
+      <view class="category-list">
+        <view 
+          wx:for="{{categories}}" 
+          wx:key="id"
+          class="category-item {{selectedCategory === item.id ? 'active' : ''}}"
+          bindtap="filterCourses"
+          data-category-id="{{item.id}}"
+        >
+          <text class="category-text">{{item.name}}</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 课程列表 -->
+  <view class="courses-section">
+    <view wx:if="{{loading}}" class="loading-container">
+      <text class="loading-text">加载中...</text>
+    </view>
+    
+    <view wx:elif="{{filteredCourses.length === 0}}" class="empty-container">
+      <text class="empty-icon">📚</text>
+      <text class="empty-text">暂无课程</text>
+      <text class="empty-subtext">该分类下暂无课程，请选择其他分类</text>
+    </view>
+    
+    <view wx:else class="courses-list">
+      <view class="course-card" wx:for="{{filteredCourses}}" wx:key="id">
+        <view class="course-cover">
+          <text class="cover-icon">{{item.icon}}</text>
+          <view class="course-duration">{{item.duration}}</view>
+          <view class="course-level">{{item.level}}</view>
+        </view>
+        <view class="course-info">
+          <text class="course-title">{{item.title}}</text>
+          <text class="course-description">{{item.description}}</text>
+          <view class="course-meta">
+            <text class="course-author">{{item.author}}</text>
+            <view class="course-stats">
+              <text class="course-rating">⭐ {{item.rating}}</text>
+              <text class="course-students">{{item.students}}人学习</text>
+            </view>
+            <text class="course-price" wx:if="{{item.isFree}}">免费</text>
+            <text class="course-price" wx:else>¥{{item.price}}</text>
+          </view>
+          <view class="course-action">
+            <button class="enroll-btn" bindtap="enrollCourse" data-id="{{item.id}}">立即学习</button>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

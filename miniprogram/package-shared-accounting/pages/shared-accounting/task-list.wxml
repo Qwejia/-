@@ -1,0 +1,115 @@
+<!-- 任务列表页面 -->
+<view class="container">
+  <!-- 页面头部 -->
+  <view class="header">
+    <view class="back-btn" bindtap="onBack">
+      <text>←</text>
+    </view>
+    <text class="title">任务列表</text>
+    <view class="header-right">
+      <text class="header-icon">📋</text>
+    </view>
+  </view>
+
+  <!-- 任务状态筛选 -->
+  <view class="filter-section">
+    <view class="filter-tabs">
+      <view class="filter-tab {{activeFilter === 'all' ? 'active' : ''}}" bindtap="switchFilter" data-filter="all">
+        <text class="tab-text">全部</text>
+      </view>
+      <view class="filter-tab {{activeFilter === 'pending' ? 'active' : ''}}" bindtap="switchFilter" data-filter="pending">
+        <text class="tab-text">待处理</text>
+      </view>
+      <view class="filter-tab {{activeFilter === 'processing' ? 'active' : ''}}" bindtap="switchFilter" data-filter="processing">
+        <text class="tab-text">处理中</text>
+      </view>
+      <view class="filter-tab {{activeFilter === 'completed' ? 'active' : ''}}" bindtap="switchFilter" data-filter="completed">
+        <text class="tab-text">已完成</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 搜索和排序 -->
+  <view class="search-sort-section">
+    <!-- 搜索框 -->
+    <view class="search-box">
+      <text class="search-icon">🔍</text>
+      <input class="search-input" placeholder="搜索任务标题或描述" value="{{searchKeyword}}" bindinput="onSearchInput" />
+      <view class="clear-btn" wx:if="searchKeyword" bindtap="clearSearch">✕</view>
+    </view>
+    
+    <!-- 排序选项 -->
+    <view class="sort-section">
+      <text class="sort-label">排序：</text>
+      <view class="sort-options">
+        <view class="sort-option {{activeSort === 'createdAt' ? 'active' : ''}}" bindtap="switchSort" data-sort="createdAt">
+          <text class="sort-text">发布时间</text>
+        </view>
+        <view class="sort-option {{activeSort === 'deadline' ? 'active' : ''}}" bindtap="switchSort" data-sort="deadline">
+          <text class="sort-text">截止日期</text>
+        </view>
+        <view class="sort-option {{activeSort === 'budget' ? 'active' : ''}}" bindtap="switchSort" data-sort="budget">
+          <text class="sort-text">预算</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 任务列表 -->
+  <view class="task-list-container">
+    <view class="task-list" wx:if="filteredTasks.length > 0">
+      <view class="task-card" wx:for="{{filteredTasks}}" wx:key="id" data-id="{{item.id}}">
+        <view class="task-header">
+          <text class="task-title">{{item.title}}</text>
+          <view class="task-status" style="background: {{getStatusColor(item.status)}}">
+            <text class="status-text">{{getStatusText(item.status)}}</text>
+          </view>
+        </view>
+        <text class="task-description">{{item.description}}</text>
+        <view class="task-meta">
+          <view class="meta-item">
+            <text class="meta-icon">💼</text>
+            <text class="meta-text">{{getServiceText(item.service)}}</text>
+          </view>
+          <view class="meta-item">
+            <text class="meta-icon">💰</text>
+            <text class="meta-text">{{getBudgetText(item.budget)}}</text>
+          </view>
+          <view class="meta-item">
+            <text class="meta-icon">📅</text>
+            <text class="meta-text">{{item.deadline}}</text>
+          </view>
+        </view>
+        <view class="task-footer">
+          <text class="task-time">{{formatTime(item.createdAt)}}</text>
+          <view class="task-actions">
+            <view class="action-btn view" bindtap="viewTaskDetail" data-id="{{item.id}}">
+              <text class="action-text">查看详情</text>
+            </view>
+            <view class="action-btn cancel" bindtap="cancelTask" data-id="{{item.id}}" wx:if="item.status === 'pending'">
+              <text class="action-text">取消任务</text>
+            </view>
+            <view class="action-btn complete" bindtap="completeTask" data-id="{{item.id}}" wx:if="item.status === 'processing'">
+              <text class="action-text">确认完成</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="empty-state" wx:else>
+      <view class="empty-icon">📋</view>
+      <text class="empty-title">暂无任务</text>
+      <text class="empty-subtitle">点击下方按钮发布新任务</text>
+    </view>
+  </view>
+
+  <!-- 发布任务按钮 -->
+  <view class="post-task-section">
+    <button class="post-task-btn" bindtap="navigateToPostTask">
+      <text class="btn-icon">✏️</text>
+      <text class="btn-text">发布新任务</text>
+    </button>
+  </view>
+
+
+</view>

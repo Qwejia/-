@@ -1,0 +1,115 @@
+<view class="container">
+  <!-- 订单基本信息 -->
+  <view class="section">
+    <view class="section-title">订单信息</view>
+    <view class="form-item">
+      <text class="form-label">客户名称:</text>
+      <picker 
+        class="form-picker" 
+        range="{{customers}}" 
+        range-key="name"
+        bindchange="updateOrderForm"
+        data-key="customerName"
+      >
+        <view class="picker-view">
+          <text>{{orderForm.customerName || '请选择客户'}}</text>
+        </view>
+      </picker>
+    </view>
+    <view class="form-item">
+      <text class="form-label">订单日期:</text>
+      <picker mode="date" value="{{orderForm.orderDate}}" bindchange="updateOrderForm" data-key="orderDate">
+        <view class="picker-view">
+          <text>{{orderForm.orderDate}}</text>
+        </view>
+      </picker>
+    </view>
+    <view class="form-item">
+      <text class="form-label">预计交货:</text>
+      <picker mode="date" value="{{orderForm.expectedDeliveryDate}}" bindchange="updateOrderForm" data-key="expectedDeliveryDate">
+        <view class="picker-view">
+          <text>{{orderForm.expectedDeliveryDate || '请选择日期'}}</text>
+        </view>
+      </picker>
+    </view>
+    <view class="form-item">
+      <text class="form-label">备注:</text>
+      <input 
+        class="form-input" 
+        placeholder="请输入备注信息"
+        value="{{orderForm.remark}}"
+        bindinput="updateOrderForm"
+        data-key="remark"
+      />
+    </view>
+  </view>
+
+  <!-- 商品信息 -->
+  <view class="section">
+    <view class="section-title">商品信息</view>
+    <view class="order-items">
+      <view 
+        wx:for="{{orderItems}}" 
+        wx:key="index"
+        class="order-item"
+      >
+        <view class="item-header">
+          <text class="item-index">商品 {{index + 1}}</text>
+          <button 
+            class="delete-btn" 
+            bindtap="deleteOrderItem"
+            data-index="{{index}}"
+            wx:if="{{orderItems.length > 1}}"
+          >删除</button>
+        </view>
+        <view class="item-body">
+          <view class="form-item">
+            <text class="form-label">商品名称:</text>
+            <input 
+              class="form-input" 
+              placeholder="请输入商品名称"
+              value="{{item.productName}}"
+              bindinput="updateOrderItem"
+              data-index="{{index}}"
+              data-key="productName"
+            />
+          </view>
+          <view class="form-item">
+            <text class="form-label">数量:</text>
+            <input 
+              class="form-input" 
+              type="number" 
+              placeholder="0"
+              value="{{item.quantity}}"
+              bindinput="updateOrderItem"
+              data-index="{{index}}"
+              data-key="quantity"
+            />
+          </view>
+          <view class="form-item">
+            <text class="form-label">单价:</text>
+            <input 
+              class="form-input" 
+              type="number" 
+              placeholder="0"
+              value="{{item.unitPrice}}"
+              bindinput="updateOrderItem"
+              data-index="{{index}}"
+              data-key="unitPrice"
+            />
+          </view>
+          <view class="form-item">
+            <text class="form-label">金额:</text>
+            <text class="form-value">¥{{item.amount.toFixed(2)}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <button class="add-item-btn" bindtap="addOrderItem">+ 添加商品</button>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-section">
+    <button class="submit-btn" bindtap="submitOrder">提交订单</button>
+  </view>
+</view>

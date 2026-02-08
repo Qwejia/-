@@ -1,0 +1,6 @@
+{
+  "name": "aiAssistant",
+  "version": "1.0.0",
+  "description": "AI Assistant Cloud Function",
+  "main": "index.js"
+}

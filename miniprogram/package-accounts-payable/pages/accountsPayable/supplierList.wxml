@@ -1,0 +1,206 @@
+<view class="container">
+  <view class="header">
+    <text class="title">供应商管理</text>
+    <button class="add-btn" bindtap="showAddSupplier">+ 新增</button>
+  </view>
+
+  <view class="search-bar">
+    <input 
+      class="search-input" 
+      placeholder="搜索供应商名称、编码、联系人或电话" 
+      value="{{searchQuery}}"
+      bindinput="searchSupplier"
+    />
+  </view>
+
+  <view class="filter-bar">
+    <view 
+      class="filter-item {{statusFilter === 'all' ? 'active' : ''}}"
+      bindtap="filterByStatus"
+      data-status="all"
+    >
+      全部
+    </view>
+    <view 
+      class="filter-item {{statusFilter === 'active' ? 'active' : ''}}"
+      bindtap="filterByStatus"
+      data-status="active"
+    >
+      正常
+    </view>
+    <view 
+      class="filter-item {{statusFilter === 'inactive' ? 'active' : ''}}"
+      bindtap="filterByStatus"
+      data-status="inactive"
+    >
+      停用
+    </view>
+  </view>
+
+  <view class="supplier-list">
+    <view wx:if="{{filteredSuppliers.length === 0}}" class="empty">
+      <text>暂无供应商数据</text>
+    </view>
+    <block wx:for="{{filteredSuppliers}}" wx:key="_id">
+      <view class="supplier-item">
+        <view class="supplier-header">
+          <view class="supplier-info">
+            <text class="supplier-name">{{item.name}}</text>
+            <text class="supplier-code">({{item.code}})</text>
+            <view class="status-badge {{item.status === 'active' ? 'active' : 'inactive'}}">
+              {{item.status === 'active' ? '正常' : '停用'}}
+            </view>
+          </view>
+        </view>
+        <view class="supplier-details">
+          <view class="detail-item">
+            <text class="label">联系人：</text>
+            <text class="value">{{item.contact}}</text>
+          </view>
+          <view class="detail-item">
+            <text class="label">电话：</text>
+            <text class="value">{{item.phone}}</text>
+          </view>
+          <view class="detail-item">
+            <text class="label">地址：</text>
+            <text class="value">{{item.address}}</text>
+          </view>
+          <view class="detail-item">
+            <text class="label">信用额度：</text>
+            <text class="value">{{item.creditLimit.toLocaleString()}} 元</text>
+          </view>
+        </view>
+        <view class="supplier-actions">
+          <button 
+            class="action-btn view" 
+            bindtap="viewSupplierDetail"
+            data-id="{{item._id}}"
+          >
+            查看
+          </button>
+          <button 
+            class="action-btn edit" 
+            bindtap="showEditSupplier"
+            data-id="{{item._id}}"
+          >
+            编辑
+          </button>
+          <button 
+            class="action-btn {{item.status === 'active' ? 'disable' : 'enable'}}" 
+            bindtap="toggleSupplierStatus"
+            data-id="{{item._id}}"
+          >
+            {{item.status === 'active' ? '停用' : '激活'}}
+          </button>
+          <button 
+            class="action-btn delete" 
+            bindtap="deleteSupplier"
+            data-id="{{item._id}}"
+          >
+            删除
+          </button>
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <!-- 新增/编辑供应商对话框 -->
+  <view class="modal" wx:if="{{showAddDialog}}">
+    <view class="modal-content">
+      <view class="modal-header">
+        <text>{{editingId ? '编辑供应商' : '新增供应商'}}</text>
+        <text class="close-btn" bindtap="closeAddDialog">×</text>
+      </view>
+      <view class="modal-body">
+        <view class="form-item">
+          <text class="form-label">供应商编码 *</text>
+          <input 
+            class="form-input" 
+            value="{{supplier.code}}"
+            bindinput="inputChange"
+            data-field="code"
+            placeholder="请输入供应商编码"
+          />
+        </view>
+        <view class="form-item">
+          <text class="form-label">供应商名称 *</text>
+          <input 
+            class="form-input" 
+            value="{{supplier.name}}"
+            bindinput="inputChange"
+            data-field="name"
+            placeholder="请输入供应商名称"
+          />
+        </view>
+        <view class="form-item">
+          <text class="form-label">联系人 *</text>
+          <input 
+            class="form-input" 
+            value="{{supplier.contact}}"
+            bindinput="inputChange"
+            data-field="contact"
+            placeholder="请输入联系人"
+          />
+        </view>
+        <view class="form-item">
+          <text class="form-label">联系电话 *</text>
+          <input 
+            class="form-input" 
+            value="{{supplier.phone}}"
+            bindinput="inputChange"
+            data-field="phone"
+            placeholder="请输入联系电话"
+          />
+        </view>
+        <view class="form-item">
+          <text class="form-label">地址</text>
+          <input 
+            class="form-input" 
+            value="{{supplier.address}}"
+            bindinput="inputChange"
+            data-field="address"
+            placeholder="请输入地址"
+          />
+        </view>
+        <view class="form-item">
+          <text class="form-label">信用额度</text>
+          <input 
+            class="form-input" 
+            type="digit" 
+            value="{{supplier.creditLimit}}"
+            bindinput="inputChange"
+            data-field="creditLimit"
+            placeholder="请输入信用额度"
+          />
+        </view>
+        <view class="form-item">
+          <text class="form-label">状态</text>
+          <view class="radio-group">
+            <label class="radio-item">
+              <radio 
+                value="active" 
+                checked="{{supplier.status === 'active'}}"
+                bindchange="inputChange"
+                data-field="status"
+              />
+              <text>正常</text>
+            </label>
+            <label class="radio-item">
+              <radio 
+                value="inactive" 
+                checked="{{supplier.status === 'inactive'}}"
+                bindchange="inputChange"
+                data-field="status"
+              />
+              <text>停用</text>
+            </label>
+          </view>
+        </view>
+      </view>
+      <view class="modal-footer">
+        <button class="btn-cancel" bindtap="closeAddDialog">取消</button>
+        <button class="btn-confirm" bindtap="saveSupplier">保存</button>
+      </view>
+    </view>
+  </view>
+</view>

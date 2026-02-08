@@ -1,0 +1,135 @@
+<view class="container">
+  <!-- 页面顶部 -->
+  <view class="page-header">
+    <text class="page-title">资产负债表</text>
+    <view class="header-actions">
+      <picker mode="date" value="{{reportDate}}" bindchange="onDateChange" class="date-picker">
+        <view class="picker-content">{{reportDate}}</view>
+      </picker>
+      <view class="export-btn" bindtap="exportReport">
+        <text class="export-icon">📤</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 报表内容 -->
+  <view class="report-content">
+    <!-- 资产部分 -->
+    <view class="section">
+      <view class="section-header">
+        <text class="section-title">资产</text>
+      </view>
+      
+      <!-- 流动资产 -->
+      <view class="subsection">
+        <text class="subsection-title">流动资产</text>
+        <view class="table">
+          <view class="table-row" wx:for="{{balanceSheet.assets.currentAssets}}" wx:key="name">
+            <view class="table-cell item-name">{{item.name}}</view>
+            <view class="table-cell item-amount">¥{{item.amount.toFixed(2)}}</view>
+          </view>
+          <view class="table-row subtotal">
+            <view class="table-cell subtotal-label">流动资产合计</view>
+            <view class="table-cell subtotal-amount">¥{{totals.currentAssets.toFixed(2)}}</view>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 非流动资产 -->
+      <view class="subsection">
+        <text class="subsection-title">非流动资产</text>
+        <view class="table">
+          <view class="table-row" wx:for="{{balanceSheet.assets.nonCurrentAssets}}" wx:key="name">
+            <view class="table-cell item-name">{{item.name}}</view>
+            <view class="table-cell item-amount">¥{{item.amount.toFixed(2)}}</view>
+          </view>
+          <view class="table-row subtotal">
+            <view class="table-cell subtotal-label">非流动资产合计</view>
+            <view class="table-cell subtotal-amount">¥{{totals.nonCurrentAssets.toFixed(2)}}</view>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 资产总计 -->
+      <view class="section-total">
+        <view class="table-row total">
+          <view class="table-cell total-label">资产总计</view>
+          <view class="table-cell total-amount">¥{{totals.totalAssets.toFixed(2)}}</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 负债和所有者权益部分 -->
+    <view class="section">
+      <view class="section-header">
+        <text class="section-title">负债和所有者权益</text>
+      </view>
+      
+      <!-- 负债 -->
+      <view class="subsection">
+        <text class="subsection-title">负债</text>
+        
+        <!-- 流动负债 -->
+        <view class="subsubsection">
+          <text class="subsubsection-title">流动负债</text>
+          <view class="table">
+            <view class="table-row" wx:for="{{balanceSheet.liabilities.currentLiabilities}}" wx:key="name">
+              <view class="table-cell item-name">{{item.name}}</view>
+              <view class="table-cell item-amount">¥{{item.amount.toFixed(2)}}</view>
+            </view>
+            <view class="table-row subtotal">
+              <view class="table-cell subtotal-label">流动负债合计</view>
+              <view class="table-cell subtotal-amount">¥{{totals.currentLiabilities.toFixed(2)}}</view>
+            </view>
+          </view>
+        </view>
+        
+        <!-- 非流动负债 -->
+        <view class="subsubsection">
+          <text class="subsubsection-title">非流动负债</text>
+          <view class="table">
+            <view class="table-row" wx:for="{{balanceSheet.liabilities.nonCurrentLiabilities}}" wx:key="name">
+              <view class="table-cell item-name">{{item.name}}</view>
+              <view class="table-cell item-amount">¥{{item.amount.toFixed(2)}}</view>
+            </view>
+            <view class="table-row subtotal">
+              <view class="table-cell subtotal-label">非流动负债合计</view>
+              <view class="table-cell subtotal-amount">¥{{totals.nonCurrentLiabilities.toFixed(2)}}</view>
+            </view>
+          </view>
+        </view>
+        
+        <!-- 负债总计 -->
+        <view class="table">
+          <view class="table-row subtotal">
+            <view class="table-cell subtotal-label">负债合计</view>
+            <view class="table-cell subtotal-amount">¥{{totals.totalLiabilities.toFixed(2)}}</view>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 所有者权益 -->
+      <view class="subsection">
+        <text class="subsection-title">所有者权益</text>
+        <view class="table">
+          <view class="table-row" wx:for="{{balanceSheet.equity}}" wx:key="name">
+            <view class="table-cell item-name">{{item.name}}</view>
+            <view class="table-cell item-amount">¥{{item.amount.toFixed(2)}}</view>
+          </view>
+          <view class="table-row subtotal">
+            <view class="table-cell subtotal-label">所有者权益合计</view>
+            <view class="table-cell subtotal-amount">¥{{totals.totalEquity.toFixed(2)}}</view>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 负债和所有者权益总计 -->
+      <view class="section-total">
+        <view class="table-row total">
+          <view class="table-cell total-label">负债和所有者权益总计</view>
+          <view class="table-cell total-amount">¥{{totals.totalLiabilitiesAndEquity.toFixed(2)}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

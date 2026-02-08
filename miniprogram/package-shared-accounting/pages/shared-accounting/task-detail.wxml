@@ -1,0 +1,144 @@
+<!-- 任务详情页面 -->
+<view class="container">
+  <!-- 页面头部 -->
+  <view class="header">
+    <view class="back-btn" bindtap="onBack">
+      <text>←</text>
+    </view>
+    <text class="title">任务详情</text>
+    <view class="header-right">
+      <text class="header-icon">📋</text>
+    </view>
+  </view>
+
+  <!-- 任务状态卡片 -->
+  <view class="status-card" style="background: {{getStatusColor(task.status)}};">
+    <text class="status-text">{{getStatusText(task.status)}}</text>
+    <text class="status-desc">{{getStatusDescription(task.status)}}</text>
+  </view>
+
+  <!-- 任务信息卡片 -->
+  <view class="task-card">
+    <view class="task-header">
+      <text class="task-title">{{task.title}}</text>
+      <view class="task-meta">
+        <view class="meta-item">
+          <text class="meta-icon">💼</text>
+          <text class="meta-text">{{getServiceText(task.service)}}</text>
+        </view>
+        <view class="meta-item">
+          <text class="meta-icon">💰</text>
+          <text class="meta-text">{{getBudgetText(task.budget)}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 任务描述 -->
+    <view class="task-description">
+      <text class="section-title">任务描述</text>
+      <text class="description-text">{{task.description}}</text>
+    </view>
+
+    <!-- 任务信息 -->
+    <view class="task-info">
+      <view class="info-row">
+        <text class="info-label">截止日期：</text>
+        <text class="info-value">{{task.deadline}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">联系方式：</text>
+        <text class="info-value">{{task.contact}}</text>
+      </view>
+      <view class="info-row">
+        <text class="info-label">发布时间：</text>
+        <text class="info-value">{{formatTime(task.createdAt)}}</text>
+      </view>
+    </view>
+
+    <!-- 附件信息 -->
+    <view class="task-attachments" wx:if="task.files && task.files.length > 0">
+      <text class="section-title">附件</text>
+      <view class="file-list">
+        <view class="file-item" wx:for="{{task.files}}" wx:key="index">
+          <text class="file-icon">📄</text>
+          <view class="file-info">
+            <text class="file-name">{{item.name}}</text>
+            <text class="file-size">{{item.size}}</text>
+          </view>
+          <view class="file-action">
+            <text class="download-text">下载</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 任务进展 -->
+  <view class="progress-section" wx:if="task.progress && task.progress.length > 0">
+    <text class="section-title">任务进展</text>
+    <view class="progress-list">
+      <view class="progress-item" wx:for="{{task.progress}}" wx:key="index">
+        <view class="progress-header">
+          <text class="progress-title">{{item.title}}</text>
+          <text class="progress-date">{{item.date}}</text>
+        </view>
+        <text class="progress-content">{{item.content}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar" wx:if="task.status === 'pending' || task.status === 'processing'">
+    <button class="action-btn" bindtap="cancelTask" wx:if="task.status === 'pending'" style="background: #ef4444;">
+      <text class="btn-text">取消任务</text>
+    </button>
+    <button class="action-btn" bindtap="completeTask" wx:if="task.status === 'processing'" style="background: #10b981;">
+      <text class="btn-text">确认完成</text>
+    </button>
+    <button class="action-btn" bindtap="addProgress" style="background: #3b82f6;">
+      <text class="btn-text">添加进展</text>
+    </button>
+  </view>
+
+  <!-- 评价表单 -->
+  <view class="review-section" wx:if="task.status === 'completed' && !task.reviewed">
+    <text class="section-title">评价服务</text>
+    <view class="review-form">
+      <view class="rating-section">
+        <text class="rating-label">评分：</text>
+        <view class="rating-stars">
+          <text class="star {{selectedRating >= 1 ? 'active' : ''}}" bindtap="selectRating" data-rating="1">⭐</text>
+          <text class="star {{selectedRating >= 2 ? 'active' : ''}}" bindtap="selectRating" data-rating="2">⭐</text>
+          <text class="star {{selectedRating >= 3 ? 'active' : ''}}" bindtap="selectRating" data-rating="3">⭐</text>
+          <text class="star {{selectedRating >= 4 ? 'active' : ''}}" bindtap="selectRating" data-rating="4">⭐</text>
+          <text class="star {{selectedRating >= 5 ? 'active' : ''}}" bindtap="selectRating" data-rating="5">⭐</text>
+        </view>
+      </view>
+      <view class="review-content-section">
+        <text class="content-label">评价内容：</text>
+        <textarea class="review-content" placeholder="请输入您的评价内容" value="{{reviewContent}}" bindinput="onReviewContentInput" />
+      </view>
+      <button class="submit-review-btn" bindtap="submitReview" style="background: #1677ff;">
+        <text class="btn-text">提交评价</text>
+      </button>
+    </view>
+  </view>
+</view>
+
+<!-- 添加进展模态框 -->
+<view class="modal" wx:if="showProgressModal">
+  <view class="modal-content">
+    <view class="modal-header">
+      <text class="modal-title">添加任务进展</text>
+      <view class="close-btn" bindtap="closeProgressModal">✕</view>
+    </view>
+    <view class="modal-body">
+      <input class="progress-title-input" placeholder="进展标题" value="{{progressTitle}}" bindinput="onProgressTitleInput" />
+      <textarea class="progress-content-input" placeholder="进展内容" value="{{progressContent}}" bindinput="onProgressContentInput" />
+    </view>
+    <view class="modal-footer">
+      <button class="footer-btn cancel" bindtap="closeProgressModal">取消</button>
+      <button class="footer-btn confirm" bindtap="submitProgress">提交</button>
+    </view>
+  </view>
+</view>

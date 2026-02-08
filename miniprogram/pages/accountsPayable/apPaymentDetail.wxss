@@ -1,0 +1,225 @@
+.container {
+  padding: 20rpx;
+  background-color: transparent;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 2rpx solid #e0e0e0;
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.back-btn {
+  background-color: #3399ff;
+  color: white;
+  border-radius: 20rpx;
+  font-size: 28rpx;
+  padding: 12rpx 24rpx;
+}
+
+.form-container {
+  background-color: white;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.1);
+}
+
+.form-section {
+  margin-bottom: 30rpx;
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.form-item {
+  margin-bottom: 30rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  font-size: 28rpx;
+  color: #333;
+  margin-bottom: 10rpx;
+  font-weight: 500;
+}
+
+.form-input {
+  background-color: #f9f9f9;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  border: 1rpx solid #e0e0e0;
+}
+
+.form-picker {
+  background-color: #f9f9f9;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  border: 1rpx solid #e0e0e0;
+}
+
+.picker-text {
+  color: #333;
+}
+
+.form-textarea {
+  background-color: #f9f9f9;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  border: 1rpx solid #e0e0e0;
+  min-height: 120rpx;
+}
+
+.form-value {
+  background-color: #f9f9f9;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  font-size: 28rpx;
+  color: #333;
+  border: 1rpx solid #e0e0e0;
+}
+
+.status-value {
+  padding: 20rpx 0;
+}
+
+.status-badge {
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+}
+
+.status-badge.pending {
+  background-color: #fff7e8;
+  color: #ff9900;
+}
+
+.status-badge.completed {
+  background-color: #e6f4ea;
+  color: #1aad19;
+}
+
+.invoice-selection {
+  background-color: #f9f9f9;
+  border-radius: 16rpx;
+  padding: 20rpx;
+  max-height: 500rpx;
+  overflow-y: auto;
+}
+
+.empty-invoices {
+  text-align: center;
+  padding: 60rpx 0;
+  color: #999;
+  font-size: 28rpx;
+}
+
+.invoice-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 20rpx;
+  background-color: white;
+  border-radius: 12rpx;
+  margin-bottom: 16rpx;
+  border: 2rpx solid transparent;
+  transition: all 0.2s;
+}
+
+.invoice-item:last-child {
+  margin-bottom: 0;
+}
+
+.invoice-item.selected {
+  border-color: #3399ff;
+  background-color: #e8f4fd;
+}
+
+.invoice-info {
+  flex: 1;
+  margin-right: 20rpx;
+}
+
+.invoice-code {
+  display: block;
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.invoice-date, .due-date {
+  display: block;
+  font-size: 24rpx;
+  color: #666;
+  margin-bottom: 4rpx;
+}
+
+.invoice-amount {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.total {
+  font-size: 26rpx;
+  color: #666;
+  margin-bottom: 4rpx;
+}
+
+.balance {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #e64340;
+}
+
+.selection-summary {
+  margin-top: 20rpx;
+  padding: 20rpx;
+  background-color: #e8f4fd;
+  border-radius: 12rpx;
+  font-size: 26rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.btn-submit {
+  background-color: #3399ff;
+  color: white;
+  font-size: 30rpx;
+  border-radius: 20rpx;
+  padding: 20rpx;
+  font-weight: bold;
+}
+
+.btn-delete {
+  background-color: #e64340;
+  color: white;
+  font-size: 30rpx;
+  border-radius: 20rpx;
+  padding: 20rpx;
+  font-weight: bold;
+}

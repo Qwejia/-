@@ -1,0 +1,82 @@
+<view class="container">
+  <!-- 调拨信息 -->
+  <view class="transfer-info">
+    <view class="info-item">
+      <text class="info-label">调出仓库:</text>
+      <input 
+        class="info-input" 
+        value="{{transferData.fromLocation}}"
+        data-key="fromLocation"
+        bindinput="updateTransferInfo"
+      />
+    </view>
+    <view class="info-item">
+      <text class="info-label">调入仓库:</text>
+      <input 
+        class="info-input" 
+        value="{{transferData.toLocation}}"
+        data-key="toLocation"
+        bindinput="updateTransferInfo"
+      />
+    </view>
+    <view class="info-item">
+      <text class="info-label">调拨日期:</text>
+      <picker mode="date" value="{{transferData.transferDate}}" bindchange="updateTransferInfo" data-key="transferDate">
+        <view class="picker-view">
+          <text>{{transferData.transferDate}}</text>
+        </view>
+      </picker>
+    </view>
+    <view class="info-item">
+      <text class="info-label">备注:</text>
+      <input 
+        class="info-input" 
+        placeholder="请输入备注信息"
+        value="{{transferData.remark}}"
+        data-key="remark"
+        bindinput="updateTransferInfo"
+      />
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 调拨商品列表 -->
+  <view wx:else class="transfer-list">
+    <view class="section-title">调拨商品</view>
+    <view 
+      wx:for="{{inventoryItems}}" 
+      wx:key="productId"
+      class="transfer-item"
+    >
+      <view class="product-info">
+        <view class="product-name">{{item.productName}}</view>
+        <view class="product-stock">库存: {{item.stock}} {{item.unit}}</view>
+      </view>
+      <view class="transfer-quantity">
+        <text class="quantity-label">调拨数量:</text>
+        <input 
+          class="quantity-input" 
+          type="number" 
+          placeholder="0"
+          value="{{item.transferQuantity}}"
+          data-index="{{index}}"
+          bindinput="updateTransferQuantity"
+        />
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view wx:if="{{inventoryItems.length === 0}}" class="empty-state">
+      <text>暂无库存数据</text>
+    </view>
+  </view>
+
+  <!-- 提交按钮 -->
+  <view class="submit-section">
+    <button class="submit-btn" bindtap="submitTransfer">提交调拨申请</button>
+  </view>
+</view>

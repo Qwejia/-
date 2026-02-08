@@ -1,0 +1,247 @@
+<!-- pages/invoice/invoiceCreate.wxml -->
+<view class="container">
+  <!-- 顶部导航 -->
+  <view class="header">
+    <view class="back-btn" bindtap="onBack">
+      <text class="back-icon">←</text>
+    </view>
+    <view class="page-title">
+      {{action === 'add' ? '制作发票' : '编辑发票'}}
+    </view>
+    <view class="save-btn" bindtap="saveInvoice">
+      <text class="save-text">保存</text>
+    </view>
+  </view>
+
+  <!-- 主表单 -->
+  <view class="form-container">
+    <!-- 发票基本信息 -->
+    <view class="form-section">
+      <view class="section-title">基本信息</view>
+      
+      <!-- 发票类型 -->
+      <view class="form-item">
+        <text class="label">发票类型</text>
+        <input 
+          class="input" 
+          value="{{invoice.type}}" 
+          bindinput="onTypeChange"
+          placeholder="请输入发票类型（如：增值税专用发票、电子增值税普通发票等）"
+        />
+      </view>
+      
+      <!-- 发票方向 -->
+      <view class="form-item">
+        <text class="label">发票方向</text>
+        <input 
+          class="input" 
+          value="{{invoice.direction === 'sale' ? '销售发票' : invoice.direction}}" 
+          bindinput="onDirectionChange"
+          placeholder="请输入发票方向（如：销售发票、采购发票等）"
+        />
+      </view>
+      
+      <!-- 发票号码 -->
+      <view class="form-item">
+        <text class="label">发票号码</text>
+        <input 
+          class="input" 
+          value="{{invoice.invoiceNo}}" 
+          bindinput="onInvoiceNoChange"
+          placeholder="请输入发票号码"
+        />
+      </view>
+      
+      <!-- 发票日期 -->
+      <view class="form-item">
+        <text class="label">发票日期</text>
+        <input 
+          class="input" 
+          value="{{invoice.invoiceDate}}" 
+          bindinput="onDateChange"
+          placeholder="请输入发票日期（如：2023-01-01）"
+        />
+      </view>
+      
+      <!-- 客户/供应商选择 -->
+      <block wx:if="{{invoice.direction === 'sale' || invoice.direction === '销售发票'}}">
+        <view class="form-item">
+          <text class="label">客户</text>
+          <input 
+            class="input" 
+            value="{{invoice.customerName}}" 
+            bindinput="onCustomerChange"
+            placeholder="请输入客户名称"
+          />
+        </view>
+      </block>
+      <block wx:else>
+        <view class="form-item">
+          <text class="label">供应商</text>
+          <input 
+            class="input" 
+            value="{{invoice.supplierName}}" 
+            bindinput="onSupplierChange"
+            placeholder="请输入供应商名称"
+          />
+        </view>
+      </block>
+    </view>
+    
+    <!-- 发票明细 -->
+    <view class="form-section">
+      <view class="section-title">发票明细</view>
+      
+      <view class="items-container">
+        <block wx:for="{{invoiceItems}}" wx:key="_id" wx:for-item="item">
+          <view class="item-section">
+            <view class="item-header">
+              <text class="item-title">明细项 {{index + 1}}</text>
+              <view class="item-actions">
+                <block wx:if="{{invoiceItems.length > 1}}">
+                  <view class="delete-btn" bindtap="deleteItem" data-index="{{index}}">
+                    <text class="delete-text">删除</text>
+                  </view>
+                </block>
+              </view>
+            </view>
+            
+            <view class="item-form">
+              <view class="item-row">
+                <view class="item-col">
+                  <text class="item-label">名称</text>
+                  <input 
+                    class="item-input" 
+                    value="{{item.name}}" 
+                    bindinput="onItemNameChange" 
+                    data-index="{{index}}"
+                    placeholder="请输入货物或服务名称"
+                  />
+                </view>
+                <view class="item-col">
+                  <text class="item-label">规格</text>
+                  <input 
+                    class="item-input" 
+                    value="{{item.spec}}" 
+                    bindinput="onItemSpecChange" 
+                    data-index="{{index}}"
+                    placeholder="请输入规格型号"
+                  />
+                </view>
+              </view>
+              
+              <view class="item-row">
+                <view class="item-col">
+                  <text class="item-label">单位</text>
+                  <input 
+                    class="item-input" 
+                    value="{{item.unit}}" 
+                    bindinput="onItemUnitChange" 
+                    data-index="{{index}}"
+                    placeholder="请输入单位"
+                  />
+                </view>
+                <view class="item-col">
+                  <text class="item-label">数量</text>
+                  <input 
+                    class="item-input" 
+                    type="digit" 
+                    value="{{item.quantity}}" 
+                    bindinput="onItemQuantityChange" 
+                    data-index="{{index}}"
+                    placeholder="请输入数量"
+                  />
+                </view>
+                <view class="item-col">
+                  <text class="item-label">单价</text>
+                  <input 
+                    class="item-input" 
+                    type="digit" 
+                    value="{{item.unitPrice}}" 
+                    bindinput="onItemUnitPriceChange" 
+                    data-index="{{index}}"
+                    placeholder="请输入单价"
+                  />
+                </view>
+                <view class="item-col">
+                  <text class="item-label">税率(%)</text>
+                  <input 
+                    class="item-input" 
+                    type="digit" 
+                    value="{{item.taxRate * 100}}" 
+                    bindinput="onItemTaxRateChange" 
+                    data-index="{{index}}"
+                    placeholder="请输入税率"
+                  />
+                </view>
+              </view>
+              
+              <view class="item-row">
+                <view class="item-col item-amount-section">
+                  <text class="item-label">金额</text>
+                  <view class="item-amount">¥{{item.amount.toFixed(2)}}</view>
+                </view>
+                <view class="item-col item-tax-section">
+                  <text class="item-label">税额</text>
+                  <view class="item-tax">¥{{item.taxAmount.toFixed(2)}}</view>
+                </view>
+              </view>
+            </view>
+          </view>
+        </block>
+        
+        <!-- 添加明细按钮 -->
+        <view class="add-item-btn" bindtap="addItem">
+          <text class="add-item-text">+ 添加明细项</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 总计信息 -->
+    <view class="form-section">
+      <view class="section-title">总计</view>
+      
+      <view class="total-section">
+        <view class="total-row">
+          <text class="total-label">合计金额:</text>
+          <text class="total-value">¥{{invoice.totalAmount.toFixed(2)}}</text>
+        </view>
+        <view class="total-row">
+          <text class="total-label">合计税额:</text>
+          <text class="total-value">¥{{invoice.totalTax.toFixed(2)}}</text>
+        </view>
+        <view class="total-row grand-total">
+          <text class="total-label">价税合计:</text>
+          <text class="grand-total-value">¥{{invoice.totalAmount + invoice.totalTax}}</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 备注 -->
+    <view class="form-section">
+      <view class="section-title">备注</view>
+      <view class="form-item">
+        <textarea 
+          class="textarea" 
+          value="{{invoice.remark}}" 
+          bindinput="onRemarkChange"
+          placeholder="请输入备注信息"
+          maxlength="200"
+        />
+      </view>
+    </view>
+  </view>
+
+  <!-- 保存按钮 -->
+  <view class="bottom-actions">
+    <button 
+      class="save-button" 
+      type="primary" 
+      bindtap="saveInvoice"
+      loading="{{isSubmitting}}"
+      disabled="{{isSubmitting}}"
+    >
+      {{isSubmitting ? '保存中...' : '保存发票'}}
+    </button>
+  </view>
+</view>

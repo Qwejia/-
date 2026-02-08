@@ -1,0 +1,156 @@
+<view class="page-container">
+  <view class="header-bar">
+    <text class="page-title">财务管理</text>
+    <view class="header-actions">
+      <view class="notification-btn" bindtap="showNotifications">
+        <text class="notification-icon">🔔</text>
+        <view class="badge" wx:if="{{notificationCount > 0}}">{{notificationCount}}</view>
+      </view>
+    </view>
+  </view>
+
+  <scroll-view class="content-scroll" scroll-y>
+    <view class="content-wrapper">
+      <view class="status-cards">
+        <view class="status-card invoice">
+          <view class="card-icon-wrapper">
+            <text class="card-icon">🧾</text>
+          </view>
+          <view class="card-content">
+            <text class="card-label">待处理发票</text>
+            <text class="card-value">{{pendingInvoices}}</text>
+          </view>
+          <view class="card-arrow">→</view>
+        </view>
+        <view class="status-card tax">
+          <view class="card-icon-wrapper">
+            <text class="card-icon">📋</text>
+          </view>
+          <view class="card-content">
+            <text class="card-label">待申报税种</text>
+            <text class="card-value">{{pendingTaxes}}</text>
+          </view>
+          <view class="card-arrow">→</view>
+        </view>
+        <view class="status-card data">
+          <view class="card-icon-wrapper">
+            <text class="card-icon">🔗</text>
+          </view>
+          <view class="card-content">
+            <text class="card-label">待同步数据</text>
+            <text class="card-value">{{pendingDataSync}}</text>
+          </view>
+          <view class="card-arrow">→</view>
+        </view>
+      </view>
+
+      <view class="functions-section">
+        <view class="section-header">
+          <text class="section-title">财务功能</text>
+        </view>
+        <view class="functions-grid">
+          <navigator url="/pages/invoice/index" class="function-card">
+            <view class="function-icon-wrapper invoice">
+              <text class="function-icon">🧾</text>
+            </view>
+            <text class="function-label">发票管理</text>
+            <text class="function-desc">智能识别录入</text>
+          </navigator>
+          <navigator url="/pages/finance/tax" class="function-card">
+            <view class="function-icon-wrapper tax">
+              <text class="function-icon">📋</text>
+            </view>
+            <text class="function-label">税务申报</text>
+            <text class="function-desc">一键报税</text>
+          </navigator>
+          <navigator url="/pages/finance/data-connection" class="function-card">
+            <view class="function-icon-wrapper data">
+              <text class="function-icon">🔗</text>
+            </view>
+            <text class="function-label">数据对接</text>
+            <text class="function-desc">自动同步</text>
+          </navigator>
+          <navigator url="/pages/finance/bank" class="function-card">
+            <view class="function-icon-wrapper bank">
+              <text class="function-icon">🏦</text>
+            </view>
+            <text class="function-label">银行对账</text>
+            <text class="function-desc">智能对账</text>
+          </navigator>
+          <navigator url="/pages/finance/voucher" class="function-card">
+            <view class="function-icon-wrapper voucher">
+              <text class="function-icon">📝</text>
+            </view>
+            <text class="function-label">凭证管理</text>
+            <text class="function-desc">自动生成</text>
+          </navigator>
+          <navigator url="/pages/finance/report" class="function-card">
+            <view class="function-icon-wrapper report">
+              <text class="function-icon">📊</text>
+            </view>
+            <text class="function-label">财务报表</text>
+            <text class="function-desc">一键生成</text>
+          </navigator>
+        </view>
+      </view>
+
+      <view class="tasks-section">
+        <view class="section-header">
+          <text class="section-title">近期任务</text>
+          <view class="more-link" bindtap="viewAllTasks">查看全部</view>
+        </view>
+        <view class="tasks-list">
+          <view class="task-row" wx:for="{{tasks}}" wx:key="index">
+            <view class="task-icon">{{item.icon}}</view>
+            <view class="task-info">
+              <text class="task-title">{{item.title}}</text>
+              <text class="task-deadline">截止：{{item.deadline}}</text>
+            </view>
+            <view class="task-status {{item.status}}">
+              <text>{{item.statusText}}</text>
+            </view>
+          </view>
+          <view class="empty-state" wx:if="{{tasks.length === 0}}">
+            <text class="empty-text">暂无任务</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="stats-section">
+        <view class="section-header">
+          <text class="section-title">数据统计</text>
+          <view class="period-selector" bindtap="openStatsFilter">
+            <text class="period-text">{{currentStatsPeriod}}</text>
+            <text class="period-arrow">▼</text>
+          </view>
+        </view>
+        <view class="stats-grid">
+          <view class="stat-item">
+            <text class="stat-label">发票数量</text>
+            <text class="stat-value">{{invoiceCount}}</text>
+            <view class="stat-trend {{invoiceChange >= 0 ? 'up' : 'down'}}">
+              <text>{{invoiceChange >= 0 ? '↑' : '↓'}}</text>
+              <text>{{Math.abs(invoiceChange)}}%</text>
+            </view>
+          </view>
+          <view class="stat-item">
+            <text class="stat-label">申报税种</text>
+            <text class="stat-value">{{taxCount}}</text>
+            <view class="stat-trend {{taxChange >= 0 ? 'up' : 'down'}}">
+              <text>{{taxChange >= 0 ? '↑' : '↓'}}</text>
+              <text>{{Math.abs(taxChange)}}%</text>
+            </view>
+          </view>
+          <view class="stat-item">
+            <text class="stat-label">同步数据</text>
+            <text class="stat-value">{{syncCount}}</text>
+            <view class="stat-trend {{syncChange >= 0 ? 'up' : 'down'}}">
+              <text>{{syncChange >= 0 ? '↑' : '↓'}}</text>
+              <text>{{Math.abs(syncChange)}}%</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

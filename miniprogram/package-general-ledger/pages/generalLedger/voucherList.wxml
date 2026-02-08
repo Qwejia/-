@@ -1,0 +1,83 @@
+<!-- pages/generalLedger/voucherList.wxml -->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-section">
+    <view class="search-box">
+      <text class="search-icon">🔍</text>
+      <input type="text" placeholder="搜索凭证编号" value="{{searchKeyword}}" bindinput="onSearch" class="search-input" />
+    </view>
+  </view>
+  
+  <!-- 筛选条件 -->
+  <view class="filter-section">
+    <view class="filter-row">
+      <view class="filter-item">
+        <text class="label">状态</text>
+        <picker mode="selector" range="{{statusOptions}}" range-key="text" value="{{statusFilter}}" bindchange="onStatusChange" class="picker">
+          <view class="picker-text">{{statusOptions[statusFilter].text}}</view>
+        </picker>
+      </view>
+      <view class="filter-item">
+        <text class="label">开始日期</text>
+        <picker mode="date" value="{{dateRange.start}}" bindchange="onStartDateChange" class="picker">
+          <view class="picker-text">{{dateRange.start || '选择日期'}}</view>
+        </picker>
+      </view>
+      <view class="filter-item">
+        <text class="label">结束日期</text>
+        <picker mode="date" value="{{dateRange.end}}" bindchange="onEndDateChange" class="picker">
+          <view class="picker-text">{{dateRange.end || '选择日期'}}</view>
+        </picker>
+      </view>
+    </view>
+    <view class="reset-btn">
+      <button type="default" bindtap="resetFilters" size="mini">重置筛选</button>
+    </view>
+  </view>
+  
+  <!-- 凭证列表 -->
+  <view class="vouchers-section">
+    <view class="section-header">
+      <text class="title">凭证列表</text>
+      <text class="count">({{filteredVouchers.length}})</text>
+    </view>
+    
+    <view class="vouchers-list">
+      <view wx:for="{{filteredVouchers}}" wx:key="_id" class="voucher-item" bindtap="viewVoucherDetail" data-id="{{item._id}}">
+        <view class="voucher-header">
+          <view class="voucher-info">
+            <text class="voucher-number">{{item.number}}</text>
+            <text class="voucher-date">{{item.date}}</text>
+          </view>
+          <view class="voucher-status {{item.status}}">
+            {{item.status === 'draft' ? '草稿' : item.status === 'submitted' ? '已提交' : item.status === 'approved' ? '已审核' : '已记账'}}
+          </view>
+        </view>
+        <view class="voucher-amounts">
+          <view class="amount-item">
+            <text class="label">借方金额</text>
+            <text class="amount debit">¥{{item.totalDebit.toFixed(2)}}</text>
+          </view>
+          <view class="amount-item">
+            <text class="label">贷方金额</text>
+            <text class="amount credit">¥{{item.totalCredit.toFixed(2)}}</text>
+          </view>
+        </view>
+        <view class="voucher-actions">
+          <button wx:if="item.status === 'draft' || item.status === 'submitted'" type="primary" size="mini" bindtap="approveVoucher" data-id="{{item._id}}">审核</button>
+          <button wx:if="item.status === 'approved'" type="primary" size="mini" bindtap="postVoucher" data-id="{{item._id}}">记账</button>
+          <button type="default" size="mini" bindtap="viewVoucherDetail" data-id="{{item._id}}">查看详情</button>
+        </view>
+      </view>
+      
+      <view wx:if="filteredVouchers.length === 0" class="empty-state">
+        <text class="empty-text">暂无凭证数据</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 新增按钮 -->
+  <view class="add-button">
+    <button type="primary" bindtap="addVoucher" class="btn">+ 新增凭证</button>
+  </view>
+</view>

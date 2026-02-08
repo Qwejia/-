@@ -1,0 +1,42 @@
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <input 
+      class="search-input" 
+      placeholder="搜索员工姓名或工号" 
+      value="{{searchKeyword}}"
+      bindinput="onSearchInput"
+    />
+    <button class="add-btn" bindtap="addEmployee">+</button>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 员工列表 -->
+  <view wx:else class="employee-list">
+    <view 
+      wx:for="{{employees}}" 
+      wx:key="employeeId"
+      class="employee-item"
+      data-employee-id="{{item.employeeId}}"
+      bindtap="goToEmployeeDetail"
+    >
+      <view class="employee-info">
+        <view class="employee-name">{{item.name}}</view>
+        <view class="employee-id">工号: {{item.employeeId}}</view>
+        <view class="employee-department">{{item.departmentName}} - {{item.position}}</view>
+      </view>
+      <view class="employee-status">
+        <text class="status-tag">{{item.status === 'active' ? '在职' : '离职'}}</text>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view wx:if="{{employees.length === 0}}" class="empty-state">
+      <text>暂无员工数据</text>
+    </view>
+  </view>
+</view>

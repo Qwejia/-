@@ -1,0 +1,237 @@
+/* 课程列表页样式 */
+.courses-page {
+  min-height: 100vh;
+  background-color: #f5f7fa;
+}
+
+/* 页面标题 */
+.page-header {
+  padding: 32rpx;
+  background-color: white;
+  border-bottom: 1rpx solid #e2e8f0;
+}
+
+.page-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333333;
+}
+
+/* 分类选择 */
+.category-section {
+  background-color: white;
+  padding: 24rpx 0;
+  margin-bottom: 16rpx;
+  border-bottom: 1rpx solid #e2e8f0;
+}
+
+.category-scroll {
+  white-space: nowrap;
+  padding: 0 32rpx;
+}
+
+.category-list {
+  display: inline-flex;
+  gap: 24rpx;
+}
+
+.category-item {
+  padding: 12rpx 24rpx;
+  border-radius: 24rpx;
+  background-color: #f1f5f9;
+  margin-right: 16rpx;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.category-item.active {
+  background-color: #1677ff;
+}
+
+.category-item.active .category-text {
+  color: white;
+}
+
+.category-text {
+  font-size: 24rpx;
+  color: #666666;
+  font-weight: 500;
+}
+
+/* 课程列表 */
+.courses-section {
+  padding-bottom: 32rpx;
+}
+
+/* 加载中 */
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 64rpx;
+}
+
+.loading-text {
+  font-size: 24rpx;
+  color: #94a3b8;
+}
+
+/* 空状态 */
+.empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64rpx;
+  background-color: white;
+  margin: 16rpx 32rpx;
+  border-radius: 12rpx;
+}
+
+.empty-icon {
+  font-size: 64rpx;
+  margin-bottom: 16rpx;
+}
+
+.empty-text {
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #333333;
+  margin-bottom: 8rpx;
+}
+
+.empty-subtext {
+  font-size: 20rpx;
+  color: #94a3b8;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* 课程列表 */
+.courses-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+  padding: 0 32rpx;
+}
+
+/* 课程卡片 */
+.course-card {
+  background-color: white;
+  border-radius: 12rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.05);
+  padding: 24rpx;
+  transition: all 0.3s ease;
+}
+
+.course-card:active {
+  transform: translateY(-2rpx);
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.1);
+}
+
+/* 课程封面 */
+.course-cover {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+  position: relative;
+}
+
+.cover-icon {
+  font-size: 64rpx;
+  margin-right: 20rpx;
+}
+
+.course-duration {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 8rpx 16rpx;
+  background-color: #f1f5f9;
+  border-radius: 16rpx;
+  font-size: 20rpx;
+  color: #666666;
+}
+
+.course-level {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 8rpx 16rpx;
+  background-color: #dbeafe;
+  border-radius: 16rpx;
+  font-size: 20rpx;
+  color: #1e40af;
+}
+
+/* 课程信息 */
+.course-info {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.course-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333333;
+  line-height: 1.3;
+}
+
+.course-description {
+  font-size: 24rpx;
+  color: #666666;
+  line-height: 1.4;
+}
+
+/* 课程元数据 */
+.course-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+  padding-top: 12rpx;
+  border-top: 1rpx solid #f1f5f9;
+}
+
+.course-author {
+  font-size: 22rpx;
+  color: #666666;
+}
+
+.course-stats {
+  display: flex;
+  gap: 24rpx;
+}
+
+.course-rating, .course-students {
+  font-size: 20rpx;
+  color: #94a3b8;
+}
+
+.course-price {
+  font-size: 24rpx;
+  font-weight: bold;
+  color: #ef4444;
+  margin-top: 8rpx;
+}
+
+/* 课程操作 */
+.course-action {
+  margin-top: 16rpx;
+}
+
+.enroll-btn {
+  width: 100%;
+  padding: 20rpx;
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  color: white;
+  border: none;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+  font-weight: 500;
+  box-shadow: 0 4rpx 12rpx rgba(30, 58, 138, 0.3);
+}
+
+.enroll-btn:active {
+  background: linear-gradient(135deg, #1e40af 0%, #b45309 100%);
+}

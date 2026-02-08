@@ -1,0 +1,41 @@
+<!-- 文章详情页 -->
+<view class="article-detail">
+  <!-- 顶部导航 -->
+  <view class="navbar">
+    <text class="back-btn" bindtap="navigateBack">←</text>
+    <text class="navbar-title">文章详情</text>
+    <text class="share-btn" bindtap="shareArticle">📤</text>
+  </view>
+
+  <!-- 加载中 -->
+  <view wx:if="{{loading}}" class="loading-container">
+    <text class="loading-text">加载中...</text>
+  </view>
+
+  <!-- 文章内容 -->
+  <view wx:else class="content">
+    <!-- 文章头部 -->
+    <view class="article-header">
+      <text class="article-title">{{article.title}}</text>
+      <view class="article-meta">
+        <text class="article-author">{{article.author}}</text>
+        <text class="article-date">{{article.date}}</text>
+      </view>
+      <view class="article-stats">
+        <text class="article-reads">{{article.reads}}阅读</text>
+        <text class="article-likes" bindtap="likeArticle">❤️ {{article.likes}}</text>
+        <text class="article-comments">💬 {{article.comments}}</text>
+      </view>
+    </view>
+
+    <!-- 文章正文 -->
+    <view class="article-content">
+      <text class="content-text">{{article.content}}</text>
+    </view>
+
+    <!-- 文章底部 -->
+    <view class="article-footer">
+      <text class="footer-text">感谢您的阅读！</text>
+    </view>
+  </view>
+</view>

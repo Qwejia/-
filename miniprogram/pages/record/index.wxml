@@ -1,0 +1,210 @@
+<view class="page-container">
+  <view class="header-bar">
+    <text class="page-title">记账</text>
+    <view class="header-actions">
+      <button class="ai-btn" bindtap="showAIAssistant">
+        <text class="ai-icon">🤖</text>
+      </button>
+    </view>
+  </view>
+
+  <scroll-view class="content-scroll" scroll-y>
+    <view class="content-wrapper">
+      <view class="type-tabs">
+        <view class="tab-item {{currentType === 'expense' ? 'active' : ''}}" bindtap="switchType" data-type="expense">支出</view>
+        <view class="tab-item {{currentType === 'income' ? 'active' : ''}}" bindtap="switchType" data-type="income">收入</view>
+      </view>
+
+      <view class="amount-section">
+        <view class="amount-card">
+          <text class="amount-label">输入金额</text>
+          <view class="amount-input-wrapper">
+            <text class="currency-symbol">¥</text>
+            <input class="amount-input" type="number" placeholder="0.00" value="{{amount}}" bindinput="onAmountChange" focus="{{focusAmount}}" />
+          </view>
+        </view>
+      </view>
+
+      <view class="quick-amounts-section">
+        <view class="section-header">
+          <text class="section-title">快速金额</text>
+        </view>
+        <view class="quick-amounts-grid">
+          <view class="quick-amount-item" bindtap="selectQuickAmount" data-amount="10">¥10</view>
+          <view class="quick-amount-item" bindtap="selectQuickAmount" data-amount="50">¥50</view>
+          <view class="quick-amount-item" bindtap="selectQuickAmount" data-amount="100">¥100</view>
+          <view class="quick-amount-item" bindtap="selectQuickAmount" data-amount="200">¥200</view>
+          <view class="quick-amount-item" bindtap="selectQuickAmount" data-amount="500">¥500</view>
+          <view class="quick-amount-item" bindtap="selectQuickAmount" data-amount="1000">¥1000</view>
+        </view>
+      </view>
+
+      <view class="category-section">
+        <view class="section-header">
+          <text class="section-title">选择分类</text>
+        </view>
+        <view class="category-grid">
+          <view class="category-item" bindtap="selectCategory" data-category="food">
+            <view class="category-icon-wrapper food">
+              <text class="category-icon">🍔</text>
+            </view>
+            <text class="category-name">餐饮</text>
+          </view>
+          <view class="category-item" bindtap="selectCategory" data-category="transport">
+            <view class="category-icon-wrapper transport">
+              <text class="category-icon">🚗</text>
+            </view>
+            <text class="category-name">交通</text>
+          </view>
+          <view class="category-item" bindtap="selectCategory" data-category="shopping">
+            <view class="category-icon-wrapper shopping">
+              <text class="category-icon">🛍️</text>
+            </view>
+            <text class="category-name">购物</text>
+          </view>
+          <view class="category-item" bindtap="selectCategory" data-category="entertainment">
+            <view class="category-icon-wrapper entertainment">
+              <text class="category-icon">🎮</text>
+            </view>
+            <text class="category-name">娱乐</text>
+          </view>
+          <view class="category-item" bindtap="selectCategory" data-category="medical">
+            <view class="category-icon-wrapper medical">
+              <text class="category-icon">🏥</text>
+            </view>
+            <text class="category-name">医疗</text>
+          </view>
+          <view class="category-item" bindtap="selectCategory" data-category="education">
+            <view class="category-icon-wrapper education">
+              <text class="category-icon">📚</text>
+            </view>
+            <text class="category-name">教育</text>
+          </view>
+          <view class="category-item" bindtap="selectCategory" data-category="housing">
+            <view class="category-icon-wrapper housing">
+              <text class="category-icon">🏠</text>
+            </view>
+            <text class="category-name">住房</text>
+          </view>
+          <view class="category-item" bindtap="selectCategory" data-category="salary">
+            <view class="category-icon-wrapper salary">
+              <text class="category-icon">💰</text>
+            </view>
+            <text class="category-name">工资</text>
+          </view>
+          <view class="category-item" bindtap="selectCategory" data-category="bonus">
+            <view class="category-icon-wrapper bonus">
+              <text class="category-icon">🎁</text>
+            </view>
+            <text class="category-name">奖金</text>
+          </view>
+          <view class="category-item" bindtap="selectCategory" data-category="investment">
+            <view class="category-icon-wrapper investment">
+              <text class="category-icon">📈</text>
+            </view>
+            <text class="category-name">投资</text>
+          </view>
+          <view class="category-item" bindtap="selectCategory" data-category="transfer">
+            <view class="category-icon-wrapper transfer">
+              <text class="category-icon">🔄</text>
+            </view>
+            <text class="category-name">转账</text>
+          </view>
+          <view class="category-item" bindtap="selectCategory" data-category="other">
+            <view class="category-icon-wrapper other">
+              <text class="category-icon">📦</text>
+            </view>
+            <text class="category-name">其他</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="form-section">
+        <view class="section-header">
+          <text class="section-title">详细信息</text>
+        </view>
+        <view class="form-card">
+          <view class="form-row">
+            <text class="form-label">备注</text>
+            <input class="form-input" placeholder="添加备注（可选）" value="{{remark}}" bindinput="onRemarkChange" />
+          </view>
+          <view class="form-row">
+            <text class="form-label">日期</text>
+            <view class="form-picker" bindtap="showDatePicker">
+              <text class="picker-value">{{currentDate}}</text>
+              <text class="picker-arrow">▼</text>
+            </view>
+          </view>
+          <view class="form-row">
+            <text class="form-label">账户</text>
+            <view class="form-picker" bindtap="showAccountPicker">
+              <text class="picker-value">{{selectedAccount}}</text>
+              <text class="picker-arrow">▼</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="actions-section">
+        <button class="action-btn clear" bindtap="clearForm">清空</button>
+        <button class="action-btn save" bindtap="saveRecord">保存记录</button>
+      </view>
+    </view>
+  </scroll-view>
+</view>
+
+<view class="picker-modal" wx:if="{{showAccountPicker}}">
+  <view class="modal-overlay" catchtap="hideAccountPicker"></view>
+  <view class="modal-content">
+    <view class="modal-header">
+      <text class="modal-title">选择账户</text>
+      <view class="close-btn" bindtap="hideAccountPicker">✕</view>
+    </view>
+    <view class="modal-body">
+      <view class="account-item {{selectedAccount === item ? 'selected' : ''}}" wx:for="{{accounts}}" wx:key="item" bindtap="selectAccount" data-account="{{item}}">
+        <text class="account-name">{{item}}</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="ai-modal" wx:if="{{showAIModal}}">
+  <view class="modal-overlay" catchtap="hideAIModal"></view>
+  <view class="modal-content">
+    <view class="modal-header">
+      <text class="modal-title">AI辅助记账</text>
+      <view class="close-btn" bindtap="hideAIModal">✕</view>
+    </view>
+    <view class="modal-body">
+      <view class="ai-input-section">
+        <text class="input-label">描述消费内容</text>
+        <textarea class="ai-textarea" placeholder="例如：今天中午吃了一份外卖，花了35元" value="{{aiInput}}" bindinput="onAIInputChange" auto-focus></textarea>
+      </view>
+      <button class="ai-analyze-btn" bindtap="analyzeWithAI" disabled="{{analyzing}}">
+        {{analyzing ? '分析中...' : '智能分析'}}
+      </button>
+      <view class="ai-result-section" wx:if="{{aiResult}}">
+        <text class="result-label">分析结果</text>
+        <view class="result-grid">
+          <view class="result-item">
+            <text class="result-key">类型</text>
+            <text class="result-value">{{aiResult.type === 'expense' ? '支出' : '收入'}}</text>
+          </view>
+          <view class="result-item">
+            <text class="result-key">金额</text>
+            <text class="result-value">¥{{aiResult.amount}}</text>
+          </view>
+          <view class="result-item">
+            <text class="result-key">分类</text>
+            <text class="result-value">{{aiResult.category}}</text>
+          </view>
+          <view class="result-item">
+            <text class="result-key">备注</text>
+            <text class="result-value">{{aiResult.remark}}</text>
+          </view>
+        </view>
+        <button class="apply-btn" bindtap="applyAIResult">应用结果</button>
+      </view>
+    </view>
+  </view>
+</view>

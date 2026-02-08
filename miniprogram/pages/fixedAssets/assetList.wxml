@@ -1,0 +1,128 @@
+<!-- 资产列表页面 -->
+<view class="container">
+  <view class="list-header">
+    <text class="list-title">资产列表</text>
+    <text class="list-subtitle">管理所有固定资产</text>
+  </view>
+
+  <!-- 搜索和筛选 -->
+  <view class="filter-section">
+    <view class="search-box">
+      <input 
+        type="text" 
+        class="search-input" 
+        placeholder="搜索资产名称或描述" 
+        bindinput="handleSearchInput"
+      />
+      <text class="search-icon">🔍</text>
+    </view>
+
+    <view class="filter-row">
+      <view class="filter-item">
+        <text class="filter-label">资产类别</text>
+        <picker 
+          mode="selector" 
+          range="{{categories}}" 
+          value="{{categoryFilter}}" 
+          bindchange="handleCategoryChange"
+          class="filter-picker"
+        >
+          <view class="picker-text">{{categoryFilter || '全部'}}</view>
+        </picker>
+      </view>
+
+      <view class="filter-item">
+        <text class="filter-label">资产状态</text>
+        <picker 
+          mode="selector" 
+          range="{{statuses}}" 
+          value="{{statusFilter}}" 
+          bindchange="handleStatusChange"
+          class="filter-picker"
+        >
+          <view class="picker-text">{{statusFilter || '全部'}}</view>
+        </picker>
+      </view>
+    </view>
+
+    <view class="sort-section">
+      <text class="sort-label">排序方式</text>
+      <picker 
+        mode="selector" 
+        range="['创建时间', '资产名称', '资产原值', '购买日期']" 
+        value="{{sortBy}}" 
+        bindchange="handleSortChange"
+        class="sort-picker"
+      >
+        <view class="picker-text">
+          {{sortBy === 'createdAt' ? '创建时间' : sortBy === 'name' ? '资产名称' : sortBy === 'originalValue' ? '资产原值' : '购买日期'}} {{sortOrder === 'asc' ? '↑' : '↓'}}
+        </view>
+      </picker>
+    </view>
+  </view>
+
+  <!-- 资产列表 -->
+  <view class="asset-list">
+    <view wx:for="{{filteredAssets}}" wx:key="_id" class="asset-card" bindtap="goToAssetDetail" data-asset-id="{{item._id}}">
+      <view class="asset-header">
+        <text class="asset-name">{{item.name}}</text>
+        <text class="asset-status {{item.status === 'inUse' ? 'status-in-use' : item.status === 'idle' ? 'status-idle' : item.status === 'scrapped' ? 'status-scrapped' : 'status-sold'}}">
+          {{item.status === 'inUse' ? '在用' : item.status === 'idle' ? '闲置' : item.status === 'scrapped' ? '报废' : '出售'}}
+        </text>
+      </view>
+
+      <view class="asset-info">
+        <view class="info-row">
+          <text class="info-label">资产类别:</text>
+          <text class="info-value">{{item.category}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">原值:</text>
+          <text class="info-value">¥{{item.originalValue}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">累计折旧:</text>
+          <text class="info-value">¥{{item.accumulatedDepreciation}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">净值:</text>
+          <text class="info-value">¥{{item.netValue}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">购买日期:</text>
+          <text class="info-value">{{item.purchaseDate}}</text>
+        </view>
+        <view class="info-row" wx:if="item.department">
+          <text class="info-label">使用部门:</text>
+          <text class="info-value">{{item.department}}</text>
+        </view>
+        <view class="info-row" wx:if="item.location">
+          <text class="info-label">存放地点:</text>
+          <text class="info-value">{{item.location}}</text>
+        </view>
+      </view>
+
+      <view class="asset-footer">
+        <text class="asset-description">{{item.description || '无描述'}}</text>
+      </view>
+    </view>
+
+    <view wx:if="filteredAssets.length === 0" class="empty-state">
+      <text class="empty-icon">📦</text>
+      <text class="empty-text">暂无资产数据</text>
+      <button class="add-asset-btn" bindtap="goToAssetAdd">添加资产</button>
+    </view>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bottom-bar">
+    <button class="bar-btn add-btn" bindtap="goToAssetAdd">
+      <text class="btn-icon">➕</text>
+      <text class="btn-text">新增资产</text>
+    </button>
+    <button class="bar-btn depreciate-btn" bindtap="goToDepreciation">
+      <text class="btn-icon">📉</text>
+      <text class="btn-text">折旧计提</text>
+    </button>
+  </view>
+</view>

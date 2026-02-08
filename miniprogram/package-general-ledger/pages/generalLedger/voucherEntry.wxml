@@ -1,0 +1,184 @@
+<!-- pages/generalLedger/voucherEntry.wxml -->
+<view class="container">
+  <!-- 凭证基本信息 -->
+  <view class="form-section">
+    <view class="form-header">
+      <text class="form-title">凭证录入</text>
+      <view class="form-actions">
+        <button type="default" bindtap="openAIAssistant" class="ai-btn">
+          <text class="ai-icon">🤖</text>
+          <text class="ai-text">AI辅助</text>
+        </button>
+      </view>
+    </view>
+    <view class="form-row">
+      <view class="form-item">
+        <text class="label">凭证编号</text>
+        <input type="text" disabled value="{{voucherNumber}}" class="input" />
+      </view>
+      <view class="form-item">
+        <text class="label">凭证日期</text>
+        <picker mode="date" value="{{voucherDate}}" bindchange="onDateChange" class="picker">
+          <view class="picker-text">{{voucherDate}}</view>
+        </picker>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 凭证分录 -->
+  <view class="entries-section">
+    <view class="entries-header">
+      <view class="header-item">摘要</view>
+      <view class="header-item">会计科目</view>
+      <view class="header-item">借方金额</view>
+      <view class="header-item">贷方金额</view>
+      <view class="header-item">操作</view>
+    </view>
+    
+    <view class="entries-list">
+      <view wx:for="{{entries}}" wx:key="id" class="entry-row">
+        <view class="entry-item">
+          <input type="text" placeholder="摘要" value="{{item.description}}" bindinput="onDescriptionInput" data-entry-id="{{item.id}}" class="input" />
+        </view>
+        <view class="entry-item">
+          <view class="account-select" bindtap="selectAccount" data-entry-id="{{item.id}}">
+            <text class="account-text">{{item.accountName || '选择科目'}}</text>
+            <text class="arrow">▼</text>
+          </view>
+        </view>
+        <view class="entry-item">
+          <input type="number" placeholder="0.00" value="{{item.debit}}" bindinput="onDebitInput" data-entry-id="{{item.id}}" class="input amount" />
+        </view>
+        <view class="entry-item">
+          <input type="number" placeholder="0.00" value="{{item.credit}}" bindinput="onCreditInput" data-entry-id="{{item.id}}" class="input amount" />
+        </view>
+        <view class="entry-item">
+          <button size="mini" type="warn" bindtap="deleteEntry" data-entry-id="{{item.id}}" class="delete-btn">删</button>
+        </view>
+      </view>
+      
+      <!-- 辅助核算选择区域 -->
+      <view wx:for="{{entries}}" wx:key="id" class="aux-accounting-section" wx:if="{{item.accountId}}">
+        <view class="aux-title">辅助核算</view>
+        <view class="aux-items">
+          <view wx:for="{{item.auxAccountingTypes || []}}" wx:for-item="auxType" wx:key="auxType" class="aux-item">
+            <text class="aux-label">{{auxType}}：</text>
+            <view class="aux-select" bindtap="selectAuxAccounting" data-entry-id="{{item.id}}" data-aux-type="{{auxType}}">
+              <text class="aux-value">{{item.auxAccounting[auxType] || '选择'}}</text>
+              <text class="arrow">▼</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 添加分录按钮 -->
+    <view class="add-entry-btn">
+      <button type="default" bindtap="addEntry" class="btn">+ 添加分录</button>
+    </view>
+    
+    <!-- 合计金额 -->
+    <view class="total-section">
+      <view class="total-row">
+        <text class="total-label">合计</text>
+        <text class="total-amount">借方：{{totalDebit}} 元</text>
+        <text class="total-amount">贷方：{{totalCredit}} 元</text>
+        <text wx:if="{{isBalanced}}" class="balanced">平衡</text>
+        <text wx:else class="unbalanced">不平衡</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 操作按钮 -->
+  <view class="footer-buttons">
+    <button type="default" bindtap="cancel" class="btn cancel">取消</button>
+    <button type="primary" bindtap="saveVoucher" class="btn save" disabled="{{!isBalanced}}">保存凭证</button>
+  </view>
+  
+  <!-- 会计科目选择器 -->
+  <view wx:if="{{showAccountPicker}}" class="account-picker-overlay" catchtap="cancelAccount">
+    <view class="account-picker" catchtap="">
+      <view class="picker-header">
+        <text class="picker-title">选择会计科目</text>
+        <button size="mini" bindtap="cancelAccount" class="close-btn">关闭</button>
+      </view>
+      <scroll-view scroll-y="true" class="account-list">
+        <view wx:for="{{accounts}}" wx:key="_id" class="account-item" bindtap="confirmAccount" data-id="{{item._id}}" data-name="{{item.name}}">
+          <text class="account-code">{{item.code}}</text>
+          <text class="account-name">{{item.name}}</text>
+          <text class="account-type">{{item.type === 'asset' ? '资产' : item.type === 'liability' ? '负债' : item.type === 'equity' ? '权益' : item.type === 'income' ? '收入' : '费用'}}</text>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+  
+  <!-- 辅助核算选择器 -->
+  <view wx:if="{{showAuxPicker}}" class="aux-picker-overlay" catchtap="cancelAuxAccounting">
+    <view class="aux-picker" catchtap="">
+      <view class="picker-header">
+        <text class="picker-title">选择{{currentAuxTypeName}}</text>
+        <button size="mini" bindtap="cancelAuxAccounting" class="close-btn">关闭</button>
+      </view>
+      <scroll-view scroll-y="true" class="aux-list">
+        <!-- 客户列表 -->
+        <view wx:if="currentAuxType === 'customer'">
+          <view wx:for="{{customers}}" wx:key="_id" class="aux-item" bindtap="confirmAuxAccounting" data-id="{{item._id}}" data-name="{{item.name}}">
+            <text class="aux-name">{{item.name}}</text>
+            <text class="aux-code">{{item.code}}</text>
+          </view>
+        </view>
+        <!-- 供应商列表 -->
+        <view wx:if="currentAuxType === 'supplier'">
+          <view wx:for="{{suppliers}}" wx:key="_id" class="aux-item" bindtap="confirmAuxAccounting" data-id="{{item._id}}" data-name="{{item.name}}">
+            <text class="aux-name">{{item.name}}</text>
+            <text class="aux-code">{{item.code}}</text>
+          </view>
+        </view>
+        <!-- 部门列表 -->
+        <view wx:if="currentAuxType === 'department'">
+          <view wx:for="{{departments}}" wx:key="_id" class="aux-item" bindtap="confirmAuxAccounting" data-id="{{item._id}}" data-name="{{item.name}}">
+            <text class="aux-name">{{item.name}}</text>
+            <text class="aux-code">{{item.code}}</text>
+          </view>
+        </view>
+        <!-- 项目列表 -->
+        <view wx:if="currentAuxType === 'project'">
+          <view wx:for="{{projects}}" wx:key="_id" class="aux-item" bindtap="confirmAuxAccounting" data-id="{{item._id}}" data-name="{{item.name}}">
+            <text class="aux-name">{{item.name}}</text>
+            <text class="aux-code">{{item.code}}</text>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- AI辅助记账模态框 -->
+  <view class="ai-assistant-modal" wx:if="{{showAIAssistant}}">
+    <view class="modal-content">
+      <view class="modal-header">
+        <text class="modal-title">AI辅助凭证录入</text>
+        <view class="close-btn" bindtap="closeAIAssistant">✕</view>
+      </view>
+      <view class="modal-body">
+        <view class="ai-input-section">
+          <text class="input-label">描述交易</text>
+          <textarea placeholder="例如：支付本月工资68450元" bindinput="onAITradeInput" class="ai-textarea" value="{{aiTradeInput}}" />
+        </view>
+        <button class="ai-analyze-btn" bindtap="analyzeWithAI" disabled="{{loadingAI || !aiTradeInput}}">
+          {{loadingAI ? 'AI分析中...' : 'AI分析'}}
+        </button>
+        <view class="ai-result-section" wx:if="{{aiAnalysisResult}}">
+          <text class="result-label">AI分析结果</text>
+          <view class="result-content">
+            <view wx:for="{{aiAnalysisResult.entries}}" wx:key="index" class="result-entry">
+              <text class="entry-description">{{item.description}}</text>
+              <text class="entry-account">{{item.accountName}}</text>
+              <text class="entry-amount">{{item.debit > 0 ? '借: ¥' + item.debit : '贷: ¥' + item.credit}}</text>
+            </view>
+          </view>
+          <button class="apply-result-btn" bindtap="applyAIResult">应用结果</button>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

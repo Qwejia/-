@@ -1,0 +1,205 @@
+<view class="page-container">
+  <scroll-view class="content-scroll" scroll-y>
+    <view class="content-wrapper">
+      <view class="profile-section">
+        <view class="profile-card">
+          <view class="profile-header">
+            <view class="avatar-wrapper">
+              <image src="/images/avatar.png" class="user-avatar" mode="aspectFill" lazy-load></image>
+              <view class="avatar-badge">VIP</view>
+            </view>
+            <view class="profile-info">
+              <text class="user-name">财务管家</text>
+              <text class="user-account">我的财务数据</text>
+            </view>
+          </view>
+          <view class="profile-stats">
+            <view class="stat-item">
+              <text class="stat-value">{{totalRecords}}</text>
+              <text class="stat-label">总记录</text>
+            </view>
+            <view class="stat-divider"></view>
+            <view class="stat-item">
+              <text class="stat-value">{{totalMonths}}</text>
+              <text class="stat-label">记账月</text>
+            </view>
+            <view class="stat-divider"></view>
+            <view class="stat-item">
+              <text class="stat-value">{{avgExpense}}</text>
+              <text class="stat-label">日均支出</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="month-stats-section">
+        <view class="section-header">
+          <text class="section-title">本月统计</text>
+        </view>
+        <view class="stats-grid">
+          <view class="stat-card income">
+            <text class="stat-icon">📈</text>
+            <text class="stat-label">本月收入</text>
+            <text class="stat-number">{{monthIncome}}</text>
+          </view>
+          <view class="stat-card expense">
+            <text class="stat-icon">📉</text>
+            <text class="stat-label">本月支出</text>
+            <text class="stat-number">{{monthExpense}}</text>
+          </view>
+          <view class="stat-card balance">
+            <text class="stat-icon">💰</text>
+            <text class="stat-label">本月结余</text>
+            <text class="stat-number">{{monthBalance}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="modules-section">
+        <view class="section-header">
+          <text class="section-title">功能模块</text>
+        </view>
+        <view class="modules-grid">
+          <navigator url="/pages/generalLedger/index" class="module-card">
+            <view class="module-icon-wrapper ledger">
+              <text class="module-icon">📋</text>
+            </view>
+            <text class="module-name">总账管理</text>
+          </navigator>
+          <navigator url="/pages/accountsReceivable/index" class="module-card">
+            <view class="module-icon-wrapper receivable">
+              <text class="module-icon">💰</text>
+            </view>
+            <text class="module-name">应收账款</text>
+          </navigator>
+          <navigator url="/pages/category/index" class="module-card">
+            <view class="module-icon-wrapper category">
+              <text class="module-icon">🏷️</text>
+            </view>
+            <text class="module-name">分类管理</text>
+          </navigator>
+          <navigator url="/pages/record/index" class="module-card">
+            <view class="module-icon-wrapper record">
+              <text class="module-icon">✏️</text>
+            </view>
+            <text class="module-name">新增记录</text>
+          </navigator>
+        </view>
+      </view>
+
+      <view class="menu-section">
+        <view class="section-header">
+          <text class="section-title">更多功能</text>
+        </view>
+        <view class="menu-list">
+          <view class="menu-item" bindtap="navigateToStatistics">
+            <view class="menu-icon-wrapper">
+              <text class="menu-icon">📊</text>
+            </view>
+            <text class="menu-text">收支分析</text>
+            <text class="menu-arrow">→</text>
+          </view>
+          <view class="menu-item" bindtap="backupData">
+            <view class="menu-icon-wrapper">
+              <text class="menu-icon">💾</text>
+            </view>
+            <text class="menu-text">数据备份</text>
+            <text class="menu-arrow">→</text>
+          </view>
+          <view class="menu-item" bindtap="restoreData">
+            <view class="menu-icon-wrapper">
+              <text class="menu-icon">🔄</text>
+            </view>
+            <text class="menu-text">数据恢复</text>
+            <text class="menu-arrow">→</text>
+          </view>
+          <view class="menu-item" bindtap="showAISettings">
+            <view class="menu-icon-wrapper">
+              <text class="menu-icon">🤖</text>
+            </view>
+            <text class="menu-text">AI设置</text>
+            <text class="menu-arrow">→</text>
+          </view>
+          <view class="menu-item" bindtap="showSettings">
+            <view class="menu-icon-wrapper">
+              <text class="menu-icon">⚙️</text>
+            </view>
+            <text class="menu-text">设置</text>
+            <text class="menu-arrow">→</text>
+          </view>
+          <view class="menu-item" bindtap="contactSupport">
+            <view class="menu-icon-wrapper">
+              <text class="menu-icon">📞</text>
+            </view>
+            <text class="menu-text">联系客服</text>
+            <text class="menu-arrow">→</text>
+          </view>
+          <view class="menu-item" bindtap="showAbout">
+            <view class="menu-icon-wrapper">
+              <text class="menu-icon">ℹ️</text>
+            </view>
+            <text class="menu-text">关于我们</text>
+            <text class="menu-arrow">→</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="version-section">
+        <text class="version-text">财务管家 v1.0.0</text>
+      </view>
+    </view>
+  </scroll-view>
+</view>
+
+<view class="ai-settings-modal" wx:if="{{showAISettingsModal}}">
+  <view class="modal-overlay" catchtap="closeAISettingsModal"></view>
+  <view class="modal-content">
+    <view class="modal-header">
+      <text class="modal-title">AI设置</text>
+      <view class="close-btn" bindtap="closeAISettingsModal">✕</view>
+    </view>
+    <view class="modal-body">
+      <view class="settings-list">
+        <view class="setting-item">
+          <view class="setting-info">
+            <text class="setting-title">AI服务开关</text>
+            <text class="setting-desc">开启或关闭AI相关功能</text>
+          </view>
+          <switch checked="{{aiSettings.enabled}}" bindchange="toggleAIService" />
+        </view>
+        <view class="setting-item">
+          <view class="setting-info">
+            <text class="setting-title">AI发票识别</text>
+            <text class="setting-desc">开启或关闭AI发票识别功能</text>
+          </view>
+          <switch checked="{{aiSettings.invoiceRecognition}}" bindchange="toggleInvoiceRecognition" />
+        </view>
+        <view class="setting-item">
+          <view class="setting-info">
+            <text class="setting-title">AI财务助手</text>
+            <text class="setting-desc">开启或关闭AI财务助手功能</text>
+          </view>
+          <switch checked="{{aiSettings.financialAssistant}}" bindchange="toggleFinancialAssistant" />
+        </view>
+        <view class="setting-item">
+          <view class="setting-info">
+            <text class="setting-title">AI提醒</text>
+            <text class="setting-desc">开启或关闭AI提醒功能</text>
+          </view>
+          <switch checked="{{aiSettings.reminders}}" bindchange="toggleReminders" />
+        </view>
+        <view class="setting-item">
+          <view class="setting-info">
+            <text class="setting-title">AI报表分析</text>
+            <text class="setting-desc">开启或关闭AI报表分析功能</text>
+          </view>
+          <switch checked="{{aiSettings.reportAnalysis}}" bindchange="toggleReportAnalysis" />
+        </view>
+      </view>
+      <view class="ai-info-card">
+        <text class="info-title">AI服务说明</text>
+        <text class="info-content">AI功能基于火山引擎Ark API提供服务，使用过程中会产生网络请求。开启AI功能可以帮助您更高效地管理财务，但请确保您的网络连接稳定。</text>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,216 @@
+<view class="container">
+  <!-- 页面顶部 -->
+  <view class="page-header">
+    <text class="page-title">现金流量表</text>
+    <view class="header-actions">
+      <view class="type-tabs">
+        <view class="tab-item {{reportType === 'month' ? 'active' : ''}}" bindtap="switchReportType" data-type="month">
+          <text>月度</text>
+        </view>
+        <view class="tab-item {{reportType === 'year' ? 'active' : ''}}" bindtap="switchReportType" data-type="year">
+          <text>年度</text>
+        </view>
+      </view>
+      <picker mode="{{reportType === 'month' ? 'month' : 'year'}}" value="{{reportPeriod}}" bindchange="onPeriodChange" class="period-picker">
+        <view class="picker-content">{{reportPeriod}}</view>
+      </picker>
+      <view class="export-btn" bindtap="exportReport">
+        <text class="export-icon">📤</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 报表内容 -->
+  <view class="report-content">
+    <!-- 经营活动产生的现金流量 -->
+    <view class="section">
+      <view class="section-header">
+        <text class="section-title">一、经营活动产生的现金流量</text>
+      </view>
+      
+      <!-- 经营活动现金流入 -->
+      <view class="subsection">
+        <text class="subsection-title">现金流入</text>
+        <view class="table">
+          <block wx:for="{{cashflowStatement.operatingActivities.inflows}}" wx:key="name">
+            <view class="table-row">
+              <view class="table-cell item-name">
+                <text class="item-number">1.{{index + 1}}</text>
+                {{item.name}}
+              </view>
+              <view class="table-cell item-amount inflow">+¥{{item.amount.toFixed(2)}}</view>
+            </view>
+          </block>
+        </view>
+      </view>
+      
+      <!-- 经营活动现金流出 -->
+      <view class="subsection">
+        <text class="subsection-title">现金流出</text>
+        <view class="table">
+          <block wx:for="{{cashflowStatement.operatingActivities.outflows}}" wx:key="name">
+            <view class="table-row">
+              <view class="table-cell item-name">
+                <text class="item-number">2.{{index + 1}}</text>
+                {{item.name}}
+              </view>
+              <view class="table-cell item-amount outflow">-¥{{item.amount.toFixed(2)}}</view>
+            </view>
+          </block>
+        </view>
+      </view>
+      
+      <!-- 经营活动现金流量净额 -->
+      <view class="net-cash-flow">
+        <text class="net-label">经营活动产生的现金流量净额</text>
+        <text class="net-amount {{cashflowStatement.operatingActivities.netCashFlow >= 0 ? 'inflow' : 'outflow'}}">
+          {{cashflowStatement.operatingActivities.netCashFlow >= 0 ? '+' : ''}}¥{{cashflowStatement.operatingActivities.netCashFlow.toFixed(2)}}
+        </text>
+      </view>
+    </view>
+
+    <!-- 投资活动产生的现金流量 -->
+    <view class="section">
+      <view class="section-header">
+        <text class="section-title">二、投资活动产生的现金流量</text>
+      </view>
+      
+      <!-- 投资活动现金流入 -->
+      <view class="subsection">
+        <text class="subsection-title">现金流入</text>
+        <view class="table">
+          <block wx:for="{{cashflowStatement.investingActivities.inflows}}" wx:key="name">
+            <view class="table-row">
+              <view class="table-cell item-name">
+                <text class="item-number">1.{{index + 1}}</text>
+                {{item.name}}
+              </view>
+              <view class="table-cell item-amount inflow">+¥{{item.amount.toFixed(2)}}</view>
+            </view>
+          </block>
+        </view>
+      </view>
+      
+      <!-- 投资活动现金流出 -->
+      <view class="subsection">
+        <text class="subsection-title">现金流出</text>
+        <view class="table">
+          <block wx:for="{{cashflowStatement.investingActivities.outflows}}" wx:key="name">
+            <view class="table-row">
+              <view class="table-cell item-name">
+                <text class="item-number">2.{{index + 1}}</text>
+                {{item.name}}
+              </view>
+              <view class="table-cell item-amount outflow">-¥{{item.amount.toFixed(2)}}</view>
+            </view>
+          </block>
+        </view>
+      </view>
+      
+      <!-- 投资活动现金流量净额 -->
+      <view class="net-cash-flow">
+        <text class="net-label">投资活动产生的现金流量净额</text>
+        <text class="net-amount {{cashflowStatement.investingActivities.netCashFlow >= 0 ? 'inflow' : 'outflow'}}">
+          {{cashflowStatement.investingActivities.netCashFlow >= 0 ? '+' : ''}}¥{{cashflowStatement.investingActivities.netCashFlow.toFixed(2)}}
+        </text>
+      </view>
+    </view>
+
+    <!-- 筹资活动产生的现金流量 -->
+    <view class="section">
+      <view class="section-header">
+        <text class="section-title">三、筹资活动产生的现金流量</text>
+      </view>
+      
+      <!-- 筹资活动现金流入 -->
+      <view class="subsection">
+        <text class="subsection-title">现金流入</text>
+        <view class="table">
+          <block wx:for="{{cashflowStatement.financingActivities.inflows}}" wx:key="name">
+            <view class="table-row">
+              <view class="table-cell item-name">
+                <text class="item-number">1.{{index + 1}}</text>
+                {{item.name}}
+              </view>
+              <view class="table-cell item-amount inflow">+¥{{item.amount.toFixed(2)}}</view>
+            </view>
+          </block>
+        </view>
+      </view>
+      
+      <!-- 筹资活动现金流出 -->
+      <view class="subsection">
+        <text class="subsection-title">现金流出</text>
+        <view class="table">
+          <block wx:for="{{cashflowStatement.financingActivities.outflows}}" wx:key="name">
+            <view class="table-row">
+              <view class="table-cell item-name">
+                <text class="item-number">2.{{index + 1}}</text>
+                {{item.name}}
+              </view>
+              <view class="table-cell item-amount outflow">-¥{{item.amount.toFixed(2)}}</view>
+            </view>
+          </block>
+        </view>
+      </view>
+      
+      <!-- 筹资活动现金流量净额 -->
+      <view class="net-cash-flow">
+        <text class="net-label">筹资活动产生的现金流量净额</text>
+        <text class="net-amount {{cashflowStatement.financingActivities.netCashFlow >= 0 ? 'inflow' : 'outflow'}}">
+          {{cashflowStatement.financingActivities.netCashFlow >= 0 ? '+' : ''}}¥{{cashflowStatement.financingActivities.netCashFlow.toFixed(2)}}
+        </text>
+      </view>
+    </view>
+
+    <!-- 汇率变动对现金及现金等价物的影响 -->
+    <view class="section">
+      <view class="table">
+        <view class="table-row">
+          <view class="table-cell item-name">
+            <text class="item-number">四</text>
+            汇率变动对现金及现金等价物的影响
+          </view>
+          <view class="table-cell item-amount {{cashflowStatement.effectOfExchangeRateChanges >= 0 ? 'inflow' : 'outflow'}}">
+            {{cashflowStatement.effectOfExchangeRateChanges >= 0 ? '+' : ''}}¥{{cashflowStatement.effectOfExchangeRateChanges.toFixed(2)}}
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 现金及现金等价物净增加额 -->
+    <view class="section">
+      <view class="table">
+        <view class="table-row total-row">
+          <view class="table-cell total-label">
+            <text class="item-number">五</text>
+            现金及现金等价物净增加额
+          </view>
+          <view class="table-cell total-amount {{cashflowStatement.netIncreaseInCashAndCashEquivalents >= 0 ? 'inflow' : 'outflow'}}">
+            {{cashflowStatement.netIncreaseInCashAndCashEquivalents >= 0 ? '+' : ''}}¥{{cashflowStatement.netIncreaseInCashAndCashEquivalents.toFixed(2)}}
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 期初和期末现金及现金等价物余额 -->
+    <view class="section">
+      <view class="table">
+        <view class="table-row">
+          <view class="table-cell item-name">
+            <text class="item-number">六</text>
+            期初现金及现金等价物余额
+          </view>
+          <view class="table-cell item-amount inflow">+¥{{cashflowStatement.beginningCashAndCashEquivalents.toFixed(2)}}</view>
+        </view>
+        <view class="table-row final-row">
+          <view class="table-cell final-label">
+            <text class="item-number">七</text>
+            期末现金及现金等价物余额
+          </view>
+          <view class="table-cell final-amount">¥{{cashflowStatement.endingCashAndCashEquivalents.toFixed(2)}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>

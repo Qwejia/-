@@ -1,0 +1,110 @@
+<!-- pages/accountsReceivable/arWriteOffDetail.wxml -->
+<view class="container">
+  <view class="header-section">
+    <text class="page-title">
+      {{action === 'add' ? '添加核销记录' : action === 'edit' ? '编辑核销记录' : '查看核销记录'}}
+    </text>
+    <button class="back-btn" bindtap="goBack">
+      <icon type="left" size="25"></icon>返回
+    </button>
+  </view>
+  
+  <form class="form-section">
+    <!-- 核销记录编号 -->
+    <view class="form-item">
+      <text class="form-label">核销记录编号</text>
+      <view class="form-value">{{writeOff.writeOffNo}}</view>
+    </view>
+    
+    <!-- 发票选择 -->
+    <view class="form-item">
+      <text class="form-label">关联发票 *</text>
+      <picker 
+        class="form-picker"
+        mode="selector" 
+        range="{{invoices}}" 
+        range-key="invoiceNo"
+        value="{{writeOff.invoiceId}}"
+        bindchange="onInvoiceChange"
+        disabled="{{action === 'view'}}"
+      >
+        <view class="picker-content">
+          {{writeOff.invoiceNo || '请选择发票'}}
+        </view>
+      </picker>
+    </view>
+    
+    <!-- 客户信息 -->
+    <view class="form-item">
+      <text class="form-label">客户名称</text>
+      <view class="form-value">{{writeOff.customerName}}</view>
+    </view>
+    
+    <!-- 核销日期 -->
+    <view class="form-item">
+      <text class="form-label">核销日期 *</text>
+      <picker 
+        class="form-picker"
+        mode="date" 
+        value="{{writeOff.writeOffDate}}"
+        bindchange="onWriteOffDateChange"
+        disabled="{{action === 'view'}}"
+      >
+        <view class="picker-content">
+          {{writeOff.writeOffDate || '请选择核销日期'}}
+        </view>
+      </picker>
+    </view>
+    
+    <!-- 核销金额 -->
+    <view class="form-item">
+      <text class="form-label">核销金额 *</text>
+      <input 
+        class="form-input" 
+        placeholder="请输入核销金额" 
+        value="{{writeOff.amount}}"
+        type="digit"
+        bindinput="onAmountInput"
+        disabled="{{action === 'view'}}"
+      />
+    </view>
+    
+    <!-- 备注 -->
+    <view class="form-item">
+      <text class="form-label">备注</text>
+      <textarea 
+        class="form-textarea" 
+        placeholder="请输入备注信息" 
+        value="{{writeOff.remark}}"
+        bindinput="onRemarkInput"
+        disabled="{{action === 'view'}}"
+      ></textarea>
+    </view>
+  </form>
+  
+  <!-- 操作按钮 -->
+  <view class="action-section">
+    <!-- 添加/编辑模式 -->
+    <view class="save-actions" wx:if="{{action === 'add' || action === 'edit'}}">
+      <button 
+        class="save-btn" 
+        bindtap="saveWriteOff"
+        loading="{{isSubmitting}}"
+        disabled="{{isSubmitting}}"
+      >
+        {{action === 'add' ? '保存核销记录' : '更新核销记录'}}
+      </button>
+      <button class="cancel-btn" bindtap="goBack">取消</button>
+    </view>
+    
+    <!-- 查看模式 -->
+    <view class="view-actions" wx:if="{{action === 'view'}}">
+      <button class="edit-btn" bindtap="editWriteOff">
+        编辑
+      </button>
+      <button class="delete-btn" bindtap="deleteWriteOff">
+        删除
+      </button>
+    </view>
+  </view>
+</view>

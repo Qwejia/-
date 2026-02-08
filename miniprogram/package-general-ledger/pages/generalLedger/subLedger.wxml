@@ -1,0 +1,70 @@
+<!-- pages/generalLedger/subLedger.wxml -->
+<view class="container">
+  <!-- 科目信息 -->
+  <view class="account-info-section" wx:if="{{account}}">
+    <view class="account-header">
+      <text class="account-code">{{account.code}}</text>
+      <text class="account-name">{{account.name}}</text>
+    </view>
+    <view class="account-details">
+      <text class="detail-item">类别：{{account.category === 'asset' ? '资产类' : account.category === 'liability' ? '负债类' : account.category === 'equity' ? '所有者权益类' : account.category === 'income' ? '损益类' : account.category === 'cost' ? '成本类' : account.category}}</text>
+      <text class="detail-item">余额方向：{{account.balanceDirection === 'debit' ? '借方' : '贷方'}}</text>
+      <text class="detail-item">当前余额：¥{{account.balance || 0}}</text>
+    </view>
+  </view>
+  
+  <!-- 筛选条件 -->
+  <view class="filter-section">
+    <view class="filter-item">
+      <text class="label">科目</text>
+      <picker mode="selector" range="{{accountOptions}}" range-key="text" value="{{accountIndex}}" bindchange="onAccountChange" class="picker">
+        <view class="picker-text">{{accountText}}</view>
+      </picker>
+    </view>
+    <view class="filter-item">
+      <text class="label">期间</text>
+      <picker mode="selector" range="{{periodOptions}}" range-key="text" value="{{periodIndex}}" bindchange="onPeriodChange" class="picker">
+        <view class="picker-text">{{periodText}}</view>
+      </picker>
+    </view>
+  </view>
+  
+  <!-- 搜索栏 -->
+  <view class="search-section">
+    <view class="search-box">
+      <text class="search-icon">🔍</text>
+      <input type="text" placeholder="搜索凭证摘要" value="{{searchKeyword}}" bindinput="onSearch" class="search-input" />
+    </view>
+  </view>
+  
+  <!-- 明细账列表 -->
+  <view class="subledger-section">
+    <view class="section-header">
+      <text class="title">明细账</text>
+    </view>
+    
+    <view class="subledger-header">
+      <text class="header-item">日期</text>
+      <text class="header-item">凭证号</text>
+      <text class="header-item">摘要</text>
+      <text class="header-item">借方</text>
+      <text class="header-item">贷方</text>
+      <text class="header-item">余额</text>
+    </view>
+    
+    <view class="subledger-list">
+      <view wx:for="{{transactions}}" wx:key="voucher._id" class="subledger-item" bindtap="viewVoucherDetail" data-id="{{item.voucher._id}}">
+        <text class="item-date">{{item.voucher.date}}</text>
+        <text class="item-voucher">{{item.voucher.number}}</text>
+        <text class="item-summary">{{item.voucher.summary}}</text>
+        <text class="item-debit">{{item.transaction.debitAmount > 0 ? '¥' + item.transaction.debitAmount.toFixed(2) : '-'}}</text>
+        <text class="item-credit">{{item.transaction.creditAmount > 0 ? '¥' + item.transaction.creditAmount.toFixed(2) : '-'}}</text>
+        <text class="item-balance {{item.runningBalance >= 0 ? 'debit' : 'credit'}}">¥{{item.runningBalance.toFixed(2)}}</text>
+      </view>
+      
+      <view wx:if="transactions.length === 0" class="empty-state">
+        <text class="empty-text">暂无交易记录</text>
+      </view>
+    </view>
+  </view>
+</view>

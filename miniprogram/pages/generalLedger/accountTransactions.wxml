@@ -1,0 +1,74 @@
+<!-- pages/generalLedger/accountTransactions.wxml -->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-section">
+    <view class="search-box">
+      <text class="search-icon">🔍</text>
+      <input type="text" placeholder="搜索凭证号或摘要" value="{{searchKeyword}}" bindinput="onSearch" class="search-input" />
+    </view>
+  </view>
+  
+  <!-- 筛选条件 -->
+  <view class="filter-section">
+    <view class="filter-row">
+      <view class="filter-item">
+        <text class="label">开始日期</text>
+        <picker mode="date" value="{{dateRange.start}}" bindchange="onStartDateChange" class="picker">
+          <view class="picker-text">{{dateRange.start || '选择日期'}}</view>
+        </picker>
+      </view>
+      <view class="filter-item">
+        <text class="label">结束日期</text>
+        <picker mode="date" value="{{dateRange.end}}" bindchange="onEndDateChange" class="picker">
+          <view class="picker-text">{{dateRange.end || '选择日期'}}</view>
+        </picker>
+      </view>
+    </view>
+    <view class="filter-row">
+      <view class="filter-item">
+        <text class="label">交易类型</text>
+        <picker mode="selector" range="{{typeOptions}}" range-key="text" value="{{typeFilter}}" bindchange="onTypeChange" class="picker">
+          <view class="picker-text">{{typeOptions[typeFilter].text}}</view>
+        </picker>
+      </view>
+      <view class="reset-btn">
+        <button type="default" bindtap="resetFilters" size="mini">重置筛选</button>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 科目信息 -->
+  <view class="account-info">
+    <text class="account-code">{{account.code}}</text>
+    <text class="account-name">{{account.name}}</text>
+  </view>
+  
+  <!-- 交易列表 -->
+  <view class="transactions-section">
+    <view class="section-header">
+      <text class="title">交易记录</text>
+      <text class="count">({{filteredTransactions.length}})</text>
+    </view>
+    
+    <view class="transactions-list">
+      <view wx:for="{{filteredTransactions}}" wx:key="_id" class="transaction-item" bindtap="viewVoucherDetail" data-id="{{item.voucherId}}">
+        <view class="transaction-date">{{item.date}}</view>
+        <view class="transaction-content">
+          <view class="transaction-info">
+            <text class="transaction-description">{{item.description}}</text>
+            <text class="transaction-voucher">{{item.voucherNumber}}</text>
+          </view>
+          <view class="transaction-amount">
+            <text class="amount {{item.type === 'debit' ? 'debit' : 'credit'}}">
+              {{item.type === 'debit' ? '+' : '-'}}¥{{item.amount.toFixed(2)}}
+            </text>
+          </view>
+        </view>
+      </view>
+      
+      <view wx:if="filteredTransactions.length === 0" class="empty-state">
+        <text class="empty-text">暂无交易记录</text>
+      </view>
+    </view>
+  </view>
+</view>

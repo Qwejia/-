@@ -1,0 +1,65 @@
+<!-- pages/generalLedger/voucherDetail.wxml -->
+<view class="container">
+  <!-- 凭证基本信息 -->
+  <view class="voucher-header">
+    <view class="voucher-title">
+      <text class="number">{{voucher.number}}</text>
+      <text class="date">{{voucher.date}}</text>
+    </view>
+    <view class="voucher-status {{voucher.status}}">
+      {{voucher.status === 'draft' ? '草稿' : voucher.status === 'submitted' ? '已提交' : voucher.status === 'approved' ? '已审核' : '已记账'}}
+    </view>
+  </view>
+  
+  <!-- 凭证分录 -->
+  <view class="entries-section">
+    <view class="entries-header">
+      <view class="header-item">摘要</view>
+      <view class="header-item">会计科目</view>
+      <view class="header-item">借方金额</view>
+      <view class="header-item">贷方金额</view>
+    </view>
+    
+    <view class="entries-list">
+      <view wx:for="{{entries}}" wx:key="_id" class="entry-row">
+        <view class="entry-item">
+          <text class="text">{{item.description || '-'}}</text>
+        </view>
+        <view class="entry-item">
+          <text class="text">{{item.accountName}}</text>
+        </view>
+        <view class="entry-item">
+          <text class="text amount debit">¥{{item.debit.toFixed(2)}}</text>
+        </view>
+        <view class="entry-item">
+          <text class="text amount credit">¥{{item.credit.toFixed(2)}}</text>
+        </view>
+      </view>
+    </view>
+    
+    <!-- 合计金额 -->
+    <view class="total-section">
+      <view class="total-row">
+        <text class="total-label">合计</text>
+        <text class="total-amount"></text>
+        <text class="total-amount debit">¥{{voucher.totalDebit.toFixed(2)}}</text>
+        <text class="total-amount credit">¥{{voucher.totalCredit.toFixed(2)}}</text>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 操作按钮 -->
+  <view class="actions-section">
+    <view class="section-title">操作</view>
+    <view class="actions-row">
+      <button wx:if="voucher.status === 'draft' || voucher.status === 'submitted'" type="primary" bindtap="approveVoucher" size="mini">审核凭证</button>
+      <button wx:if="voucher.status === 'approved'" type="primary" bindtap="postVoucher" size="mini">记账凭证</button>
+      <button type="warn" bindtap="deleteVoucher" size="mini">删除凭证</button>
+    </view>
+  </view>
+  
+  <!-- 底部返回按钮 -->
+  <view class="back-section">
+    <button type="default" bindtap="goBack">返回列表</button>
+  </view>
+</view>

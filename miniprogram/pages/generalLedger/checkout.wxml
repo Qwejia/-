@@ -1,0 +1,63 @@
+<!--pages/generalLedger/checkout.wxml-->
+<view class="container">
+  <view class="header">
+    <text class="title">期末结账</text>
+  </view>
+  
+  <!-- 结账操作区 -->
+  <view class="checkout-section">
+    <view class="section-title">结账操作</view>
+    
+    <view class="selector-group">
+      <view class="selector-item">
+        <text class="label">选择年份：</text>
+        <picker mode="selector" range="{{[2023, 2024, 2025, 2026, 2027, 2028]}}" range-key="value" value="{{currentYear - 2023}}" bindchange="onYearChange">
+          <view class="picker-value">{{currentYear}}</view>
+        </picker>
+      </view>
+      
+      <view class="selector-item">
+        <text class="label">选择月份：</text>
+        <picker mode="selector" range="{{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]}}" range-key="value" value="{{currentMonth - 1}}" bindchange="onMonthChange">
+          <view class="picker-value">{{currentMonth}}</view>
+        </picker>
+      </view>
+    </view>
+    
+    <button 
+      type="primary" 
+      bindtap="doCheckout" 
+      disabled="{{isLoading}}" 
+      class="checkout-btn"
+    >
+      {{isLoading ? '处理中...' : '执行期末结账'}}
+    </button>
+    
+    <view wx:if="{{showMessage}}" class="message-box {{message.includes('失败') ? 'error' : 'success'}}">
+      <text class="message-text">{{message}}</text>
+      <icon type="cancel" size="20" class="close-icon" bindtap="closeMessage"/>
+    </view>
+  </view>
+  
+  <!-- 结账记录列表 -->
+  <view class="records-section">
+    <view class="section-title">结账记录</view>
+    
+    <view class="records-list">
+      <view wx:if="{{checkoutRecords.length === 0}}" class="empty-tip">
+        <text>暂无结账记录</text>
+      </view>
+      
+      <view wx:for="{{checkoutRecords}}" wx:key="_id" class="record-item">
+        <view class="record-header">
+          <text class="period">{{item.year}}年{{item.month}}月</text>
+          <text class="status">已结账</text>
+        </view>
+        <view class="record-info">
+          <text class="checkout-date">结账日期：{{item.checkoutDate.substring(0, 10)}}</text>
+          <text class="voucher-id">凭证号：{{item.voucherId}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
