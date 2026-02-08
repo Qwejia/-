@@ -6,9 +6,6 @@
         <text class="page-subtitle">专业智能 · 财务无忧</text>
       </view>
       <view class="header-actions">
-        <button class="icon-btn secondary" bindtap="toggleAPIMode">
-          <text class="btn-icon">{{useRealAPI ? '🌐' : '📡'}}</text>
-        </button>
         <button class="icon-btn secondary" bindtap="clearChatHistory">
           <text class="btn-icon">🗑️</text>
         </button>
