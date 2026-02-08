@@ -1,0 +1,60 @@
+<view class="page-container">
+  <view class="header-section">
+    <text class="page-title">财务健康检查</text>
+    <text class="page-subtitle">全面评估企业财务状况</text>
+  </view>
+
+  <scroll-view class="content-scroll" scroll-y>
+    <view class="form-container">
+      <view class="form-item">
+        <text class="label">年营收（万元）</text>
+        <input class="input-field" type="digit" placeholder="请输入年营收" value="{{revenue}}" bindinput="onRevenueInput" />
+      </view>
+      <view class="form-item">
+        <text class="label">年利润（万元）</text>
+        <input class="input-field" type="digit" placeholder="请输入年利润" value="{{profit}}" bindinput="onProfitInput" />
+      </view>
+      <view class="form-item">
+        <text class="label">总资产（万元）</text>
+        <input class="input-field" type="digit" placeholder="请输入总资产" value="{{assets}}" bindinput="onAssetsInput" />
+      </view>
+      <view class="form-item">
+        <text class="label">总负债（万元）</text>
+        <input class="input-field" type="digit" placeholder="请输入总负债" value="{{liabilities}}" bindinput="onLiabilitiesInput" />
+      </view>
+
+      <button class="action-btn" bindtap="calculate" disabled="{{!canCalculate}}">
+        <text class="btn-icon">📊</text>
+        <text class="btn-text">开始评估</text>
+      </button>
+
+      <view class="info-section" wx:if="{{showResult}}">
+        <view class="info-card">
+          <view class="info-header">
+            <text class="info-icon">📊</text>
+            <text class="info-title">评估结果</text>
+          </view>
+          <view class="info-content">
+            <view class="result-row highlight">
+              <text class="result-label">健康评分</text>
+              <text class="result-value score">{{healthScore}}分</text>
+            </view>
+            <view class="result-row">
+              <text class="result-label">健康等级</text>
+              <text class="result-value level">{{healthLevel}}</text>
+            </view>
+            <view class="analysis-section">
+              <text class="analysis-title">详细分析</text>
+              <text class="analysis-text">{{healthAnalysis}}</text>
+            </view>
+          </view>
+        </view>
+
+        <button class="action-btn secondary" bindtap="copyResult">
+          <text class="btn-icon">📋</text>
+          <text class="btn-text">复制结果</text>
+        </button>
+      </view>
+    </view>
+  </scroll-view>
+</view>
